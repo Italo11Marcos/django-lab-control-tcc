@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 from django.contrib.auth.models import AbstractUser, BaseUserManager #AbstractBaseUser - bem básico
 
 class UsuarioManager(BaseUserManager):
@@ -35,22 +36,21 @@ class CustomUsuario(AbstractUser):
     objects = UsuarioManager()
 
 class Curso(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=45)
 
 class Disciplina(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=70)
 
 class Professor(models.Model):
-    id = models.IntegerField(primary_key=True)
-    masp = models.CharField(max_length=10)
+    masp = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
     contato = models.CharField(max_length=15, blank=True)
 
 class Laboratorio(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=45)
     qnt_computador = models.IntegerField(blank=True)
 
@@ -102,7 +102,7 @@ class Computador(models.Model):
     software_id = models.ManyToManyField(Software)
 
 class Reserva(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
     dia = models.DateField()
     horario_inicio = models.TimeField()
     horario_fim = models.TimeField()
@@ -114,7 +114,7 @@ class Reserva(models.Model):
     user_id = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True)
 
 class Emprestimo(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
     date = models.DateTimeField()
     evento = models.CharField(max_length=200)
     responsavel = models.CharField(max_length=100)
@@ -122,6 +122,31 @@ class Emprestimo(models.Model):
     contato = models.CharField(max_length=15, blank=True)
     computador_id = models.ForeignKey(Computador, on_delete=models.SET_NULL, null=True)
     user_id = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True)
+
+class SolicitacaoReserva(models.Model):
+    
+    STATUS_CHOICES = [
+        ('P', 'Pendente'),
+        ('F', 'Finzalizada'),
+    ]
+
+    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    date = models.DateField(auto_now_add=True)
+    observacao = models.TextField()
+    status = models.CharField(choices=STATUS_CHOICES, max_length=1)
+    horario_dia = models.DateField()
+    horario_inicio = models.TimeField()
+    horario_fim = models.TimeField()
+    qnt_alunos = models.IntegerField()
+    professor_masp = models.ForeignKey(Professor, on_delete=models.CASCADE)
+    curso_id = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    disciplina_id = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
+    Software_id = models.ManyToManyField(Software)
+
+class RespostaSolicitacao(models.Model):
+    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    solicitacao = models.ForeignKey(SolicitacaoReserva, on_delete=models.CASCADE)
+    user_masp = models.ForeignKey(CustomUsuario, on_delete=models.CASCADE)
 
 class Log(models.Model):
 
@@ -132,6 +157,8 @@ class Log(models.Model):
         ('CR', 'Criação'),
         ('RV', 'Reserva'),
         ('EM', 'Empréstimo'),
+        ('AS', 'Atualização Status'),
+        ('NS', 'Nova Solicitação'),
     ]
 
     date = models.DateTimeField(auto_now_add=True)
@@ -141,3 +168,4 @@ class Log(models.Model):
     reserva_id = models.ForeignKey(Reserva, on_delete=models.SET_NULL, null=True, blank=True)
     emprestimo_id = models.ForeignKey(Emprestimo, on_delete=models.SET_NULL, null=True, blank=True)
     software_id = models.ForeignKey(Software, on_delete=models.SET_NULL, null=True, blank=True)
+    solicitacao_id = models.ForeignKey(SolicitacaoReserva, on_delete=models.SET_NULL, null=True)
