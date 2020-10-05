@@ -36,11 +36,11 @@ class CustomUsuario(AbstractUser):
     objects = UsuarioManager()
 
 class Curso(models.Model):
-    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=45)
 
 class Disciplina(models.Model):
-    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=70)
 
 class Professor(models.Model):
@@ -50,7 +50,7 @@ class Professor(models.Model):
     contato = models.CharField(max_length=15, blank=True)
 
 class Laboratorio(models.Model):
-    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=45)
     qnt_computador = models.IntegerField(blank=True)
 
@@ -61,7 +61,7 @@ class Software(models.Model):
         ('SP', 'Software Licenciado'),
     ]
 
-    id = models.IntegerField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=100)
     versao = models.CharField(max_length=15)
     tipo = models.CharField(choices=TIPO_CHOICES, max_length=2)
@@ -102,7 +102,7 @@ class Computador(models.Model):
     software_id = models.ManyToManyField(Software)
 
 class Reserva(models.Model):
-    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     dia = models.DateField()
     horario_inicio = models.TimeField()
     horario_fim = models.TimeField()
@@ -114,7 +114,7 @@ class Reserva(models.Model):
     user_id = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True)
 
 class Emprestimo(models.Model):
-    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     date = models.DateTimeField()
     evento = models.CharField(max_length=200)
     responsavel = models.CharField(max_length=100)
@@ -130,7 +130,7 @@ class SolicitacaoReserva(models.Model):
         ('F', 'Finzalizada'),
     ]
 
-    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     date = models.DateField(auto_now_add=True)
     observacao = models.TextField()
     status = models.CharField(choices=STATUS_CHOICES, max_length=1)
@@ -144,7 +144,7 @@ class SolicitacaoReserva(models.Model):
     Software_id = models.ManyToManyField(Software)
 
 class RespostaSolicitacao(models.Model):
-    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     solicitacao = models.ForeignKey(SolicitacaoReserva, on_delete=models.CASCADE)
     user_masp = models.ForeignKey(CustomUsuario, on_delete=models.CASCADE)
 
@@ -161,6 +161,7 @@ class Log(models.Model):
         ('NS', 'Nova Solicitação'),
     ]
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     date = models.DateTimeField(auto_now_add=True)
     categoria = models.CharField(choices=CATEGORIA_CHOICES, max_length=2)
     laboratorio_id = models.ForeignKey(Laboratorio, on_delete=models.SET_NULL, null=True, blank=True)
