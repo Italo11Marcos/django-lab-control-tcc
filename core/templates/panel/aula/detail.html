@@ -1,0 +1,137 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Index {% endblock %} 
+
+{% block head %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block layouts %}
+
+    {% include 'layouts/navbar.html' %}
+
+    {% include 'layouts/sidebar.html' %}
+
+{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+ <!-- Content Wrapper. Contains page content -->
+ <div class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Create</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Legacy User Menu</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">{{ aula.name }}</h3>
+        </div>
+        <div class="card-body">
+          <p>{{ aula.start_day }}</p>
+          <p>{{ aula.end_day }}</p>
+          <p>{{ aula.start_time }}</p>
+          <p>{{ aula.end_time }}</p>
+          <p>{{ aula.laboratorio_id }}</p>
+          <p>{{ aula.curso_id }}</p>
+          <p>{{ aula.professor_id }}</p>
+          <p>{{ aula.disciplina_id }}</p>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'aula-update' aula.pk %}" class="btn btn-outline-info">Editar</a>
+            <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Modal -->
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'aula-delete' aula.pk %}" method="post">
+            {% csrf_token %}
+            Realmente deseja excluir o {{ aula.name }} ?
+            Essa ação não poderá ser desfeita!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Excluir</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+
+    {% include 'layouts/footer.html' %}
+
+{% endblock %}
+
+{% block js %}
+
+<!-- jquery-validation -->
+<script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    $("#table-lab").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
+
+
+{% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'info' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'warning' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'error' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% endif %}
+        {% endfor %}
+{% endif %}
+
+{% endblock %}

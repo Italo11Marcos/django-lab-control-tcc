@@ -1,0 +1,186 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Index {% endblock %} 
+
+{% block head %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block layouts %}
+
+    {% include 'layouts/navbar.html' %}
+
+    {% include 'layouts/sidebar.html' %}
+
+{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+ <!-- Content Wrapper. Contains page content -->
+ <div class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Create</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Legacy User Menu</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Softwares</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST" autocomplete="off" id="form-software">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Nome:</label>
+                            {% render_field form.name class+="form-control" %}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Versão:</label>
+                            {% render_field form.versao class+="form-control" %}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                          <label>Tipo:</label>
+                          {% render_field form.tipo class+="form-control" %}
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label>Descrição:</label>
+                          {% render_field form.descricao class+="form-control" %}
+                      </div>
+                  </div>
+              </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+              </form>
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}
+
+{% block footer %}
+
+    {% include 'layouts/footer.html' %}
+
+{% endblock %}
+
+{% block js %}
+
+<!-- jquery-validation -->
+<script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    $("#table-lab").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
+
+<script>
+    $(document).ready(function () {
+    $('#form-software').validate({
+      rules: {
+        descricao: {
+          required: true,
+        },
+        name: {
+          required: true,
+          maxlength: 100
+        },
+        tipo: {
+            required: true,
+        },
+        versao: {
+            required: true,
+        }
+      },
+      messages: {
+        name: {
+          required: "Esse campo é obrigatório",
+          maxlength: "Máximo 100 caracteres",
+        },
+        descricao: {
+          required: "Esse campo é obrigatório",
+        },
+        tipo: {
+            required: "Esse campo é obrigatório",
+        },
+        versao: {
+            required: "Esse campo é obrigatório",
+        }
+      },
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
+        $(element).addClass('is-valid');
+      }
+    });
+  });
+</script>
+
+{% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'info' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'warning' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'error' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% endif %}
+        {% endfor %}
+{% endif %}
+
+{% endblock %}

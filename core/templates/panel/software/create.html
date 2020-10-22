@@ -43,7 +43,7 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Laboratórios</h3>
+          <h3 class="card-title">Software</h3>
         </div>
         <div class="card-body">
           <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
@@ -61,17 +61,20 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Quantidade Computadores</th>
-                        <th>Ações</th>
+                        <th>Tipo</th>
+                        <th>Versão</th>
+                        <th>Descrição</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for l in laboratorios %}
+                    {% for s in softwares %}
                         <tr>
-                            <td>{{ l.name }}</td>
-                            <td>{{ l.qnt_computador }}</td>
+                            <td>{{ s.name }}</td>
+                            <td>{{ s.tipo }}</td>
+                            <td>{{ s.versao }}</td>
+                            <td>{{ s.descricao }}</td>
                             <td>
-                                <a href="{% url 'laboratorio-detail' l.pk %}" title="Informações"><i class="far fa-eye"></i></a>
+                                <a href="{% url 'software-detail' s.pk %}" title="Informações"><i class="far fa-eye"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -80,22 +83,36 @@
            </div>
            <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
             <br>
-            <form method="POST" autocomplete="off" id="form-laboratorio">
+            <form method="POST" autocomplete="off" id="form-software">
               {% csrf_token %}
               <div class="row">
-                  <div class="col-sm-6">
+                  <div class="col-sm-4">
                       <div class="form-group">
                           <label>Nome:</label>
                           {% render_field form.name class+="form-control" %}
                       </div>
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-4">
                       <div class="form-group">
-                          <label>Quantidade de Computadores:</label>
-                          {% render_field form.qnt_computador class+="form-control" %}
+                          <label>Versão:</label>
+                          {% render_field form.versao class+="form-control" %}
                       </div>
                   </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Tipo:</label>
+                        {% render_field form.tipo class+="form-control" %}
+                    </div>
+                  </div>
               </div>
+              <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        {% render_field form.descricao class+="form-control" %}
+                    </div>
+                </div>
+            </div>
               <div class="row">
                   <div class="col-sm-12">
                       <div class="form-group">
@@ -133,6 +150,10 @@
 <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
 <script>
   $(function () {
     $("#table-lab").DataTable({
@@ -144,24 +165,36 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-laboratorio').validate({
+  $('#form-software').validate({
     rules: {
+      descricao: {
+        required: true,
+      },
       name: {
         required: true,
+        maxlength: 100
       },
-      qnt_computador: {
-        required: true,
-        min: 1
+      tipo: {
+          required: true,
       },
+      versao: {
+          required: true,
+      }
     },
     messages: {
       name: {
         required: "Esse campo é obrigatório",
+        maxlength: "Máximo 100 caracteres",
       },
-      qnt_computador: {
-        required: "Esse campo é requerido",
-        min: "O laboratório não pode ter menos que 1 computador"
+      descricao: {
+        required: "Esse campo é obrigatório",
       },
+      tipo: {
+          required: "Esse campo é obrigatório",
+      },
+      versao: {
+          required: "Esse campo é obrigatório",
+      }
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

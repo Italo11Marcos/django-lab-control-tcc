@@ -25,31 +25,43 @@ class CustomUsuarioChangeForm(UserChangeForm):
 class LaboratorioForm(forms.ModelForm):
     class Meta:
         model = Laboratorio
-        fields = '__all__'
+        fields = ('name', 'qnt_computador')
     
 class CursoForm(forms.ModelForm):
     class Meta:
         model = Curso
-        fields = '__all__'
+        fields = ['name']
 
 class DisciplinaForm(forms.ModelForm):
     class Meta:
         model = Disciplina
-        fields = '__all__'
+        fields = ['name']
 
 class ProfessorForm(forms.ModelForm):
     class Meta:
         model = Professor
         fields = '__all__'
 
-class ComputatorForm(forms.ModelForm):
+class ComputadorForm(forms.ModelForm):
     class Meta:
         model = Computador
         fields = '__all__'
 
+    laboratorio_id = forms.ModelChoiceField(queryset=Laboratorio.objects.all())
+
 class ReservaForm(forms.ModelForm):
     class Meta:
         model = Reserva
+        fields = '__all__'
+
+        laboratorio_id = forms.ModelChoiceField(queryset=Laboratorio.objects.all(),required=False)
+        professor_id = forms.ModelChoiceField(queryset=Professor.objects.all(),required=False)
+        disciplina_id = forms.ModelChoiceField(queryset=Disciplina.objects.all(),required=False)
+        curso_id = forms.ModelChoiceField(queryset=Curso.objects.all(),required=False)
+
+class AulaForm(forms.ModelForm):
+    class Meta:
+        model = Aula
         fields = '__all__'
 
 class EmprestimoForm(forms.ModelForm):
@@ -60,6 +72,6 @@ class EmprestimoForm(forms.ModelForm):
 class SoftwareForm(forms.ModelForm):
     class Meta:
         model = Software
-        fields = '__all__'
+        fields = ('name', 'versao', 'tipo', 'descricao')
 
 

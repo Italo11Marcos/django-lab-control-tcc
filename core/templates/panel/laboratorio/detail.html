@@ -43,69 +43,14 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Laboratórios</h3>
+          <h3 class="card-title">{{ laboratorio.name }}</h3>
         </div>
         <div class="card-body">
-          <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Listagem</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Cadastrar</a>
-            </li>
-          </ul>
-          <div class="tab-content" id="custom-content-below-tabContent">
-            <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-              <br>
-              <table id="table-lab" class="table table-bordered table-hover dataTable">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Quantidade Computadores</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for l in laboratorios %}
-                        <tr>
-                            <td>{{ l.name }}</td>
-                            <td>{{ l.qnt_computador }}</td>
-                            <td>
-                                <a href="{% url 'laboratorio-detail' l.pk %}" title="Informações"><i class="far fa-eye"></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-           </div>
-           <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
-            <br>
-            <form method="POST" autocomplete="off" id="form-laboratorio">
-              {% csrf_token %}
-              <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Nome:</label>
-                          {% render_field form.name class+="form-control" %}
-                      </div>
-                  </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Quantidade de Computadores:</label>
-                          {% render_field form.qnt_computador class+="form-control" %}
-                      </div>
-                  </div>
-              </div>
-              <div class="row">
-                  <div class="col-sm-12">
-                      <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                      </div>
-                  </div>
-              </div>
-            </form>
-           </div>
-          </div>
+          <p>{{ laboratorio.qnt_computador }}</p>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'laboratorio-update' laboratorio.pk %}" class="btn btn-outline-info">Editar</a>
+            <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
         </div>
       </div>
 
@@ -113,6 +58,31 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+  <!-- Modal -->
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'laboratorio-delete' laboratorio.pk %}" method="post">
+            {% csrf_token %}
+            Realmente deseja excluir o {{ laboratorio.name }} ?
+            Essa ação não poderá ser desfeita!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Excluir</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block footer %}

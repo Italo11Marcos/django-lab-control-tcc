@@ -43,7 +43,7 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Laboratórios</h3>
+          <h3 class="card-title">Reserva</h3>
         </div>
         <div class="card-body">
           <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
@@ -60,18 +60,22 @@
               <table id="table-lab" class="table table-bordered table-hover dataTable">
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Quantidade Computadores</th>
+                        <th>Professor</th>
+                        <th>Laboratório</th>
+                        <th>Disciplina</th>
+                        <th>Curso</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for l in laboratorios %}
+                    {% for a in aulas %}
                         <tr>
-                            <td>{{ l.name }}</td>
-                            <td>{{ l.qnt_computador }}</td>
+                            <td>{{ a.professor_id }}</td>
+                            <td>{{ a.laboratorio_id }}</td>
+                            <td>{{ a.disciplina_id }}</td>
+                            <td>{{ a.curso_id }}</td>
                             <td>
-                                <a href="{% url 'laboratorio-detail' l.pk %}" title="Informações"><i class="far fa-eye"></i></a>
+                                <a href="{% url 'aula-detail' a.pk %}" title="Informações"><i class="far fa-eye"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -80,29 +84,75 @@
            </div>
            <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
             <br>
-            <form method="POST" autocomplete="off" id="form-laboratorio">
+            <form method="POST" autocomplete="off" id="form-aula">
               {% csrf_token %}
-              <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Nome:</label>
-                          {% render_field form.name class+="form-control" %}
-                      </div>
-                  </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Quantidade de Computadores:</label>
-                          {% render_field form.qnt_computador class+="form-control" %}
-                      </div>
-                  </div>
-              </div>
               <div class="row">
                   <div class="col-sm-12">
                       <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Salvar</button>
+                          <label>Dia:</label>
+                          {% render_field form.dia class+="form-control" %}
                       </div>
                   </div>
               </div>
+              <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Data Início</label>
+                        {% render_field form.start_day type="date" class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <label>Hora Início</label>
+                      {% render_field form.start_time type="time" class+="form-control" %}
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <label>Data Fim</label>
+                      {% render_field form.end_day type="date" class+="form-control" %}
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <label>Hora Fim</label>
+                      {% render_field form.end_time type="time" class+="form-control" %}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Laboratório</label>
+                        {% render_field form.laboratorio_id class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <label>Professor</label>
+                      {% render_field form.professor_id class+="form-control" %}
+                  </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Disciplina</label>
+                    {% render_field form.disciplina_id class+="form-control" %}
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Curso</label>
+                    {% render_field form.curso_id class+="form-control" %}
+                </div>
+              </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </div>
             </form>
            </div>
           </div>
@@ -133,6 +183,10 @@
 <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
 <script>
   $(function () {
     $("#table-lab").DataTable({
@@ -144,24 +198,49 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-laboratorio').validate({
+  $('#form-aula').validate({
     rules: {
-      name: {
+      dia: {
         required: true,
       },
-      qnt_computador: {
+      start_day: {
         required: true,
-        min: 1
       },
+      start_time: {
+        required: true,
+      },
+      end_time: {
+        required: true,
+      },
+      end_day: {
+        required: true,
+      },
+      laboratorio_id: {
+        required: true,
+      },
+      professor_id: {
+        required: true,
+      },
+      curso_id: {
+        required: true,
+      },
+      disciplina_id: {
+        required: true,
+      }
     },
     messages: {
-      name: {
+      start_day: {
         required: "Esse campo é obrigatório",
       },
-      qnt_computador: {
-        required: "Esse campo é requerido",
-        min: "O laboratório não pode ter menos que 1 computador"
+      start_time: {
+        required: "Esse campo é obrigatório",
       },
+      end_time: {
+        required: "Esse campo é obrigatório",
+      },
+      end_day: {
+        required: "Esse campo é obrigatório",
+      }
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

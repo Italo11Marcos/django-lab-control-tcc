@@ -1,0 +1,321 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Index {% endblock %} 
+
+{% block head %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block layouts %}
+
+    {% include 'layouts/navbar.html' %}
+
+    {% include 'layouts/sidebar.html' %}
+
+{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+ <!-- Content Wrapper. Contains page content -->
+ <div class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Create</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Legacy User Menu</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Reserva</h3>
+        </div>
+        <div class="card-body">
+          <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Listagem</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Cadastrar</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="custom-content-below-tabContent">
+            <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+              <br>
+              <table id="table-lab" class="table table-bordered table-hover dataTable">
+                <thead>
+                    <tr>
+                        <th>Evento</th>
+                        <th>Responsável</th>
+                        <th>Dia</th>
+                        <th>Laboratório</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in reservas %}
+                        <tr>
+                            <td>{{ r.evento }}</td>
+                            <td>{{ r.responsavel }}</td>
+                            <td>{{ r.start_day }}</td>
+                            <td>{{ r.laboratorio_id }}</td>
+                            <td>
+                                <a href="{% url 'reserva-detail' r.pk %}" title="Informações"><i class="far fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+           </div>
+           <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
+            <br>
+            <form method="POST" autocomplete="off" id="form-reserva">
+              {% csrf_token %}
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label>Evento:</label>
+                          {% render_field form.evento class+="form-control" %}
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Responsável:</label>
+                        {% render_field form.responsavel class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Contato:</label>
+                        {% render_field form.contato class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>E-mail:</label>
+                        {% render_field form.email class+="form-control" %}
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Data Início</label>
+                        {% render_field form.start_day type="date" class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <label>Hora Início</label>
+                      {% render_field form.start_time type="time" class+="form-control" %}
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <label>Data Fim</label>
+                      {% render_field form.end_day type="date" class+="form-control" %}
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <label>Hora Fim</label>
+                      {% render_field form.end_time type="time" class+="form-control" %}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Laboratório</label>
+                        {% render_field form.laboratorio_id class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <label>Professor</label>
+                      {% render_field form.professor_id class+="form-control" %}
+                  </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Disciplina</label>
+                    {% render_field form.disciplina_id class+="form-control" %}
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Curso</label>
+                    {% render_field form.curso_id class+="form-control" %}
+                </div>
+              </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+           </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}
+
+{% block footer %}
+
+    {% include 'layouts/footer.html' %}
+
+{% endblock %}
+
+{% block js %}
+
+<!-- jquery-validation -->
+<script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
+<script>
+  $(function () {
+    $("#table-lab").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+  $('#form-reserva').validate({
+    rules: {
+      evento: {
+        required: true,
+        maxlength: 100
+      },
+      responsavel: {
+        required: true,
+        maxlength: 100
+      },
+      contato: {
+        required: true
+      },
+      email: {
+        required: true,
+        email: true
+      },
+      start_day: {
+        required: true,
+      },
+      start_time: {
+        required: true,
+      },
+      end_time: {
+        required: true,
+      },
+      end_day: {
+        required: true,
+      },
+      laboratorio_id: {
+        required: false,
+      },
+      professor_id: {
+        required: false,
+      },
+      curso_id: {
+        required: false,
+      },
+      disciplina_id: {
+        required: false,
+      }
+    },
+    messages: {
+      evento: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máximo 100 caracteres",
+      },
+      responsavel: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máximo 100 caracteres",
+      },
+      contato: {
+        required: "Esse campo é obrigatório",
+      },
+      email: {
+        required: "Esse campo é obrigatório",
+      },
+      start_day: {
+        required: "Esse campo é obrigatório",
+      },
+      start_time: {
+        required: "Esse campo é obrigatório",
+      },
+      end_time: {
+        required: "Esse campo é obrigatório",
+      },
+      end_day: {
+        required: "Esse campo é obrigatório",
+      }
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+      $(element).addClass('is-valid');
+    }
+  });
+});
+</script>
+
+{% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'info' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'warning' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'error' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% endif %}
+        {% endfor %}
+{% endif %}
+
+{% endblock %}

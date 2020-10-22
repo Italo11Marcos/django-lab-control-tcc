@@ -43,7 +43,7 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Laboratórios</h3>
+          <h3 class="card-title">Computador</h3>
         </div>
         <div class="card-body">
           <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
@@ -60,18 +60,24 @@
               <table id="table-lab" class="table table-bordered table-hover dataTable">
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Quantidade Computadores</th>
+                        <th>Código</th>
+                        <th>Patrimônio</th>
+                        <th>Funciona?</th>
+                        <th>Dual Boot?</th>
+                        <th>Laboratório</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for l in laboratorios %}
+                    {% for pc in computadors %}
                         <tr>
-                            <td>{{ l.name }}</td>
-                            <td>{{ l.qnt_computador }}</td>
+                            <td>{{ pc.codigo }}</td>
+                            <td>{{ pc.patrimonio }}</td>
+                            <td>{{ pc.funciona }}</td>
+                            <td>{{ pc.dual_boot }}</td>
+                            <td>{{ pc.laboratorio_id }}</td>
                             <td>
-                                <a href="{% url 'laboratorio-detail' l.pk %}" title="Informações"><i class="far fa-eye"></i></a>
+                                <a href="{% url 'computador-detail' pc.pk %}" title="Informações"><i class="far fa-eye"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -80,21 +86,69 @@
            </div>
            <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
             <br>
-            <form method="POST" autocomplete="off" id="form-laboratorio">
+            <form method="POST" autocomplete="off" id="form-pc">
               {% csrf_token %}
               <div class="row">
                   <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Nome:</label>
-                          {% render_field form.name class+="form-control" %}
+                          <label>Código:</label>
+                          {% render_field form.codigo class+="form-control" %}
                       </div>
                   </div>
                   <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Quantidade de Computadores:</label>
-                          {% render_field form.qnt_computador class+="form-control" %}
+                          <label>Patrimônio:</label>
+                          {% render_field form.patrimonio class+="form-control" %}
                       </div>
                   </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Dual Boot?</label>
+                        {% render_field form.dual_boot class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Funciona?</label>
+                        {% render_field form.funciona class+="form-control" %}
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Processador:</label>
+                        {% render_field form.processador class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>HD:</label>
+                        {% render_field form.hd class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>RAM:</label>
+                        {% render_field form.ram class+="form-control" %}
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Laboratório</label>
+                      {% render_field form.laboratorio_id class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Software</label>
+                      {% render_field form.software_id class+="form-control" %}
+                    </div>
+                </div>
               </div>
               <div class="row">
                   <div class="col-sm-12">
@@ -133,6 +187,10 @@
 <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
 <script>
   $(function () {
     $("#table-lab").DataTable({
@@ -144,24 +202,67 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-laboratorio').validate({
+  $('#form-pc').validate({
     rules: {
-      name: {
+      codigo: {
         required: true,
       },
-      qnt_computador: {
+      patrimonio: {
         required: true,
-        min: 1
+        maxlength: 15
       },
+      dual_boot: {
+          required: true,
+      },
+      funciona: {
+          required: true,
+      },
+      processador: {
+          required: true,
+      },
+      ram: {
+          required: true,
+      },
+      hd: {
+          required: true,
+      },
+      laboratorio_id: {
+          required: true,
+      },
+      software_id: {
+          required: true,
+      }
     },
     messages: {
-      name: {
+      patrimonio: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máximo 15 caracteres",
+      },
+      codigo: {
         required: "Esse campo é obrigatório",
       },
-      qnt_computador: {
-        required: "Esse campo é requerido",
-        min: "O laboratório não pode ter menos que 1 computador"
+      dual_boot: {
+          required: "Esse campo é obrigatório",
       },
+      funciona: {
+          required: "Esse campo é obrigatório",
+      },
+      hd: {
+          required: "Esse campo é obrigatório",
+      },
+      ram: {
+          required: "Esse campo é obrigatório",
+      },
+      processador: {
+          required: "Esse campo é obrigatório",
+      },
+      laboratorio_id: {
+          required: "Esse campo é obrigatório",
+      },
+      software_id: {
+          required: "Esse campo é obrigatório",
+      }
+
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

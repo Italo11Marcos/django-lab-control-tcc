@@ -1,0 +1,111 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Index {% endblock %} 
+
+{% block head %}
+<!-- fullCalendar -->
+<link rel="stylesheet" href="{% static 'plugins/fullcalendar/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/fullcalendar-daygrid/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/fullcalendar-timegrid/main.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/fullcalendar-bootstrap/main.min.css' %}">
+{% endblock %}
+
+{% block layouts %}
+
+    {% include 'layouts/navbar.html' %}
+
+    {% include 'layouts/sidebar.html' %}
+
+{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+ <!-- Content Wrapper. Contains page content -->
+ <div class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Create</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Legacy User Menu</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Reserva</h3>
+        </div>
+        <div class="card-body">
+            <div id="calendar"></div>
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}
+
+{% block footer %}
+
+    {% include 'layouts/footer.html' %}
+
+{% endblock %}
+
+{% block js %}
+
+<!-- fullCalendar 2.2.5 -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/fullcalendar/main.min.js' %}"></script>
+<script src="{% static 'plugins/fullcalendar-daygrid/main.min.js' %}"></script>
+<script src="{% static 'plugins/fullcalendar-timegrid/main.min.js' %}"></script>
+<script src="{% static 'plugins/fullcalendar-interaction/main.min.js' %}"></script>
+<script src="{% static 'plugins/fullcalendar-bootstrap/main.min.js' %}"></script>
+<script src="{% static 'plugins/fullcalendar/locales/pt-br.js' %}"></script>
+
+<script>
+    var date = new Date()
+    var d    = date.getDate(),
+        m    = date.getMonth(),
+        y    = date.getFullYear()
+        var Calendar = FullCalendar.Calendar;
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new Calendar(calendarEl, {
+      locale: 'pt-br',  
+      plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid' ],
+      header    : {
+        left  : 'prev,next today',
+        center: 'title',
+        right : 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      'themeSystem': 'bootstrap',
+      //Random default events
+      events    : [
+      {% for i in reservas %}
+        {
+            title: "teste",
+            start: '{{ i.dia|date:"Y-m-d" }}',
+            allDay         : false,
+
+        },
+        {% endfor %}
+      ],
+    });
+
+    calendar.render();
+</script>
+
+
+{% endblock %}
