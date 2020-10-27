@@ -46,6 +46,57 @@
               </li>
             </ul>
           </li>
+          <!-- Solicitacao de Reservas-->
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Solicitação Reserva
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'solicitacao-create' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Solicitar Reserva</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'solicitacao-list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Solicitações Pendentes</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v3</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          {% if request.user.is_staff %}
+          <!-- Calendário -->
+          <li class="nav-item has-treeview">
+            <a href="{% url 'calendario' %}" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Calendário
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+          </li>
+          <!-- Usuários -->
+          <li class="nav-item has-treeview">
+            <a href="{% url 'usuario-list' %}" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Usuários
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+          </li>
           <!-- Laboratórios -->
           <li class="nav-item has-treeview">
             <a href="{% url 'laboratorio-create' %}" class="nav-link">
@@ -186,6 +237,7 @@
               </p>
             </a>
           </li>
+          {% endif %}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

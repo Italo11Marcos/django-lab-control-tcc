@@ -2,25 +2,26 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import *
 
-class CustomUsuarioCreationForm(UserCreationForm):
+class CustomUsuarioCreateForm(UserCreationForm):
+
     class Meta:
         model = CustomUsuario
-        fields = ('first_name', 'last_name', 'masp')
-        labels = {'username': 'E-mail'}
+        fields = ('first_name', 'last_name', 'masp','username')
+        labels = {'username': 'Username/E-mail'}
 
-        def save(self, commit=True):
-            user = super().save(commit=False)
-            user.set_password(self.cleaned_data['password1'])
-            user.email = self.cleaned_data['username']
-            if commit:
-                user.save()
-            return user
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        user.email = self.cleaned_data["username"]
+        if commit:
+            user.save()
+        return user
 
 class CustomUsuarioChangeForm(UserChangeForm):
+
     class Meta:
         model = CustomUsuario
-        fields = ('first_name', 'last_name', 'masp')
-        labels = {'username': 'E-mail'}
+        fields = ('first_name', 'last_name', 'masp', 'username', 'is_staff')
 
 class LaboratorioForm(forms.ModelForm):
     class Meta:
@@ -74,4 +75,7 @@ class SoftwareForm(forms.ModelForm):
         model = Software
         fields = ('name', 'versao', 'tipo', 'descricao')
 
-
+class SolicitacaoReservaForm(forms.ModelForm):
+    class Meta:
+        model = SolicitacaoReserva
+        fields = ('qnt_alunos', 'professor_masp', 'curso_id', 'disciplina_id', 'software_id', 'observacao')

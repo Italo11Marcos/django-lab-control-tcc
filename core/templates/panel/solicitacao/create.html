@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-{% block title %} Softwares - Painel de Controle {% endblock %} 
+{% block title %} Solicitação - Painel de Controle {% endblock %} 
 
 {% block head %}
 <!-- DataTables -->
@@ -29,86 +29,62 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Software</h3>
+          <h3 class="card-title">Solicitar Reserva</h3>
         </div>
         <div class="card-body">
-          <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Listagem</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Cadastrar</a>
-            </li>
-          </ul>
-          <div class="tab-content" id="custom-content-below-tabContent">
-            <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-              <br>
-              <table id="table-lab" class="table table-bordered table-hover dataTable">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Tipo</th>
-                        <th>Versão</th>
-                        <th>Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for s in softwares %}
-                        <tr>
-                            <td>{{ s.name }}</td>
-                            <td>{{ s.tipo }}</td>
-                            <td>{{ s.versao }}</td>
-                            <td>{{ s.descricao }}</td>
-                            <td>
-                                <a href="{% url 'software-detail' s.pk %}" title="Informações"><i class="far fa-eye"></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-           </div>
-           <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
-            <br>
-            <form method="POST" autocomplete="off" id="form-software">
-              {% csrf_token %}
-              <div class="row">
-                  <div class="col-sm-4">
+            <form method="POST" autocomplete="off" id="form-reserva">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Nome:</label>
-                          {% render_field form.name class+="form-control" %}
+                          <label>Quantidade de alunos:</label>
+                          {% render_field form.qnt_alunos class+="form-control" %}
                       </div>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Versão:</label>
-                          {% render_field form.versao class+="form-control" %}
+                          <label>Disciplina:</label>
+                          {% render_field form.disciplina_id class+="form-control" %}
                       </div>
                   </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <label>Tipo:</label>
-                        {% render_field form.tipo class+="form-control" %}
-                    </div>
-                  </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label>Descrição:</label>
-                        {% render_field form.descricao class+="form-control" %}
-                    </div>
                 </div>
-            </div>
-              <div class="row">
+                <div class="row">
+                  <div class="col-sm-4">
+                      <div class="form-group">
+                          <label>Professor</label>
+                          {% render_field form.professor_masp class+="form-control" %}
+                      </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Curso</label>
+                        {% render_field form.curso_id class+="form-control" %}
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Softwares</label>
+                        {% render_field form.software_id class+="form-control" %}
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Oberservação</label>
+                        {% render_field form.observacao class+="form-control" %}
+                    </div>
+                    </div>
+                    <input name="user_id" type="hidden" value="{{ request.user.id }}">
+                </div>
+                <div class="row">
                   <div class="col-sm-12">
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary">Salvar</button>
                       </div>
                   </div>
               </div>
-            </form>
-           </div>
-          </div>
+              </form>
         </div>
       </div>
 
@@ -151,35 +127,74 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-software').validate({
+  $('#form-reserva').validate({
     rules: {
-      descricao: {
-        required: true,
-      },
-      name: {
+      evento: {
         required: true,
         maxlength: 100
       },
-      tipo: {
-          required: true,
+      responsavel: {
+        required: true,
+        maxlength: 100
       },
-      versao: {
-          required: true,
+      contato: {
+        required: true
+      },
+      email: {
+        required: true,
+        email: true
+      },
+      start_day: {
+        required: true,
+      },
+      start_time: {
+        required: true,
+      },
+      end_time: {
+        required: true,
+      },
+      end_day: {
+        required: true,
+      },
+      laboratorio_id: {
+        required: false,
+      },
+      professor_id: {
+        required: false,
+      },
+      curso_id: {
+        required: false,
+      },
+      disciplina_id: {
+        required: false,
       }
     },
     messages: {
-      name: {
+      evento: {
         required: "Esse campo é obrigatório",
         maxlength: "Máximo 100 caracteres",
       },
-      descricao: {
+      responsavel: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máximo 100 caracteres",
+      },
+      contato: {
         required: "Esse campo é obrigatório",
       },
-      tipo: {
-          required: "Esse campo é obrigatório",
+      email: {
+        required: "Esse campo é obrigatório",
       },
-      versao: {
-          required: "Esse campo é obrigatório",
+      start_day: {
+        required: "Esse campo é obrigatório",
+      },
+      start_time: {
+        required: "Esse campo é obrigatório",
+      },
+      end_time: {
+        required: "Esse campo é obrigatório",
+      },
+      end_day: {
+        required: "Esse campo é obrigatório",
       }
     },
     errorElement: 'span',

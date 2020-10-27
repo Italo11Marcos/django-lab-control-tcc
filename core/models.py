@@ -16,34 +16,43 @@ class UsuarioManager(BaseUserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
-        #extra_fields.setdefault('is_statff', True) Por padrão já é false
-        extra_fields.setdefault('is_superuser', 'False')
+        # extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', False)
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser precisa ter is_superuser=True')
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser precisa ter is_staff=True')
+
         return self._create_user(email, password, **extra_fields)
+
 
 class CustomUsuario(AbstractUser):
     email = models.EmailField('E-mail', unique=True)
-    masp = models.CharField(max_length=10)
-    #is_staff = models.BooleanField('Membro da equipe', default=True)
-    #Aqui eu poderia criar vários outros campos
+    masp = models.CharField(max_length=15)
+    is_staff = models.BooleanField('Membro da equipe', default=False)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'masp']
+
+    def __str__(self):
+        return self.email
 
     objects = UsuarioManager()
 
 class Curso(models.Model):
-    id = models.IntegerField(primary_key=True, default=random.randint(1000,9999))
     name = models.CharField(max_length=45)
 
     def __str__(self):
         return self.name
 
 class Disciplina(models.Model):
-    id = models.IntegerField(primary_key=True, default=random.randint(1000,9999))
     name = models.CharField(max_length=70)
 
     def __str__(self):
@@ -59,7 +68,6 @@ class Professor(models.Model):
         return self.name
 
 class Laboratorio(models.Model):
-    id = models.IntegerField(primary_key=True, default=random.randint(1000,9999))
     name = models.CharField(max_length=45)
     qnt_computador = models.IntegerField(blank=True)
 
@@ -73,7 +81,6 @@ class Software(models.Model):
         ('SP', 'Software Licenciado'),
     ]
 
-    id = models.IntegerField(primary_key=True, default=random.randint(10000,99999))
     name = models.CharField(max_length=100)
     versao = models.CharField(max_length=15)
     tipo = models.CharField(choices=TIPO_CHOICES, max_length=2, default='SL')
@@ -106,7 +113,7 @@ class Computador(models.Model):
         ('IP', 'Intel Pentium Dual Core'),
     ]
 
-    codigo = models.IntegerField(max_length=15, primary_key=True)
+    codigo = models.IntegerField(primary_key=True)
     patrimonio = models.CharField(max_length=15)
     dual_boot = models.BooleanField(default=False)
     funciona = models.BooleanField(default=True)
@@ -114,7 +121,7 @@ class Computador(models.Model):
     hd = models.CharField(choices=HD_CHOICES, max_length=5)
     ram = models.CharField(choices=RAM_CHOICES, max_length=3)
     laboratorio_id = models.ForeignKey(Laboratorio, on_delete=models.SET_NULL, null=True)
-    software_id = models.ManyToManyField(Software, null=True)
+    software_id = models.ManyToManyField(Software)
 
     def __str__(self):
         return self.codigo
@@ -177,14 +184,13 @@ class SolicitacaoReserva(models.Model):
         ('F', 'Finzalizada'),
     ]
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     observacao = models.TextField(null=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=1, default='P')
     qnt_alunos = models.IntegerField()
     professor_masp = models.ForeignKey(Professor, on_delete=models.CASCADE)
     curso_id = models.ForeignKey(Curso, on_delete=models.CASCADE)
     disciplina_id = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
-    Software_id = models.ManyToManyField(Software)
+    software_id = models.ManyToManyField(Software)
     user_masp = models.ForeignKey(CustomUsuario, on_delete=models.CASCADE)
 
 class RespostaSolicitacao(models.Model):

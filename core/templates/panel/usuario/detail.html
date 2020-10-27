@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-{% block title %} Disciplinas - Painel de Controle {% endblock %} 
+{% block title %} Usuários - Painel de Controle {% endblock %} 
 
 {% block head %}
 <!-- DataTables -->
@@ -29,60 +29,14 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Disciplinas</h3>
+          <h3 class="card-title">{{ user.username }}</h3>
         </div>
         <div class="card-body">
-          <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Listagem</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Cadastrar</a>
-            </li>
-          </ul>
-          <div class="tab-content" id="custom-content-below-tabContent">
-            <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-              <br>
-              <table id="table-disciplina" class="table table-bordered table-hover dataTable">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for d in disciplinas %}
-                        <tr>
-                            <td>{{ d.name }}</td>
-                            <td>
-                                <a href="{% url 'disciplina-detail' d.pk %}" title="Informações"><i class="far fa-eye"></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-           </div>
-           <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
-            <br>
-            <form method="POST" autocomplete="off" id="form-curso">
-              {% csrf_token %}
-              <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Nome:</label>
-                          {% render_field form.name class+="form-control" %}
-                      </div>
-                  </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                        <br>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                      </div>
-                  </div>
-              </div>
-            </form>
-           </div>
-          </div>
+          <p> {{ user.email }} </p>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'usuario-update' user.pk %}" class="btn btn-outline-info">Editar</a>
+            <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
         </div>
       </div>
 
@@ -90,6 +44,31 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+  <!-- Modal -->
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'usuario-delete' user.pk %}" method="post">
+            {% csrf_token %}
+            Realmente deseja excluir o {{ user.username }} ?
+            Essa ação não poderá ser desfeita!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Excluir</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block footer %}
@@ -112,7 +91,7 @@
 
 <script>
   $(function () {
-    $("#table-disciplina").DataTable({
+    $("#table-lab").DataTable({
       "responsive": true,
       "autoWidth": false,
     });
@@ -121,15 +100,23 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-curso').validate({
+  $('#form-laboratorio').validate({
     rules: {
       name: {
         required: true,
+      },
+      qnt_computador: {
+        required: true,
+        min: 1
       },
     },
     messages: {
       name: {
         required: "Esse campo é obrigatório",
+      },
+      qnt_computador: {
+        required: "Esse campo é requerido",
+        min: "O laboratório não pode ter menos que 1 computador"
       },
     },
     errorElement: 'span',

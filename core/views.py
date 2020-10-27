@@ -5,11 +5,69 @@ from .models import *
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponse, Http404
 
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'panel/index.html'
 
+
+def cadastro(request): 
+    if request.method == "POST":
+        form = CustomUsuarioCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cadastro Realizado com Sucesso')
+            return redirect('login')
+        else:
+            messages.error(request, 'Tivemos algum problema')
+    else:
+        form = CustomUsuarioCreateForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'auth/register.html', context)
+
+class ListUserView(ListView):
+    template_name = 'panel/usuario/list.html'
+    model = CustomUsuario
+    context_object_name = 'users'
+
+class DetailUserView(DetailView):
+    model = CustomUsuario
+    template_name = 'panel/usuario/detail.html'
+    context_object_name = 'user'
+
+class UpdateUserView(UpdateView):
+    model = CustomUsuario
+    template_name = 'panel/usuario/update.html'
+    form_class = CustomUsuarioChangeForm
+    context_object_name = 'user'
+    #fields = ['first_name', 'last_name', 'masp', 'username', 'is_staff']
+    success_url = reverse_lazy('usuario-list')
+
+    def form_valid(self, form, *args, **kwargs):
+        messages.success(self.request, 'Usuário editado com sucesso!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form, *args, **kwargs):
+        messages.error(self.request, 'Tivemos algum problema')
+        return super().form_valid(form)
+
+class DeleteUserView(DeleteView):
+    model = CustomUsuario
+    success_url = reverse_lazy('usuario-list')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        messages.success(self.request, 'Usuário excluído com sucesso!')
+        success_url = self.get_success_url()
+        return HttpResponseRedirect(success_url)
 
 ##Laboratorios CRUD##
 class CreateLaborationView(CreateView):
@@ -61,10 +119,18 @@ class DeleteLaboratorioView(DeleteView):
         return HttpResponseRedirect(success_url)
     
 ##Cursos CRUD##
-class CreateCursoView(CreateView):
+
+class CreateCursoView(UserPassesTestMixin ,CreateView):
+    login_url = 'login'
     form_class = CursoForm
     template_name = 'panel/curso/create.html'
     success_url = reverse_lazy('curso-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(CreateCursoView, self).get_context_data(**kwargs)
@@ -403,6 +469,62 @@ class DeleteAulaView(DeleteView):
         success_url = self.get_success_url()
         return HttpResponseRedirect(success_url)
 
+##Solicitação Reserva CRUD##
+class CreateSolicitacaoReservaView(CreateView):
+    form_class = SolicitacaoReservaForm
+    template_name = 'panel/solicitacao/create.html'
+    success_url = reverse_lazy('solicitacao-create')
+
+    def form_valid(self, form, *args, **kwargs):
+        form = SolicitacaoReservaForm(self.request.POST)
+        solicitacao = form.save(commit=False)
+        solicitacao.user_masp = self.request.user
+        solicitacao.save()
+        messages.success(self.request, 'Solicitação Realizada com sucesso')
+        return super(CreateSolicitacaoReservaView, self).form_valid(form)
+
+    def form_invalid(self, form, *args, **kwargs):
+        messages.error(self.request, 'Tivemos algum problema')
+        return super(CreateSolicitacaoReservaView, self).form_valid(form)
+
+class ListSolicitacaoReservaView(ListView):
+    model = SolicitacaoReserva
+    template_name = 'panel/solicitacao/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListSolicitacaoReservaView, self).get_context_data(**kwargs)
+        context['solicitacao'] = SolicitacaoReserva.objects.filter(status='P')
+        return context
+
+class DetailSolicitacaoReservaView(DetailView):
+    model = SolicitacaoReserva
+    template_name = 'panel/solicitacao/detail.html'
+    context_object_name = 'solicitacao'
+
+class UpdateSolicitacaoReservaView(UpdateView):
+    model = Aula
+    template_name = 'panel/solicitacao/update.html'
+    form_class = SolicitacaoReservaForm
+    success_url = reverse_lazy('solicitacao-list')
+
+    def form_valid(self, form, *args, **kwargs):
+        messages.success(self.request, 'Solicitacao editada com sucesso!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form, *args, **kwargs):
+        messages.error(self.request, 'Tivemos algum problema')
+        return super().form_valid(form)
+
+class DeleteSolicitacaoReservaView(DeleteView):
+    model = SolicitacaoReserva
+    success_url = reverse_lazy('solicitacao-list')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        messages.success(self.request, 'Solicitacao excluída com sucesso!')
+        success_url = self.get_success_url()
+        return HttpResponseRedirect(success_url)
 ##calendar
 def calendar(request):
     reservas = Reserva.objects.all()

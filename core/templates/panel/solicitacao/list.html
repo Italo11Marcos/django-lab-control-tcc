@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-{% block title %} Disciplinas - Painel de Controle {% endblock %} 
+{% block title %} Solicitação - Painel de Controle {% endblock %} 
 
 {% block head %}
 <!-- DataTables -->
@@ -29,60 +29,37 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Disciplinas</h3>
+          <h3 class="card-title">Todas as Solicitações</h3>
         </div>
         <div class="card-body">
-          <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Listagem</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Cadastrar</a>
-            </li>
-          </ul>
-          <div class="tab-content" id="custom-content-below-tabContent">
-            <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-              <br>
-              <table id="table-disciplina" class="table table-bordered table-hover dataTable">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for d in disciplinas %}
+            <table>
+                <table id="table-lab" class="table table-bordered table-hover dataTable">
+                    <thead>
                         <tr>
-                            <td>{{ d.name }}</td>
-                            <td>
-                                <a href="{% url 'disciplina-detail' d.pk %}" title="Informações"><i class="far fa-eye"></i></a>
-                            </td>
+                            <th>Professor</th>
+                            <th>Quantidade de Alunos</th>
+                            <th>Disciplina</th>
+                            <th>Curso</th>
+                            <th>Status</th>
+                            <th>Ações</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-           </div>
-           <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
-            <br>
-            <form method="POST" autocomplete="off" id="form-curso">
-              {% csrf_token %}
-              <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Nome:</label>
-                          {% render_field form.name class+="form-control" %}
-                      </div>
-                  </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                        <br>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                      </div>
-                  </div>
-              </div>
-            </form>
-           </div>
-          </div>
+                    </thead>
+                    <tbody>
+                        {% for s in solicitacao %}
+                            <tr>
+                                <td>{{ s.professor_masp }}</td>
+                                <td>{{ s.qnt_alunos }}</td>
+                                <td>{{ s.disciplina_id }}</td>
+                                <td>{{ s.curso_id }}</td>
+                                <td>{{ s.status }}</td>
+                                <td>
+                                    <a href="{% url 'solicitacao-detail' s.pk %}" title="Informações"><i class="far fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </table>
         </div>
       </div>
 
@@ -110,9 +87,13 @@
 <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
 <script>
   $(function () {
-    $("#table-disciplina").DataTable({
+    $("#table-lab").DataTable({
       "responsive": true,
       "autoWidth": false,
     });
@@ -121,16 +102,75 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-curso').validate({
+  $('#form-reserva').validate({
     rules: {
-      name: {
+      evento: {
+        required: true,
+        maxlength: 100
+      },
+      responsavel: {
+        required: true,
+        maxlength: 100
+      },
+      contato: {
+        required: true
+      },
+      email: {
+        required: true,
+        email: true
+      },
+      start_day: {
         required: true,
       },
+      start_time: {
+        required: true,
+      },
+      end_time: {
+        required: true,
+      },
+      end_day: {
+        required: true,
+      },
+      laboratorio_id: {
+        required: false,
+      },
+      professor_id: {
+        required: false,
+      },
+      curso_id: {
+        required: false,
+      },
+      disciplina_id: {
+        required: false,
+      }
     },
     messages: {
-      name: {
+      evento: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máximo 100 caracteres",
+      },
+      responsavel: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máximo 100 caracteres",
+      },
+      contato: {
         required: "Esse campo é obrigatório",
       },
+      email: {
+        required: "Esse campo é obrigatório",
+      },
+      start_day: {
+        required: "Esse campo é obrigatório",
+      },
+      start_time: {
+        required: "Esse campo é obrigatório",
+      },
+      end_time: {
+        required: "Esse campo é obrigatório",
+      },
+      end_day: {
+        required: "Esse campo é obrigatório",
+      }
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

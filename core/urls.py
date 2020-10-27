@@ -3,10 +3,17 @@ from django.contrib.auth import views as auth_views
 from .views import *
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='index'),
+    path('panel', IndexView.as_view(), name='index'),
     ## URLs Auth
-    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('', auth_views.LoginView.as_view(template_name='auth/login.html'), name='login'),
+    #path('registrar/', CreateUserView.as_view(), name='registrar'),
+    path('registrar/', cadastro, name='registrar'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    ## URLs Usuários
+    path('panel/usuarios/todos', ListUserView.as_view(), name='usuario-list'),
+    path('panel/usuarios/<int:pk>', DetailUserView.as_view(), name='usuario-detail'),
+    path('panel/usuarios/updade/<int:pk>', UpdateUserView.as_view(), name='usuario-update'),
+    path('panel/usuarios/delete/<int:pk>', DeleteUserView.as_view(), name='usuario-delete'),
     ## URLs Laboratórios
     path('panel/laboratorio/cadastrar', CreateLaborationView.as_view(), name='laboratorio-create'),
     path('panel/laboratorio/<int:pk>', DetailLaboratorioView.as_view(), name='laboratorio-detail'),
@@ -47,6 +54,12 @@ urlpatterns = [
     path('panel/aula/<int:pk>', DetailAulaView.as_view(), name='aula-detail'),
     path('panel/aula/updade/<int:pk>', UpdateAulaView.as_view(), name='aula-update'),
     path('panel/aula/delete/<int:pk>', DeleteAulaView.as_view(), name='aula-delete'),
+    ## URLs Solicitacao Reservas
+    path('panel/solicitacao/reserva/cadastrar', CreateSolicitacaoReservaView.as_view(), name='solicitacao-create'),
+    path('panel/solicitacao/pendente', ListSolicitacaoReservaView.as_view(), name='solicitacao-list'),
+    path('panel/solicitacao/int:pk>', DetailSolicitacaoReservaView.as_view(), name='solicitacao-detail'),
+    path('panel/solicitacao/updade/int:pk>', UpdateSolicitacaoReservaView.as_view(), name='solicitacao-update'),
+    path('panel/solicitacao/delete/int:pk>', DeleteSolicitacaoReservaView.as_view(), name='solicitacao-delete'),
     ## URL calendar
     path('panel/calendar', calendar, name='calendario'),
 ]
