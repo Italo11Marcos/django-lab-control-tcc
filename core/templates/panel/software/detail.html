@@ -29,12 +29,33 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ software.name }}</h3>
+          <h3 class="card-title"><label>{{ software.name }}</label></h3>
         </div>
         <div class="card-body">
-          <p>{{ software.versao }}</p>
-          <p>{{ software.tipo }}</p>
-          <p>{{ software.descricao }}</p>
+          <div class="row">
+            <div class="col-md-4"> <label>Versão:</label> {{ software.versao }} </div>
+            <div class="col-md-4"> <label>Tipo:</label> {{ software.tipo }} </div>
+            <div class="col-md-4"> <label>Descrição:</label> {{ software.descricao }} </div>
+          </div>
+          <hr class="my-3">
+          <div class="row">
+            <div class="col-md-12">
+              <label>Presente em {{ qnt }} computadores: </label>
+              <div class="row">
+                {% for p in pcs %}
+                <div class="col-md-3 col-sm-6 col-12">
+                    <div class="info-box">
+                      <span class="info-box-icon bg-dark"><i class="fas fa-laptop"></i></span>
+                      <div class="info-box-content">
+                        <span class="info-box-number"> Código: {{ p.codigo }} </span>
+                        <span class="info-box-number"> Patrimônio: {{ p.patrimonio }} </span>
+                      </div>
+                    </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
         </div>
         <div class="card-footer">
             <a href="{% url 'software-update' software.pk %}" class="btn btn-outline-info">Editar</a>
@@ -59,7 +80,7 @@
         <div class="modal-body">
           <form action="{% url 'software-delete' software.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ software.name }} ?
+            Realmente deseja excluir o software <code>{{ software.name }}</code> ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">

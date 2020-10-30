@@ -29,12 +29,13 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ professor.name }}</h3>
+          <h3 class="card-title"><label>{{ professor.name }}</label></h3>
         </div>
         <div class="card-body">
-          <p>{{ professor.masp }}</p>
-          <p>{{ professor.contato }}</p>
-          <p>{{ professor.email }}</p>
+          <p> <label>Professor: </label> {{ professor.name }}</p>
+          <p> <label>MASP: </label> {{ professor.masp }}</p>
+          <p> <label>Contato: </label> {{ professor.contato }}</p>
+          <p> <label>E-mail: </label> {{ professor.email }}</p>
         </div>
         <div class="card-footer">
             <a href="{% url 'professor-update' professor.pk %}" class="btn btn-outline-info">Editar</a>
@@ -59,7 +60,7 @@
         <div class="modal-body">
           <form action="{% url 'professor-delete' professor.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ professor.name }} ?
+            Realmente deseja excluir o professor <code>{{ professor.name }}</code> ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">

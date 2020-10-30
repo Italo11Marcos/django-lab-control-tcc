@@ -29,20 +29,26 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ reserva.evento }}</h3>
+          <h3 class="card-title"><label>{{ reserva.evento }}</label></h3>
         </div>
         <div class="card-body">
-          <p>{{ reserva.responsavel }}</p>
-          <p>{{ reserva.contato }}</p>
-          <p>{{ reserva.email }}</p>
-          <p>{{ reserva.stard_day }}</p>
-          <p>{{ reserva.end_day }}</p>
-          <p>{{ reserva.stard_time }}</p>
-          <p>{{ reserva.end_time }}</p>
-          <p>{{ reserva.laboratorio_id }}</p>
-          <p>{{ reserva.curso_id }}</p>
-          <p>{{ reserva.professor_id }}</p>
-          <p>{{ reserva.disciplina_id }}</p>
+          <p> <label>Responsável: </label> {{ reserva.responsavel }}</p>
+          <p> <label>Contato: </label> {{ reserva.contato }}</p>
+          <p> <label>E-mail: </label> {{ reserva.email }}</p>
+          <p> <label>Dia início: </label> {{ reserva.start_day }}</p>
+          <p> <label>Dia fim: </label> {{ reserva.end_day }}</p>
+          <p> <label>Hora começo: </label> {{ reserva.start_time }}</p>
+          <p> <label>Hora término: </label> {{ reserva.end_time }}</p>
+          <p> <label>Laboratório: </label> {{ reserva.laboratorio_id }}</p>
+          {% if reserva.curso_id %}
+            <p> <label>Curso: </label> {{ reserva.curso_id }}</p>
+          {% endif %}
+          {% if reserva.professor_id %}
+            <p> <label>Professor: </label> {{ reserva.professor_id }}</p>
+          {% endif %}
+          {% if reserva.disciplina_id %}
+            <p> <label>Disciplina: </label> {{ reserva.disciplina_id }}</p>
+          {% endif %}
         </div>
         <div class="card-footer">
             <a href="{% url 'reserva-update' reserva.pk %}" class="btn btn-outline-info">Editar</a>
@@ -67,7 +73,7 @@
         <div class="modal-body">
           <form action="{% url 'reserva-delete' reserva.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ reserva.evento }} ?
+            Realmente deseja excluir a reserva para <code>{{ reserva.evento }}</code> ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">

@@ -29,14 +29,25 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ user.username }}</h3>
+          <h3 class="card-title"> <label> {{ user.get_full_name }} </label></h3>
         </div>
         <div class="card-body">
-          <p> {{ user.email }} </p>
+          <p> <label> E-mail: </label> {{ user.email }} </p>
+          <p> <label> MASP: </label> {{ user.masp }} </p>
+          {% if user.is_staff %}
+            <p> <label>Administrador? </label> Sim </p>
+          {% else %}
+            <p> <label>Administrador? </label> Não </p>
+          {% endif %}
         </div>
         <div class="card-footer">
             <a href="{% url 'usuario-update' user.pk %}" class="btn btn-outline-info">Editar</a>
-            <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
+            {% if user == request.user %}
+              <button class="btn btn-outline-danger" disabled>Excluir</button>
+            {% else %}
+              <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
+            {% endif %}
+            
         </div>
       </div>
 
@@ -57,7 +68,7 @@
         <div class="modal-body">
           <form action="{% url 'usuario-delete' user.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ user.username }} ?
+            Realmente deseja excluir o usuário <code>{{ user.get_full_name }}</code> ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">

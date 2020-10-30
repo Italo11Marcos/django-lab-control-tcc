@@ -32,7 +32,6 @@ class UsuarioManager(BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
-
 class CustomUsuario(AbstractUser):
     email = models.EmailField('E-mail', unique=True)
     masp = models.CharField(max_length=15)
@@ -165,7 +164,7 @@ class Aula(models.Model):
     professor_id = models.ForeignKey(Professor, on_delete=models.SET_NULL, null=True)
 
     def name(self):
-        return str(self.curso_id) + ' ' + str(self.disciplina_id)
+        return str(self.curso_id) + ' - ' + str(self.disciplina_id)
 
 class Emprestimo(models.Model):
     date = models.DateTimeField()

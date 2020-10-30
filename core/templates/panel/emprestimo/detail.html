@@ -29,10 +29,15 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ emprestimo.evento }}</h3>
+          <h3 class="card-title"><label>Evento: </label> {{ emprestimo.evento }}</h3>
         </div>
         <div class="card-body">
-          <p>{{ emprestimo.responsavel }}</p>
+          <p> <label>Data: </label> {{ emprestimo.date }}</p>
+          <p> <label>Responsável pelo evento: </label> {{ emprestimo.responsavel }}</p>
+          <p> <label>Contato: </label> {{ emprestimo.contato }}</p>
+          <p> <label>E-mail: </label> {{ emprestimo.email }}</p>
+          <p> <label>Computador emprestado: </label> {{ emprestimo.computador_codigo }}</p>
+          <p> <label>Empréstimo realizado por: </label> {{ emprestimo.user_id.get_full_name }} </p>
         </div>
         <div class="card-footer">
             <a href="{% url 'emprestimo-update' emprestimo.pk %}" class="btn btn-outline-info">Editar</a>
@@ -57,7 +62,7 @@
         <div class="modal-body">
           <form action="{% url 'emprestimo-delete' emprestimo.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ emprestimo.evento }} ?
+            Realmente deseja excluir o  evento <code>{{ emprestimo.evento }}</code> ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">

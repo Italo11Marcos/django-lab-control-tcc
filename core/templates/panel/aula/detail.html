@@ -29,17 +29,18 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ aula.name }}</h3>
+          <h3 class="card-title"><label>{{ aula.name }}</label></h3>
         </div>
         <div class="card-body">
-          <p>{{ aula.start_day }}</p>
-          <p>{{ aula.end_day }}</p>
-          <p>{{ aula.start_time }}</p>
-          <p>{{ aula.end_time }}</p>
-          <p>{{ aula.laboratorio_id }}</p>
-          <p>{{ aula.curso_id }}</p>
-          <p>{{ aula.professor_id }}</p>
-          <p>{{ aula.disciplina_id }}</p>
+          <p> <label>Curso: </label> {{ aula.curso_id }}</p>
+          <p> <label>Disciplina: </label> {{ aula.disciplina_id }}</p>
+          <p> <label>Dia: </label> {{ aula.dia }}</p>
+          <p> <label>Laboratório: </label> {{ aula.laboratorio_id }}</p>
+          <p> <label>Professor: </label> {{ aula.professor_id }}</p>
+          <p> <label>Dia início: </label> {{ aula.start_day }}</p>
+          <p> <label>Dia término: </label> {{ aula.end_day }}</p>
+          <p> <label>Hora início: </label> {{ aula.start_time }}</p>
+          <p> <label>Hora término: </label> {{ aula.end_time }}</p>
         </div>
         <div class="card-footer">
             <a href="{% url 'aula-update' aula.pk %}" class="btn btn-outline-info">Editar</a>
@@ -64,7 +65,7 @@
         <div class="modal-body">
           <form action="{% url 'aula-delete' aula.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ aula.name }} ?
+            Realmente deseja excluir a aula <code>{{ aula.name }}</code> ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">

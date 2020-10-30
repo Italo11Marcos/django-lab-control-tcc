@@ -29,19 +29,33 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ computador.codigo }}</h3>
+          <h3 class="card-title"><label> Computador: {{ computador.codigo }} </label></h3>
         </div>
         <div class="card-body">
-          <p>{{ computador.patrimonio }}</p>
-          <p>{{ computador.funciona }}</p>
-          <p>{{ computador.dual_boot }}</p>
-          <p>{{ computador.patrimonio }}</p>
-          <p>{{ computador.processador }}</p>
-          <p>{{ computador.ram }}</p>
-          <p>{{ computador.hd }}</p>
-          {% for s in computador.software_id.all %}
-            <p>{{ s }}</p>
-          {% endfor %}
+          <div class="row">
+            <div class="col-md-6">
+              <p> <label>Patrimônio:</label> {{computador.patrimonio }}</p>
+              {% if computador.funciona %}
+                <p><label>Funciona?</label> Sim</p>
+              {% else %}
+                <p><label>Funciona?</label> Não</p>
+              {% endif %}
+              {% if computador.dual_boot %}
+                <p> <label>Dual Boot?</label> Sim</p>
+              {% else %}
+                <p> <label>Dual Boot?</label> Não</p>
+              {% endif %}
+              <p> <label>Processador:</label> {{computador.processador }}</p>
+              <p> <label>Ram:</label> {{computador.ram }}</p>
+              <p> <label>HD:</label> {{computador.hd }}</p>
+            </div>
+            <div class="col-md-6">
+              <label>Softwares Instalados</label><br>
+              {% for s in computador.software_id.all %}
+                <span class="badge badge-pill badge-dark">{{ s }}</span>
+              {% endfor %}
+            </div>
+          </div>
         </div>
         <div class="card-footer">
             <a href="{% url 'computador-update' computador.pk %}" class="btn btn-outline-info">Editar</a>
@@ -66,11 +80,11 @@
         <div class="modal-body">
           <form action="{% url 'computador-delete' computador.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ computador.cod }} ?
+            Realmente deseja excluir o computador <code>{{ computador.codigo }}</code> ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-danger">Excluir</button>
           </form>
         </div>

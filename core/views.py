@@ -99,7 +99,13 @@ class CreateLaborationView(CreateView):
 class DetailLaboratorioView(DetailView):
     model = Laboratorio
     template_name = 'panel/laboratorio/detail.html'
-    context_object_name = 'laboratorio'
+    
+    def get_context_data(self, **kwargs):
+        context = super(DetailLaboratorioView, self).get_context_data(**kwargs)
+        pcs = Computador.objects.filter(laboratorio_id=self.get_object().pk)
+        context['pcs'] = pcs
+        context['qnt'] = len(pcs)
+        return context
 
 class UpdateLaboratorioView(UpdateView):
     model = Laboratorio
@@ -304,6 +310,13 @@ class DetailSoftwareView(DetailView):
     model = Software
     template_name = 'panel/software/detail.html'
     context_object_name = 'software'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailSoftwareView, self).get_context_data(**kwargs)
+        pcs = Computador.objects.filter(software_id=self.get_object().pk)
+        context['pcs'] = pcs
+        context['qnt'] = len(pcs)
+        return context
 
 class UpdateSoftwareView(UpdateView):
     model = Software

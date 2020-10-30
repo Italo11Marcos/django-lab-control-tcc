@@ -29,10 +29,25 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ laboratorio.name }}</h3>
+          <h3 class="card-title"> <label>{{ laboratorio.name }}</label></h3>
         </div>
         <div class="card-body">
-          <p>{{ laboratorio.qnt_computador }}</p>
+          <p> <label>Quantidade de Computadores: </label> {{ qnt }}</p>
+          
+          <div class="row">
+            {% for p in pcs %}
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-dark"><i class="fas fa-laptop"></i></span>
+                  <div class="info-box-content">
+                    <span class="info-box-number"> Código: {{ p.codigo }} </span>
+                    <span class="info-box-number"> Patrimônio: {{ p.patrimonio }} </span>
+                  </div>
+                </div>
+            </div>
+            {% endfor %}
+          </div>
+          
         </div>
         <div class="card-footer">
             <a href="{% url 'laboratorio-update' laboratorio.pk %}" class="btn btn-outline-info">Editar</a>
@@ -57,11 +72,11 @@
         <div class="modal-body">
           <form action="{% url 'laboratorio-delete' laboratorio.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ laboratorio.name }} ?
+            Realmente deseja excluir o <code>{{ laboratorio.name }}</code> ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-danger">Excluir</button>
           </form>
         </div>
