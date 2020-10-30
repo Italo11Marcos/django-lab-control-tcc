@@ -68,7 +68,7 @@ class AulaForm(forms.ModelForm):
 class EmprestimoForm(forms.ModelForm):
     class Meta:
         model = Emprestimo
-        fields = '__all__'
+        fields = ('date', 'evento', 'responsavel', 'email', 'contato', 'computador_codigo')
 
 class SoftwareForm(forms.ModelForm):
     class Meta:

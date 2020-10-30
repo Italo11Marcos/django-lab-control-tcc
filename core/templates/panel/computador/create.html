@@ -46,12 +46,12 @@
               <table id="table-lab" class="table table-bordered table-hover dataTable">
                 <thead>
                     <tr>
-                        <th>Código</th>
-                        <th>Patrimônio</th>
-                        <th>Funciona?</th>
-                        <th>Dual Boot?</th>
-                        <th>Laboratório</th>
-                        <th>Ações</th>
+                        <th class="text-center">Código</th>
+                        <th class="text-center">Patrimônio</th>
+                        <th class="text-center">Funciona?</th>
+                        <th class="text-center">Dual Boot?</th>
+                        <th class="text-center">Laboratório</th>
+                        <th class="text-center">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,8 +59,20 @@
                         <tr>
                             <td>{{ pc.codigo }}</td>
                             <td>{{ pc.patrimonio }}</td>
-                            <td>{{ pc.funciona }}</td>
-                            <td>{{ pc.dual_boot }}</td>
+                            <td>
+                              {% if pc.funciona %}
+                                Sim
+                              {% else %}
+                                Não
+                              {% endif %}
+                            </td>
+                            <td>
+                              {% if pc.dual_boot %}
+                                Sim
+                              {% else %}
+                                Não
+                              {% endif %}
+                            </td>
                             <td>{{ pc.laboratorio_id }}</td>
                             <td>
                                 <a href="{% url 'computador-detail' pc.pk %}" title="Informações"><i class="far fa-eye"></i></a>
@@ -103,33 +115,33 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label>Processador:</label>
                         {% render_field form.processador class+="form-control" %}
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label>HD:</label>
                         {% render_field form.hd class+="form-control" %}
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label>RAM:</label>
                         {% render_field form.ram class+="form-control" %}
                     </div>
                 </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <label>Laboratório:</label>
+                      {% render_field form.laboratorio_id class+="form-control" %}
+                  </div>
+              </div>
               </div>
               <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                      <label>Laboratório</label>
-                      {% render_field form.laboratorio_id class+="form-control" %}
-                    </div>
-                </div>
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div class="form-group">
                       <label>Software</label>
                       {% render_field form.software_id class+="form-control" %}
@@ -198,10 +210,10 @@
         maxlength: 15
       },
       dual_boot: {
-          required: true,
+          required: false,
       },
       funciona: {
-          required: true,
+          required: false,
       },
       processador: {
           required: true,

@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-{% block title %} Usuários - Painel de Controle {% endblock %} 
+{% block title %} Empréstimos - Painel de Controle {% endblock %} 
 
 {% block head %}
 <!-- DataTables -->
@@ -29,44 +29,46 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Usuários</h3>
+          <h3 class="card-title">{{ emprestimo.evento }}</h3>
         </div>
         <div class="card-body">
-              <table id="table-disciplina" class="table table-bordered table-hover dataTable">
-                <thead>
-                    <tr>
-                        <th class="text-center">Nome</th>
-                        <th class="text-center">E-mail</th>
-                        <th class="text-center">Admin?</th>
-                        <th class="text-center">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for u in users %}
-                        <tr>
-                            <td>{{ u.get_full_name }}</td>
-                            <td>{{ u.email }}</td>
-                            <td>
-                              {% if u.is_staff %}
-                               Sim
-                              {% else %}
-                               Não
-                              {% endif %}
-                            </td>
-                            <td>
-                                <a href="{% url 'usuario-detail' u.pk %}" title="Informações"><i class="far fa-eye"></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-        </div>  
+          <p>{{ emprestimo.responsavel }}</p>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'emprestimo-update' emprestimo.pk %}" class="btn btn-outline-info">Editar</a>
+            <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
+        </div>
       </div>
 
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+  <!-- Modal -->
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'emprestimo-delete' emprestimo.pk %}" method="post">
+            {% csrf_token %}
+            Realmente deseja excluir o {{ emprestimo.evento }} ?
+            Essa ação não poderá ser desfeita!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Excluir</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block footer %}
@@ -89,7 +91,7 @@
 
 <script>
   $(function () {
-    $("#table-disciplina").DataTable({
+    $("#table-lab").DataTable({
       "responsive": true,
       "autoWidth": false,
     });
@@ -98,15 +100,23 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-curso').validate({
+  $('#form-laboratorio').validate({
     rules: {
       name: {
         required: true,
+      },
+      qnt_computador: {
+        required: true,
+        min: 1
       },
     },
     messages: {
       name: {
         required: "Esse campo é obrigatório",
+      },
+      qnt_computador: {
+        required: "Esse campo é requerido",
+        min: "O laboratório não pode ter menos que 1 computador"
       },
     },
     errorElement: 'span',

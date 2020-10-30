@@ -124,7 +124,7 @@ class Computador(models.Model):
     software_id = models.ManyToManyField(Software)
 
     def __str__(self):
-        return self.codigo
+        return str(self.codigo)
 
 class Reserva(models.Model):
     #dia = models.DateField()
@@ -168,14 +168,16 @@ class Aula(models.Model):
         return str(self.curso_id) + ' ' + str(self.disciplina_id)
 
 class Emprestimo(models.Model):
-    id = models.IntegerField(primary_key=True, default=random.randint(100000,999999))
     date = models.DateTimeField()
     evento = models.CharField(max_length=200)
     responsavel = models.CharField(max_length=100)
     email = models.EmailField()
     contato = models.CharField(max_length=15, blank=True)
-    computador_id = models.ForeignKey(Computador, on_delete=models.SET_NULL, null=True)
+    computador_codigo = models.ForeignKey(Computador, on_delete=models.SET_NULL, null=True)
     user_id = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.evento
 
 class SolicitacaoReserva(models.Model):
     
@@ -205,7 +207,7 @@ class Log(models.Model):
         ('MN', 'Manutenção'),
         ('AT', 'Atualização'),
         ('IT', 'Instalação'),
-        ('CR', 'Criação'),
+        ('CR', 'Cadastro'),
         ('RV', 'Reserva'),
         ('EM', 'Empréstimo'),
         ('AS', 'Atualização Status'),

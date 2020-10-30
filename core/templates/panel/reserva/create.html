@@ -46,11 +46,11 @@
               <table id="table-lab" class="table table-bordered table-hover dataTable">
                 <thead>
                     <tr>
-                        <th>Evento</th>
-                        <th>Responsável</th>
-                        <th>Dia</th>
-                        <th>Laboratório</th>
-                        <th>Ações</th>
+                        <th class="text-center">Evento</th>
+                        <th class="text-center">Responsável</th>
+                        <th class="text-center">Dia</th>
+                        <th class="text-center">Laboratório</th>
+                        <th class="text-center">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,14 +109,14 @@
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
-                      <label>Hora Início</label>
-                      {% render_field form.start_time type="time" class+="form-control" %}
+                      <label>Data Fim</label>
+                      {% render_field form.end_day type="date" class+="form-control" %}
                   </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
-                      <label>Data Fim</label>
-                      {% render_field form.end_day type="date" class+="form-control" %}
+                      <label>Hora Início</label>
+                      {% render_field form.start_time type="time" class+="form-control" %}
                   </div>
                 </div>
                 <div class="col-sm-3">

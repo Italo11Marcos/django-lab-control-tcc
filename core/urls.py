@@ -60,6 +60,11 @@ urlpatterns = [
     path('panel/solicitacao/int:pk>', DetailSolicitacaoReservaView.as_view(), name='solicitacao-detail'),
     path('panel/solicitacao/updade/int:pk>', UpdateSolicitacaoReservaView.as_view(), name='solicitacao-update'),
     path('panel/solicitacao/delete/int:pk>', DeleteSolicitacaoReservaView.as_view(), name='solicitacao-delete'),
+    ## URLs Emprestimo
+    path('panel/emprestimo/cadastrar', CreateEmprestimoView.as_view(), name='emprestimo-create'),
+    path('panel/emprestimo/<int:pk>', DetailEmprestimoView.as_view(), name='emprestimo-detail'),
+    path('panel/emprestimo/updade/<int:pk>', UpdateEmprestimoView.as_view(), name='emprestimo-update'),
+    path('panel/emprestimo/delete/<int:pk>', DeleteEmprestimoView.as_view(), name='emprestimo-delete'),
     ## URL calendar
     path('panel/calendar', calendar, name='calendario'),
 ]

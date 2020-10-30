@@ -46,8 +46,8 @@
               <table id="table-disciplina" class="table table-bordered table-hover dataTable">
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Ações</th>
+                        <th class="text-center">Nome</th>
+                        <th class="text-center">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,18 +67,20 @@
             <form method="POST" autocomplete="off" id="form-curso">
               {% csrf_token %}
               <div class="row">
-                  <div class="col-sm-6">
+                  <div class="col-sm-12">
                       <div class="form-group">
                           <label>Nome:</label>
                           {% render_field form.name class+="form-control" %}
                       </div>
                   </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                        <br>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                      </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <br>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
                   </div>
+              </div>
               </div>
             </form>
            </div>

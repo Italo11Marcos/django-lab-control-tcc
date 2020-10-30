@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-{% block title %} Aulas - Painel de Controle {% endblock %} 
+{% block title %} Empréstimos - Painel de Controle {% endblock %} 
 
 {% block head %}
 <!-- DataTables -->
@@ -29,7 +29,7 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Reserva</h3>
+          <h3 class="card-title">Empréstimos</h3>
         </div>
         <div class="card-body">
           <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
@@ -46,99 +46,80 @@
               <table id="table-lab" class="table table-bordered table-hover dataTable">
                 <thead>
                     <tr>
-                        <th class="text-center">Professor</th>
-                        <th class="text-center">Laboratório</th>
-                        <th class="text-center">Disciplina</th>
-                        <th class="text-center">Curso</th>
+                        <th class="text-center">Evento</th>
+                        <th class="text-center">Data</th>
+                        <th class="text-center">Responsável</th>
+                        <th class="text-center">Contato</th>
                         <th class="text-center">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for a in aulas %}
+                    {% for e in emprestimos %}
                         <tr>
-                            <td>{{ a.professor_id }}</td>
-                            <td>{{ a.laboratorio_id }}</td>
-                            <td>{{ a.disciplina_id }}</td>
-                            <td>{{ a.curso_id }}</td>
+                            <td>{{ e.evento }}</td>
+                            <td>{{ e.date }}</td>
+                            <td>{{ e.responsavel }}</td>
+                            <td>{{ e.contato }}</td>
                             <td>
-                                <a href="{% url 'aula-detail' a.pk %}" title="Informações"><i class="far fa-eye"></i></a>
+                                <a href="{% url 'emprestimo-detail' e.pk %}" title="Informações"><i class="far fa-eye"></i></a>
                             </td>
                         </tr>
-                    {% endfor %}
+                    {% endfor %} 
                 </tbody>
               </table>
            </div>
            <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
             <br>
-            <form method="POST" autocomplete="off" id="form-aula">
+            <form method="POST" autocomplete="off" id="form-emprestimo">
               {% csrf_token %}
               <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Dia:</label>
-                          {% render_field form.dia class+="form-control" %}
+                          <label>Evento:</label>
+                          {% render_field form.evento class+="form-control" %}
+                      </div>
+                  </div>
+                  <div class="col-sm-6">
+                      <div class="form-group">
+                          <label>Date:</label>
+                          {% render_field form.date type="datetime-local" class+="form-control" %}
                       </div>
                   </div>
               </div>
               <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label>Data Início</label>
-                        {% render_field form.start_day type="date" class+="form-control" %}
+                        <label>Responsável:</label>
+                        {% render_field form.responsavel class+="form-control" %}
                     </div>
                 </div>
-                <div class="col-sm-3">
-                  <div class="form-group">
-                      <label>Hora Início</label>
-                      {% render_field form.start_time type="time" class+="form-control" %}
-                  </div>
-                </div>
-                <div class="col-sm-3">
-                  <div class="form-group">
-                      <label>Data Fim</label>
-                      {% render_field form.end_day type="date" class+="form-control" %}
-                  </div>
-                </div>
-                <div class="col-sm-3">
-                  <div class="form-group">
-                      <label>Hora Fim</label>
-                      {% render_field form.end_time type="time" class+="form-control" %}
-                  </div>
-                </div>
-              </div>
-              <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label>Laboratório</label>
-                        {% render_field form.laboratorio_id class+="form-control" %}
+                        <label>E-mail:</label>
+                        {% render_field form.email class+="form-control" %}
                     </div>
                 </div>
                 <div class="col-sm-3">
-                  <div class="form-group">
-                      <label>Professor</label>
-                      {% render_field form.professor_id class+="form-control" %}
-                  </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="form-group">
-                    <label>Disciplina</label>
-                    {% render_field form.disciplina_id class+="form-control" %}
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="form-group">
-                    <label>Curso</label>
-                    {% render_field form.curso_id class+="form-control" %}
-                </div>
-              </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
                     <div class="form-group">
-                      <button type="submit" class="btn btn-primary">Salvar</button>
+                        <label>Contato:</label>
+                        {% render_field form.contato class+="form-control" %}
                     </div>
                 </div>
-            </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Computador:</label>
+                        {% render_field form.computador_codigo class+="form-control" %}
+                    </div>
+                </div>
+                <input name="user_id" type="hidden" value="{{ request.user.id }}">
+                </div>
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                      </div>
+                  </div>
+              </div>
             </form>
            </div>
           </div>
@@ -169,10 +150,6 @@
 <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 
-<!-- InputMask -->
-<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
-<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
-
 <script>
   $(function () {
     $("#table-lab").DataTable({
@@ -184,49 +161,24 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-aula').validate({
+  $('#form-emprestimo').validate({
     rules: {
-      dia: {
+      name: {
         required: true,
       },
-      start_day: {
+      qnt_computador: {
         required: true,
+        min: 1
       },
-      start_time: {
-        required: true,
-      },
-      end_time: {
-        required: true,
-      },
-      end_day: {
-        required: true,
-      },
-      laboratorio_id: {
-        required: true,
-      },
-      professor_id: {
-        required: true,
-      },
-      curso_id: {
-        required: true,
-      },
-      disciplina_id: {
-        required: true,
-      }
     },
     messages: {
-      start_day: {
+      name: {
         required: "Esse campo é obrigatório",
       },
-      start_time: {
-        required: "Esse campo é obrigatório",
+      qnt_computador: {
+        required: "Esse campo é requerido",
+        min: "O laboratório não pode ter menos que 1 computador"
       },
-      end_time: {
-        required: "Esse campo é obrigatório",
-      },
-      end_day: {
-        required: "Esse campo é obrigatório",
-      }
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

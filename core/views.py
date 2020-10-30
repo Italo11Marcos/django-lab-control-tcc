@@ -15,7 +15,15 @@ from django.http import HttpResponse, Http404
 class IndexView(TemplateView):
     template_name = 'panel/index.html'
 
+#View qnt de solicitações pendentes
+def QntSolicitacoesPendentes(request):
+    qntSolicitacoesPendentes = len(SolicitacaoReserva.objects.filter(status='P'))
+    context = {
+        'qnt': qntSolicitacoesPendentes
+    }
+    return render(request, 'layouts/base.html', context)
 
+##Usuários CRUD##
 def cadastro(request): 
     if request.method == "POST":
         form = CustomUsuarioCreateForm(request.POST)
@@ -502,7 +510,7 @@ class DetailSolicitacaoReservaView(DetailView):
     context_object_name = 'solicitacao'
 
 class UpdateSolicitacaoReservaView(UpdateView):
-    model = Aula
+    model = SolicitacaoReserva
     template_name = 'panel/solicitacao/update.html'
     form_class = SolicitacaoReservaForm
     success_url = reverse_lazy('solicitacao-list')
@@ -525,11 +533,67 @@ class DeleteSolicitacaoReservaView(DeleteView):
         messages.success(self.request, 'Solicitacao excluída com sucesso!')
         success_url = self.get_success_url()
         return HttpResponseRedirect(success_url)
+
+##Emprestimo CRUD##
+class CreateEmprestimoView(CreateView):
+    form_class = EmprestimoForm
+    template_name = 'panel/emprestimo/create.html'
+    success_url = reverse_lazy('emprestimo-create')
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateEmprestimoView, self).get_context_data(**kwargs)
+        context['emprestimos'] = Emprestimo.objects.order_by('?').all()
+        return context
+
+    def form_valid(self, form, *args, **kwargs):
+        form = EmprestimoForm(self.request.POST)
+        emprestimo = form.save(commit=False)
+        emprestimo.user_id = self.request.user
+        emprestimo.save()
+        messages.success(self.request, 'Solicitação Realizada com sucesso')
+        return super(CreateEmprestimoView, self).form_valid(form)
+
+    def form_invalid(self, form, *args, **kwargs):
+        messages.error(self.request, 'Tivemos algum problema')
+        return super(CreateEmprestimoView, self).form_valid(form)
+
+class DetailEmprestimoView(DetailView):
+    model = Emprestimo
+    template_name = 'panel/emprestimo/detail.html'
+    context_object_name = 'emprestimo'
+
+class UpdateEmprestimoView(UpdateView):
+    model = Emprestimo
+    template_name = 'panel/emprestimo/update.html'
+    form_class = EmprestimoForm
+    success_url = reverse_lazy('emprestimo-create')
+
+    def form_valid(self, form, *args, **kwargs):
+        messages.success(self.request, 'Empréstimo editado com sucesso!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form, *args, **kwargs):
+        messages.error(self.request, 'Tivemos algum problema')
+        return super().form_valid(form)
+
+class DeleteEmprestimoView(DeleteView):
+    model = Emprestimo
+    success_url = reverse_lazy('emprestimo-create')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        messages.success(self.request, 'Empréstimo excluído com sucesso!')
+        success_url = self.get_success_url()
+        return HttpResponseRedirect(success_url)
+
 ##calendar
 def calendar(request):
     reservas = Reserva.objects.all()
+    aulas = Aula.objects.all()
     context = {
-        "reservas": reservas
+        "reservas": reservas,
+        "aulas": aulas
     }
     return render(request, 'panel/reserva/calendario.html', context)
 

@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-{% block title %} Usuários - Painel de Controle {% endblock %} 
+{% block title %} Laboratórios - Painel de Controle {% endblock %} 
 
 {% block head %}
 <!-- DataTables -->
@@ -29,38 +29,60 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Usuários</h3>
+          <h3 class="card-title">Laboratórios</h3>
         </div>
         <div class="card-body">
-              <table id="table-disciplina" class="table table-bordered table-hover dataTable">
-                <thead>
-                    <tr>
-                        <th class="text-center">Nome</th>
-                        <th class="text-center">E-mail</th>
-                        <th class="text-center">Admin?</th>
-                        <th class="text-center">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for u in users %}
-                        <tr>
-                            <td>{{ u.get_full_name }}</td>
-                            <td>{{ u.email }}</td>
-                            <td>
-                              {% if u.is_staff %}
-                               Sim
-                              {% else %}
-                               Não
-                              {% endif %}
-                            </td>
-                            <td>
-                                <a href="{% url 'usuario-detail' u.pk %}" title="Informações"><i class="far fa-eye"></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-        </div>  
+            <form method="POST" autocomplete="off" id="form-emprestimo">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Evento:</label>
+                            {% render_field form.evento class+="form-control" %}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Date:</label>
+                            {% render_field form.date type="datetime-local" class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                      <div class="form-group">
+                          <label>Responsável:</label>
+                          {% render_field form.responsavel class+="form-control" %}
+                      </div>
+                  </div>
+                  <div class="col-sm-3">
+                      <div class="form-group">
+                          <label>E-mail:</label>
+                          {% render_field form.email class+="form-control" %}
+                      </div>
+                  </div>
+                  <div class="col-sm-3">
+                      <div class="form-group">
+                          <label>Contato:</label>
+                          {% render_field form.contato class+="form-control" %}
+                      </div>
+                  </div>
+                  <div class="col-sm-3">
+                      <div class="form-group">
+                          <label>Computador:</label>
+                          {% render_field form.computador_codigo class+="form-control" %}
+                      </div>
+                  </div>
+                  </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+              </form>
+        </div>
       </div>
 
     </section>
@@ -89,7 +111,7 @@
 
 <script>
   $(function () {
-    $("#table-disciplina").DataTable({
+    $("#table-lab").DataTable({
       "responsive": true,
       "autoWidth": false,
     });
@@ -98,15 +120,23 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-curso').validate({
+  $('#form-laboratorio').validate({
     rules: {
       name: {
         required: true,
+      },
+      qnt_computador: {
+        required: true,
+        min: 1
       },
     },
     messages: {
       name: {
         required: "Esse campo é obrigatório",
+      },
+      qnt_computador: {
+        required: "Esse campo é requerido",
+        min: "O laboratório não pode ter menos que 1 computador"
       },
     },
     errorElement: 'span',

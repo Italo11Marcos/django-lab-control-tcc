@@ -76,12 +76,24 @@
       'themeSystem': 'bootstrap',
       //Random default events
       events    : [
-      {% for i in reservas %}
+      {% for r in reservas %}
         {
-            title: "teste",
-            start: '{{ i.dia|date:"Y-m-d" }}',
-            allDay         : false,
-
+            title: "{{ r.evento }}",
+            start: '{{ r.start_day|date:"Y-m-d" }} {{ r.start_time }}',
+            end: '{{ r.end_day|date:"Y-m-d" }} {{ r.end_time }}',
+            color: '#deeb34'
+            //allDay         : false,
+        },
+        {% endfor %}
+        {% for a in aulas %}
+        {
+          title: "{{ a.name }}",
+          daysOfWeek: [ '{{ a.dia }}' ], // these recurrent events move separately
+          startRecur: '{{ a.start_day|date:"Y-m-d" }}',
+          endRecur: '{{ a.end_day|date:"Y-m-d" }}',
+          startTime: '{{ a.start_time }}',
+          endTime: '{{ a.end_time }}',
+          color: '#20d4d1',
         },
         {% endfor %}
       ],
