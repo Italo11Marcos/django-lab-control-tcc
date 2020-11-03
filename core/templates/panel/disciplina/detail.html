@@ -29,10 +29,10 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ disciplina.name }}</h3>
+          <h3 class="card-title"><label> {{ disciplina.name }} </label></h3>
         </div>
         <div class="card-body">
-          <p> - </p>
+          <p> Há <b>{{ qnt }}</b> aulas reservadas para essa disciplina. </p>
         </div>
         <div class="card-footer">
             <a href="{% url 'disciplina-update' disciplina.pk %}" class="btn btn-outline-info">Editar</a>
@@ -57,7 +57,7 @@
         <div class="modal-body">
           <form action="{% url 'disciplina-delete' disciplina.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ disciplina.name }} ?
+            Realmente deseja excluir a disciplina <code>{{ disciplina.name }}</code> ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">

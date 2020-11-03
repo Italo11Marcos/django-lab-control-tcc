@@ -29,23 +29,25 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Disciplinas</h3>
+          <h3 class="card-title"><label>Editar disciplina: <code>{{ disciplina.name }}</code></label></h3>
         </div>
         <div class="card-body">
             <form method="POST" autocomplete="off" id="form-disciplina">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <div class="form-group">
                             <label>Nome:</label>
                             {% render_field form.name class+="form-control" %}
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Salvar</button>
-                          </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
+                  </div>
                 </div>
               </form>
         </div>

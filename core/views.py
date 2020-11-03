@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -164,6 +164,13 @@ class DetailCursoView(DetailView):
     template_name = 'panel/curso/detail.html'
     context_object_name = 'curso'
 
+    def get_context_data(self, **kwargs):
+        context = super(DetailCursoView, self).get_context_data(**kwargs)
+        aulas = Aula.objects.filter(curso_id=self.get_object().pk)
+        reservas = Reserva.objects.filter(curso_id=self.get_object().pk)
+        context['qnt'] = len(aulas) + len(reservas)
+        return context
+
 class UpdateCursoView(UpdateView):
     model = Curso
     template_name = 'panel/curso/update.html'
@@ -212,6 +219,13 @@ class DetailDisciplinaView(DetailView):
     model = Disciplina
     template_name = 'panel/disciplina/detail.html'
     context_object_name = 'disciplina'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailDisciplinaView, self).get_context_data(**kwargs)
+        aulas = Aula.objects.filter(disciplina_id=self.get_object().pk)
+        reservas = Reserva.objects.filter(disciplina_id=self.get_object().pk)
+        context['qnt'] = len(aulas) + len(reservas)
+        return context
 
 class UpdateDisciplinaView(UpdateView):
     model = Disciplina
@@ -517,10 +531,31 @@ class ListSolicitacaoReservaView(ListView):
         context['solicitacao'] = SolicitacaoReserva.objects.filter(status='P')
         return context
 
+class ListMySolicitacaoReservaView(ListView):
+    model = SolicitacaoReserva
+    template_name = 'panel/solicitacao/mylist.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListMySolicitacaoReservaView, self).get_context_data(**kwargs)
+        context['solicitacao'] = SolicitacaoReserva.objects.filter(user_masp=self.request.user.id)
+        return context
+
+class ListAllSolicitacaoReservaView(ListView):
+    model = SolicitacaoReserva
+    template_name = 'panel/solicitacao/alllist.html'
+    context_object_name = 'solicitacao'
+
 class DetailSolicitacaoReservaView(DetailView):
     model = SolicitacaoReserva
     template_name = 'panel/solicitacao/detail.html'
     context_object_name = 'solicitacao'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailSolicitacaoReservaView, self).get_context_data(**kwargs)
+        resp = RespostaSolicitacao.objects.filter(solicitacao=self.get_object().pk)
+        resp = resp[0].resposta
+        context['resp'] = resp
+        return context
 
 class UpdateSolicitacaoReservaView(UpdateView):
     model = SolicitacaoReserva
@@ -546,6 +581,21 @@ class DeleteSolicitacaoReservaView(DeleteView):
         messages.success(self.request, 'Solicitacao excluída com sucesso!')
         success_url = self.get_success_url()
         return HttpResponseRedirect(success_url)
+
+def RespostaSolicitacaoCreate(request):
+    if request.method == 'POST':
+        solicitacaoreserva = request.POST.get('solicitacaoreserva_id', False)
+        user = request.POST.get('user_id', False)
+        resposta = request.POST.get('resposta', False)
+        s = SolicitacaoReserva.objects.get(pk=solicitacaoreserva)
+        u = CustomUsuario.objects.get(pk=user)
+        s.status = 'F'
+        s.save()
+        r = RespostaSolicitacao.objects.create(user_masp=u, solicitacao=s, resposta=resposta)
+        r.save()
+        messages.success(request, 'Respondido com sucesso!')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
 
 ##Emprestimo CRUD##
 class CreateEmprestimoView(CreateView):

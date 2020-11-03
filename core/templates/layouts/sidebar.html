@@ -16,36 +16,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <!-- Painel de Controle -->
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Painel de Controle
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{% url 'calendario' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+          {% if not request.user.is_staff %}
           <!-- Solicitacao de Reservas-->
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -63,9 +34,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'solicitacao-list' %}" class="nav-link">
+                <a href="{% url 'solicitacao-mylist' %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Solicitações Pendentes</p>
+                  <p>Minhas solicitações</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -76,7 +47,42 @@
               </li>
             </ul>
           </li>
+          <!-- Calendário -->
+          <li class="nav-item has-treeview">
+            <a href="{% url 'calendario' %}" class="nav-link">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+                Calendário
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+          </li>
+          {% endif %}
           {% if request.user.is_staff %}
+          <!-- Solicitacao de Reservas-->
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>
+                Solicitação Reserva
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'solicitacao-list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Solicitações Pendentes</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'solicitacao-alllist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Todas as Solicitações</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <!-- Calendário -->
           <li class="nav-item has-treeview">
             <a href="{% url 'calendario' %}" class="nav-link">
@@ -127,18 +133,8 @@
               </p>
             </a>
           </li>
-          <!-- Empréstimos -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'emprestimo-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-dolly-flatbed"></i>
-              <p>
-                Empréstimos
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
           <!-- Log -->
-          <li class="nav-item has-treeview">
+          <!-- <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-history"></i>
               <p>
@@ -166,7 +162,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> -->
           <!-- Reserva -->
           <li class="nav-item has-treeview">
             <a href="{% url 'reserva-create' %}" class="nav-link">
@@ -213,6 +209,16 @@
               <i class="nav-icon fas fa-chalkboard"></i>
               <p>
                 Aulas
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+          </li>
+          <!-- Empréstimos -->
+          <li class="nav-item has-treeview">
+            <a href="{% url 'emprestimo-create' %}" class="nav-link">
+              <i class="nav-icon fas fa-dolly-flatbed"></i>
+              <p>
+                Empréstimos
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>

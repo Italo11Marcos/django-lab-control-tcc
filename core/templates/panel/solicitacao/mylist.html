@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-{% block title %} Cursos - Painel de Controle {% endblock %} 
+{% block title %} Solicitação - Painel de Controle {% endblock %} 
 
 {% block head %}
 <!-- DataTables -->
@@ -29,27 +29,37 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title"><label>Editar curso: <code>{{ curso.name }}</code> </label></h3>
+          <h3 class="card-title"><label>Minhas solicitações</label></h3>
         </div>
         <div class="card-body">
-            <form method="POST" autocomplete="off" id="form-curso">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label>Nome:</label>
-                            {% render_field form.name class+="form-control" %}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Editar</button>
-                      </div>
-                </div>
-                </div>
-              </form>
+            <table>
+                <table id="table-lab" class="table table-bordered table-hover dataTable">
+                    <thead>
+                        <tr>
+                            <th>Professor</th>
+                            <th>Quantidade de Alunos</th>
+                            <th>Disciplina</th>
+                            <th>Curso</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in solicitacao %}
+                            <tr>
+                                <td>{{ s.professor_masp }}</td>
+                                <td>{{ s.qnt_alunos }}</td>
+                                <td>{{ s.disciplina_id }}</td>
+                                <td>{{ s.curso_id }}</td>
+                                <td>{{ s.status }}</td>
+                                <td>
+                                    <a href="{% url 'solicitacao-detail' s.pk %}" title="Informações"><i class="far fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </table>
         </div>
       </div>
 
@@ -77,6 +87,10 @@
 <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
 <script>
   $(function () {
     $("#table-lab").DataTable({
@@ -88,16 +102,75 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-curso').validate({
+  $('#form-reserva').validate({
     rules: {
-      name: {
+      evento: {
+        required: true,
+        maxlength: 100
+      },
+      responsavel: {
+        required: true,
+        maxlength: 100
+      },
+      contato: {
+        required: true
+      },
+      email: {
+        required: true,
+        email: true
+      },
+      start_day: {
         required: true,
       },
+      start_time: {
+        required: true,
+      },
+      end_time: {
+        required: true,
+      },
+      end_day: {
+        required: true,
+      },
+      laboratorio_id: {
+        required: false,
+      },
+      professor_id: {
+        required: false,
+      },
+      curso_id: {
+        required: false,
+      },
+      disciplina_id: {
+        required: false,
+      }
     },
     messages: {
-      name: {
+      evento: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máximo 100 caracteres",
+      },
+      responsavel: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máximo 100 caracteres",
+      },
+      contato: {
         required: "Esse campo é obrigatório",
       },
+      email: {
+        required: "Esse campo é obrigatório",
+      },
+      start_day: {
+        required: "Esse campo é obrigatório",
+      },
+      start_time: {
+        required: "Esse campo é obrigatório",
+      },
+      end_time: {
+        required: "Esse campo é obrigatório",
+      },
+      end_day: {
+        required: "Esse campo é obrigatório",
+      }
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

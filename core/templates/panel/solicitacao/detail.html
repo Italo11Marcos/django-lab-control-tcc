@@ -29,16 +29,36 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">{{ solicitacao.professor_masp }}</h3>
+          <h3 class="card-title"><label>Status: </label></h3>
+          {% if solicitacao.status == 'P' %}
+            <span class="badge badge-pill badge-danger"> Pendente</span>
+          {% else %}
+            <span class="badge badge-pill badge-success"> Concluída</span>
+          {% endif %} 
         </div>
         <div class="card-body">
-          <p>{{ solicitacao.curso_id }}</p>
-          <p>{{ solicitacao.disciplina_id }}</p>
-          <p>{{ solicitacao.qnt_alunos }}</p>
+          <p><label>Solicitante: </label> {{ solicitacao.user_masp.get_full_name }}</p>
+          <p><label>Curso: </label> {{ solicitacao.curso_id }}</p>
+          <p><label>Disciplina: </label> {{ solicitacao.disciplina_id }}</p>
+          <p><label>Quantidade de alunos: </label> {{ solicitacao.qnt_alunos }}</p>
+          <p><label>Obersavções: </label> {{ solicitacao.observacao }}</p>
+          <label>Softwares Requisitados: </label><br>
+          {% for s in solicitacao.software_id.all %}
+            <span class="badge badge-pill badge-dark">{{ s }}</span>
+          {% endfor %}
+          {% if resp %}
+          <p><label>Resposta: </label> {{ resp }}</p>
+          {% endif %}
         </div>
         <div class="card-footer">
+          {% if solicitacao.status == 'P' %}  
+            {% if request.user.is_staff %}
+            <a href="{% url 'solicitacao-update' solicitacao.pk %}" class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModalCenter">Responder</a>
+            {% else %}
             <a href="{% url 'solicitacao-update' solicitacao.pk %}" class="btn btn-outline-info">Editar</a>
-            <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
+            <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Cancelar</a>
+            {% endif %}
+          {% endif %}
         </div>
       </div>
 
@@ -47,7 +67,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Modal -->
+  <!-- Modal Delete-->
 <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -59,7 +79,7 @@
         <div class="modal-body">
           <form action="{% url 'solicitacao-delete' solicitacao.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja excluir o {{ solicitacao.professor_masp }} ?
+            Realmente deseja cancelar a {{ solicitacao.professor_masp }} ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">
@@ -69,6 +89,33 @@
         </div>
       </div>
     </div>
+</div>
+
+<!-- modal resposta-->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><b>Responder Solicitação: <code>{{ solicitacao.id }}</code></b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'resposta-create' %}" method="post">
+          {% csrf_token %}
+          <label>Resposta: </label>
+          <textarea name="resposta" class="form-control" cols="30" rows="10" required></textarea>
+          <input type="hidden" name="solicitacaoreserva_id" value="{{ solicitacao.id }}">
+          <input type="hidden" name="user_id" value="{{ request.user.id }}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary">Responder</button>
+      </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

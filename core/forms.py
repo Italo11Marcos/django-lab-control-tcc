@@ -79,3 +79,8 @@ class SolicitacaoReservaForm(forms.ModelForm):
     class Meta:
         model = SolicitacaoReserva
         fields = ('qnt_alunos', 'professor_masp', 'curso_id', 'disciplina_id', 'software_id', 'observacao')
+
+class RespostaSolicitacaoForm(forms.ModelForm):
+    class Meta:
+        model = RespostaSolicitacao
+        fields = ['resposta']
