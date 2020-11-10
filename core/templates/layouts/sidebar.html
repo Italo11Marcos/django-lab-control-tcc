@@ -39,12 +39,6 @@
                   <p>Minhas solicitações</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
             </ul>
           </li>
           <!-- Calendário -->
@@ -59,6 +53,16 @@
           </li>
           {% endif %}
           {% if request.user.is_staff %}
+          <!-- Calendário -->
+          <li class="nav-item has-treeview">
+            <a href="{% url 'calendario' %}" class="nav-link">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+                Calendário
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+          </li>
           <!-- Solicitacao de Reservas-->
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -82,16 +86,6 @@
                 </a>
               </li>
             </ul>
-          </li>
-          <!-- Calendário -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'calendario' %}" class="nav-link">
-              <i class="nav-icon fas fa-calendar-alt"></i>
-              <p>
-                Calendário
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
           </li>
           <!-- Usuários -->
           <li class="nav-item has-treeview">

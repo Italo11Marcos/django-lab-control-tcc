@@ -29,24 +29,26 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Todas as Solicitações</h3>
+          <h3 class="card-title">Todas as Solicitações Pendentes</h3>
         </div>
         <div class="card-body">
             <table>
                 <table id="table-lab" class="table table-bordered table-hover dataTable">
                     <thead>
                         <tr>
-                            <th>Professor</th>
-                            <th>Quantidade de Alunos</th>
-                            <th>Disciplina</th>
-                            <th>Curso</th>
-                            <th>Status</th>
-                            <th>Ações</th>
+                            <th class="text-center">Solicitante</th>
+                            <th class="text-center">Professor</th>
+                            <th class="text-center">Quantidade de Alunos</th>
+                            <th class="text-center">Disciplina</th>
+                            <th class="text-center">Curso</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for s in solicitacao %}
                             <tr>
+                                <td>{{ s.user_masp.get_full_name }}</td>
                                 <td>{{ s.professor_masp }}</td>
                                 <td>{{ s.qnt_alunos }}</td>
                                 <td>{{ s.disciplina_id }}</td>

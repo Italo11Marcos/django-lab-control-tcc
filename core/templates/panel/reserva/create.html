@@ -90,7 +90,8 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Contato:</label>
-                        {% render_field form.contato class+="form-control" %}
+                        <!-- {% render_field form.contato class+="form-control" %} -->
+                        <input type="text" class="form-control" name="contato" id="test" data-inputmask='"mask": "(99) 9999-9999"' data-mask>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -192,6 +193,12 @@
 <!-- InputMask -->
 <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
 <script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
+<script>
+  $(document).ready(function(){
+    $('#test').inputmask('(99) 9999-9999');
+  });
+</script>
 
 <script>
   $(function () {

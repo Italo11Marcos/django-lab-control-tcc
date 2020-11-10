@@ -126,7 +126,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #MEDIA_URL = os.path.join(BASE_DIR, 'media')
 
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'calendario'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
 

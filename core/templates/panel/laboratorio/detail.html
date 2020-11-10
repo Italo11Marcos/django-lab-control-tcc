@@ -42,6 +42,16 @@
                   <div class="info-box-content">
                     <span class="info-box-number"> Código: {{ p.codigo }} </span>
                     <span class="info-box-number"> Patrimônio: {{ p.patrimonio }} </span>
+                    {% if p.funciona %}
+                    <span class="info-box-number"> Funcionando: Sim</span>
+                    {% else %}
+                    <span class="info-box-number"> Funcionando: Não</span>
+                    {% endif %}
+                    {% if p.dual_boot %}
+                    <span class="info-box-number"> Dual Boot: Sim</span>
+                    {% else %}
+                    <span class="info-box-number"> Dual Boot: Não</span>
+                    {% endif %}
                   </div>
                 </div>
             </div>

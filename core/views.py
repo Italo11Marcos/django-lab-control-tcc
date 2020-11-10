@@ -366,6 +366,7 @@ class CreateComputadorView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateComputadorView, self).get_context_data(**kwargs)
         context['computadors'] = Computador.objects.order_by('?').all()
+        context['softwares'] = Software.objects.all()
         return context
 
     def form_valid(self, form, *args, **kwargs):

@@ -29,10 +29,10 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Solicitar Reserva</h3>
+          <h3 class="card-title"><label>Solicitar Reserva</label></h3>
         </div>
         <div class="card-body">
-            <form method="POST" autocomplete="off" id="form-reserva">
+            <form method="POST" autocomplete="off" id="form-solicitacao">
                 {% csrf_token %}
                 <div class="row">
                   <div class="col-sm-6">
@@ -49,19 +49,21 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-4">
+                  <div class="col-sm-6">
                       <div class="form-group">
                           <label>Professor</label>
                           {% render_field form.professor_masp class+="form-control" %}
                       </div>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-sm-6">
                     <div class="form-group">
                         <label>Curso</label>
                         {% render_field form.curso_id class+="form-control" %}
                     </div>
                   </div>
-                  <div class="col-sm-4">
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
                     <div class="form-group">
                         <label>Softwares</label>
                         {% render_field form.software_id class+="form-control" %}
@@ -127,75 +129,51 @@
 
 <script>
   $(document).ready(function () {
-  $('#form-reserva').validate({
+  $('#form-solicitacao').validate({
     rules: {
-      evento: {
+      qnt_alunos: {
         required: true,
-        maxlength: 100
+        max: 100,
+        min: 1
       },
-      responsavel: {
+      curso_id: {
         required: true,
-        maxlength: 100
       },
-      contato: {
+      disciplina_id: {
         required: true
       },
-      email: {
+      software_id: {
         required: true,
         email: true
       },
-      start_day: {
+      professor_masp: {
         required: true,
       },
-      start_time: {
+      observacao: {
         required: true,
       },
-      end_time: {
-        required: true,
-      },
-      end_day: {
-        required: true,
-      },
-      laboratorio_id: {
-        required: false,
-      },
-      professor_id: {
-        required: false,
-      },
-      curso_id: {
-        required: false,
-      },
-      disciplina_id: {
-        required: false,
-      }
     },
     messages: {
-      evento: {
+      qnt_alunos: {
         required: "Esse campo é obrigatório",
-        maxlength: "Máximo 100 caracteres",
+        max: "Limite máximo de 100 alunos",
+        min: "Limite minímo de 1 aluno",
       },
-      responsavel: {
-        required: "Esse campo é obrigatório",
-        maxlength: "Máximo 100 caracteres",
-      },
-      contato: {
+      curso_id: {
         required: "Esse campo é obrigatório",
       },
-      email: {
+      disciplina_id: {
         required: "Esse campo é obrigatório",
       },
-      start_day: {
+      software_id: {
         required: "Esse campo é obrigatório",
       },
-      start_time: {
+      professor_masp: {
         required: "Esse campo é obrigatório",
       },
-      end_time: {
+      observacao: {
         required: "Esse campo é obrigatório",
       },
-      end_day: {
-        required: "Esse campo é obrigatório",
-      }
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

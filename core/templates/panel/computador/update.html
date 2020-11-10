@@ -29,7 +29,7 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Laboratórios</h3>
+          <h3 class="card-title"><label>Editar Computador <code>{{ computador.codigo }}</code></label></h3>
         </div>
         <div class="card-body">
             <form method="POST" autocomplete="off" id="form-pc">
@@ -63,37 +63,37 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                       <div class="form-group">
                           <label>Processador:</label>
                           {% render_field form.processador class+="form-control" %}
                       </div>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                       <div class="form-group">
                           <label>HD:</label>
                           {% render_field form.hd class+="form-control" %}
                       </div>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                       <div class="form-group">
                           <label>RAM:</label>
                           {% render_field form.ram class+="form-control" %}
                       </div>
                   </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label>Laboratório</label>
+                      {% render_field form.laboratorio_id class+="form-control" %}
+                    </div>
+                </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Laboratório</label>
-                        {% render_field form.laboratorio_id class+="form-control" %}
-                      </div>
-                  </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Software</label>
-                        {% render_field form.software_id class+="form-control" %}
-                      </div>
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Software</label>
+                      {% render_field form.software_id class+="form-control" %}
+                    </div>
                   </div>
                 </div>
                 <div class="row">
@@ -152,10 +152,10 @@
           maxlength: 15
         },
         dual_boot: {
-            required: true,
+            required: false,
         },
         funciona: {
-            required: true,
+            required: false,
         },
         processador: {
             required: true,

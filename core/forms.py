@@ -48,8 +48,6 @@ class ComputadorForm(forms.ModelForm):
         model = Computador
         fields = '__all__'
 
-    laboratorio_id = forms.ModelChoiceField(queryset=Laboratorio.objects.all())
-
 class ReservaForm(forms.ModelForm):
     class Meta:
         model = Reserva
