@@ -39,6 +39,22 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <div class="modal" id="fullCalModal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modalTitle" class="modal-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p> <b>Início: <code id="start"></code> - <code id="starttime"></code></b> </p>
+          <p> <b>Fim: <code id="end"></code> - <code id="endtime"></code></b> </p>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block footer %}
@@ -49,7 +65,7 @@
 
 {% block js %}
 
-<!-- fullCalendar 2.2.5 -->
+fullCalendar 2.2.5
 <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
 <script src="{% static 'plugins/fullcalendar/main.min.js' %}"></script>
 <script src="{% static 'plugins/fullcalendar-daygrid/main.min.js' %}"></script>
@@ -59,11 +75,7 @@
 <script src="{% static 'plugins/fullcalendar/locales/pt-br.js' %}"></script>
 
 <script>
-    var date = new Date()
-    var d    = date.getDate(),
-        m    = date.getMonth(),
-        y    = date.getFullYear()
-        var Calendar = FullCalendar.Calendar;
+    var Calendar = FullCalendar.Calendar;
     var calendarEl = document.getElementById('calendar');
     var calendar = new Calendar(calendarEl, {
       locale: 'pt-br',  
@@ -94,13 +106,25 @@
           startTime: '{{ a.start_time }}',
           endTime: '{{ a.end_time }}',
           color: '#20d4d1',
+          //url: 'http://google.com/',
         },
         {% endfor %}
       ],
+      eventClick: function(event){
+        console.log(event)
+        $('#modalTitle').html(event.event.title)
+        $('#start').html(event.event.start.toLocaleDateString("pt-BR"))
+        $('#starttime').html(event.event.start.toLocaleTimeString("pt-BR"))
+        $('#end').html(event.event.end.toLocaleDateString("pt-BR"))
+        $('#endtime').html(event.event.end.toLocaleTimeString("pt-BR"))
+        $('#fullCalModal').modal();
+      },
+
     });
 
     calendar.render();
 </script>
+
 
 
 {% endblock %}
