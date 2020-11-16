@@ -50,7 +50,7 @@
               <p> <label>HD:</label> {{computador.hd }}</p>
             </div>
             <div class="col-md-6">
-              <label>Softwares Instalados</label><br>
+              <label>Softwares Instalados: {{ computador.software_id.all.count }}</label><br>
               {% for s in computador.software_id.all %}
                 <span class="badge badge-pill badge-dark">{{ s }}</span>
               {% endfor %}
