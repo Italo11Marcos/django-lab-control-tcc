@@ -121,6 +121,8 @@ class Computador(models.Model):
     ram = models.CharField(choices=RAM_CHOICES, max_length=3)
     laboratorio_id = models.ForeignKey(Laboratorio, on_delete=models.SET_NULL, null=True)
     software_id = models.ManyToManyField(Software)
+    qnt_manutencao = models.IntegerField(default=0)
+    em_manutencao = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.codigo)
@@ -222,3 +224,16 @@ class Log(models.Model):
     software_id = models.ForeignKey(Software, on_delete=models.SET_NULL, null=True, blank=True)
     solicitacao_id = models.ForeignKey(SolicitacaoReserva, on_delete=models.SET_NULL, null=True)
     user_id = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True)
+
+class Manutencao(models.Model):
+    STATUS_CHOICES = [
+        ('Em Curso', 'Em Curso'),
+        ('Resolvido', 'Resolvido'),
+    ]
+    
+    status = models.CharField(choices=STATUS_CHOICES, max_length=9, default='Em Curso')
+    pc_codigo = models.ForeignKey(Computador, on_delete=models.SET_NULL, null=True, blank=True)
+    data_inicio = models.DateField(auto_now_add=True)
+    data_fim = models.DateField(null=True, blank=True)
+    descricao = models.TextField(null=True, blank=True)
+    user_masp = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True, blank=True)

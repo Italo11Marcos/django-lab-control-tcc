@@ -1,0 +1,136 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Manutenção - Painel de Controle {% endblock %} 
+
+{% block head %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block layouts %}
+
+    {% include 'layouts/navbar.html' %}
+
+    {% include 'layouts/sidebar.html' %}
+
+{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+ <!-- Content Wrapper. Contains page content -->
+ <div class="content-wrapper">
+    <br>
+    <!-- Content Header (Page header) -->
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><label> Manutenção Computador: {{ manutencao.pc_codigo }} </label></h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <p> <label>Patrimônio:</label> {{manutencao.pc_codigo.patrimonio }}</p>
+              {% if manutencao.status == 'Em Curso' %}
+              <p><label>Status: <span class="badge badge-warning">Em curso</span></label></p>
+              {% else %}
+              <p><label>Status: <span class="badge badge-success">Resolvido</span></label></p>
+              {% endif %}
+              <p><label>Data início:</label> {{ manutencao.data_inicio }}</p>
+              {% if manutencao.data_fim %}
+              <p><label>Data fim:</label> {{ manutencao.data_fim }}</p>
+              {% endif %}
+              <p><label>Responsável pela manutenção:</label> {{ manutencao.user_masp.get_full_name }}</p>
+              {% if manutencao.descricao %}
+              <p><label>Descrição:</label></p>
+              <p>{{ manutencao.descricao }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+            {% if manutencao.status == 'Em Curso' %}
+                <a href="{% url 'computador-update' manutencao.pk %}" class="btn btn-outline-info">Editar</a>
+                <a href="#" class="btn btn-outline-info" data-toggle="modal" data-target="#modalUpdate">Editar</a>
+            {% endif %}
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<!-- Modal Update-->
+<div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <b>Descrição</b>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'manutencao-update' %}" method="post">
+            {% csrf_token %}
+            <textarea class="form-control" name="descricao" rows="7"></textarea>
+            <input type="hidden" name="manutencao_id" value="{{ manutencao.id }}">        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-success">Confirmar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+
+    {% include 'layouts/footer.html' %}
+
+{% endblock %}
+
+{% block js %}
+
+<!-- jquery-validation -->
+<script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    $("#table-lab").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
+
+{% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'info' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'warning' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% elif message.tags == 'error' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+            {% endif %}
+        {% endfor %}
+{% endif %}
+
+{% endblock %}

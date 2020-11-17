@@ -82,3 +82,9 @@ class RespostaSolicitacaoForm(forms.ModelForm):
     class Meta:
         model = RespostaSolicitacao
         fields = ['resposta']
+
+class ManutencaoForm(forms.ModelForm):
+    class Meta:
+        model = Manutencao
+        fields = ['pc_codigo', 'user_masp']
+

@@ -68,6 +68,12 @@ urlpatterns = [
     path('panel/emprestimo/<int:pk>', DetailEmprestimoView.as_view(), name='emprestimo-detail'),
     path('panel/emprestimo/updade/<int:pk>', UpdateEmprestimoView.as_view(), name='emprestimo-update'),
     path('panel/emprestimo/delete/<int:pk>', DeleteEmprestimoView.as_view(), name='emprestimo-delete'),
+    ## URLs Manutenção
+    path('panel/manutencao/cadastrar', CreateManutencaoView.as_view(), name='manutencao-create'),
+    path('panel/manutencao/listar', ListManutencaoView.as_view(), name='manutencao-list'),
+    path('panel/manutencao/detail/<int:pk>', DetailManutencaoView.as_view(), name='manutencao-detail'),
+    path('panel/manutencao/update', UpdateManutencao, name='manutencao-update'),
+    #path('panel/manutencao/update/<int:pk>', UpdateManutencaoView.as_view(), name='manutencao-update'),
     ## URL calendar
     path('panel/calendar', calendar, name='calendario'),
 ]

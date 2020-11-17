@@ -10,6 +10,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from datetime import date
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -597,7 +598,6 @@ def RespostaSolicitacaoCreate(request):
         messages.success(request, 'Respondido com sucesso!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         
-
 ##Emprestimo CRUD##
 class CreateEmprestimoView(CreateView):
     form_class = EmprestimoForm
@@ -651,6 +651,53 @@ class DeleteEmprestimoView(DeleteView):
         success_url = self.get_success_url()
         return HttpResponseRedirect(success_url)
 
+##Manutenção CRUD##
+class CreateManutencaoView(CreateView):
+    form_class = ManutencaoForm
+    success_url = reverse_lazy('manutencao-list')
+
+    def form_valid(self, form, *args, **kwargs):
+        form = ManutencaoForm(self.request.POST)
+        #print(self.request.POST.get('pc_codigo'))
+        manutencao = form.save(commit=False)
+        pc = Computador.objects.get(pk=self.request.POST.get('pc_codigo'))
+        pc.qnt_manutencao += 1
+        pc.em_manutencao = True
+        pc.save()
+        manutencao.user_masp = self.request.user
+        manutencao.save()
+        messages.success(self.request, 'Manutenção iniciado com sucesso')
+        return super(CreateManutencaoView, self).form_valid(form)
+
+    def form_invalid(self, form, *args, **kwargs):
+        messages.error(self.request, 'Tivemos algum problema')
+        return super(CreateManutencaoView, self).form_valid(form)
+
+class ListManutencaoView(ListView):
+    model = Manutencao
+    template_name = 'panel/manutencao/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListManutencaoView, self).get_context_data(**kwargs)
+        context['manutencoes'] = Manutencao.objects.all()
+        return context
+
+class DetailManutencaoView(DetailView):
+    model = Manutencao
+    template_name = 'panel/manutencao/detail.html'
+    context_object_name = 'manutencao'
+
+def UpdateManutencao(request):
+    if request.method == 'POST':
+        manutecao = request.POST.get('manutencao_id', False)
+        descricao = request.POST.get('descricao', False)
+        m = Manutencao.objects.get(pk=manutecao)
+        m.descricao = descricao
+        m.status = 'Resolvido'
+        m.data_fim = date.today()
+        m.save()
+        messages.success(request, 'Respondido com sucesso!')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 ##calendar
 def calendar(request):
     reservas = Reserva.objects.all()
