@@ -49,6 +49,9 @@
           </button>
         </div>
         <div class="modal-body">
+          <p> <b>Professor: <code id="professor"></code></b> </p>
+          <p> <b>Disciplina: <code id="disciplina"></code></b> </p>
+          <p> <b>Curso: <code id="curso"></code></b> </p>
           <p> <b>Início: <code id="start"></code> - <code id="starttime"></code></b> </p>
           <p> <b>Fim: <code id="end"></code> - <code id="endtime"></code></b> </p>
         </div>
@@ -99,12 +102,16 @@ fullCalendar 2.2.5
         {% endfor %}
         {% for a in aulas %}
         {
-          title: "{{ a.name }}",
+          title: "{{ a.disciplina_id }}",
           daysOfWeek: [ '{{ a.dia }}' ], // these recurrent events move separately
           startRecur: '{{ a.start_day|date:"Y-m-d" }}',
           endRecur: '{{ a.end_day|date:"Y-m-d" }}',
           startTime: '{{ a.start_time }}',
           endTime: '{{ a.end_time }}',
+          extendedProps: {
+            professor: '{{ a.professor_id }}',
+            curso: '{{ a.curso_id }}'
+          },
           color: '#20d4d1',
           //url: 'http://google.com/',
         },
@@ -112,7 +119,18 @@ fullCalendar 2.2.5
       ],
       eventClick: function(event){
         console.log(event)
+        $('#modalTitle').empty()
+        $('#disciplina').empty()
+        $('#professor').empty()
+        $('#curso').empty()
+        $('#start').empty()
+        $('#starttime').empty()
+        $('#end').empty()
+        $('#endtime').empty()
         $('#modalTitle').html(event.event.title)
+        $('#disciplina').html(event.event.title)
+        $('#professor').html(event.event.extendedProps.professor)
+        $('#curso').html(event.event.extendedProps.curso)
         $('#start').html(event.event.start.toLocaleDateString("pt-BR"))
         $('#starttime').html(event.event.start.toLocaleTimeString("pt-BR"))
         $('#end').html(event.event.end.toLocaleDateString("pt-BR"))

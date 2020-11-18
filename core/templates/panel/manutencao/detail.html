@@ -53,8 +53,7 @@
           </div>
         </div>
         <div class="card-footer">
-            {% if manutencao.status == 'Em Curso' %}
-                <a href="{% url 'computador-update' manutencao.pk %}" class="btn btn-outline-info">Editar</a>
+            {% if manutencao.status == 'Em Curso' and request.user.get_full_name == manutencao.user_masp.get_full_name %}
                 <a href="#" class="btn btn-outline-info" data-toggle="modal" data-target="#modalUpdate">Editar</a>
             {% endif %}
         </div>
@@ -99,25 +98,6 @@
 {% endblock %}
 
 {% block js %}
-
-<!-- jquery-validation -->
-<script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
-<script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
-
-<!-- DataTables -->
-<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
-
-<script>
-  $(function () {
-    $("#table-lab").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-    });
-  });
-</script>
 
 {% if messages %}
         {% for message in messages %}

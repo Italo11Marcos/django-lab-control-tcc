@@ -34,7 +34,21 @@
         <div class="card-body">
           <p> <label>Curso: </label> {{ aula.curso_id }}</p>
           <p> <label>Disciplina: </label> {{ aula.disciplina_id }}</p>
-          <p> <label>Dia: </label> {{ aula.dia }}</p>
+          {% if aula.dia == '1' %}
+            <p> <label>Dia: </label> Segunda </p>
+          {% elif aula.dia == '2' %}
+            <p> <label>Dia: </label> Terça </p>
+          {% elif aula.dia == '3' %}
+            <p> <label>Dia: </label> Quarta </p>
+          {% elif aula.dia == '4' %}
+            <p> <label>Dia: </label> Quinta </p>
+          {% elif aula.dia == '5' %}
+            <p> <label>Dia: </label> Sexta </p>
+          {% elif aula.dia == '6' %}
+            <p> <label>Dia: </label> Sábado </p>
+          {% elif aula.dia == '7' %}
+            <p> <label>Dia: </label> Domingo </p>
+          {% endif %}
           <p> <label>Laboratório: </label> {{ aula.laboratorio_id }}</p>
           <p> <label>Professor: </label> {{ aula.professor_id }}</p>
           <p> <label>Dia início: </label> {{ aula.start_day }}</p>
@@ -86,26 +100,6 @@
 {% endblock %}
 
 {% block js %}
-
-<!-- jquery-validation -->
-<script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
-<script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
-
-<!-- DataTables -->
-<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
-
-<script>
-  $(function () {
-    $("#table-lab").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-    });
-  });
-</script>
-
 
 {% if messages %}
         {% for message in messages %}

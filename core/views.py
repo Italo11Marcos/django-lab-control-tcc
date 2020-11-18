@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, CreateView, ListView, DeleteView, DetailView, UpdateView
+from django.views.generic import TemplateView, CreateView, ListView, DeleteView, DetailView, UpdateView, View
 from .forms import *
 from .models import *
 from django.urls import reverse_lazy
@@ -11,6 +11,9 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from datetime import date
+from django.core.files.storage import FileSystemStorage
+from django.template.loader import render_to_string
+#from weasyprint import HTML
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -698,6 +701,7 @@ def UpdateManutencao(request):
         m.save()
         messages.success(request, 'Respondido com sucesso!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 ##calendar
 def calendar(request):
     reservas = Reserva.objects.all()
@@ -708,8 +712,29 @@ def calendar(request):
     }
     return render(request, 'panel/reserva/calendario.html', context)
 
+##Relatorios
+# class RelatorioSoftwaresComputadores(View):
+    
+#     def get(self, request, *args, **kwargs):
+#         computador = Computador.objects.all()
+#         context = {
+#             'computator': computador,
+#         }
+#         html_string = render_to_string('relatorio.html', context)
 
+#         html = HTML(string=html_string)
+#         html.write_pdf(target='/tmp/relatorio-softwares-pcs')
 
+#         fs = FileSystemStorage('/tmp')
+
+#         with fs.open('relatorio-softwares-pcs.pdf') as pdf:
+#             response = HttpResponse(pdf, content_type='application/pdf')
+#             #Faz o download do arquivo PDF
+#             #response['Content-Disposition'] = 'attachment; filename="relatorio-softwares-pcs.pdf"'
+
+#             #Abre o PDF direto no navegador
+#             #response['Content-Disposition'] = 'inline; filename="relatorio-softwares-pcs.pdf"'
+#         return response
 
 
 

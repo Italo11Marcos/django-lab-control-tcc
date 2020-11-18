@@ -184,7 +184,7 @@ class SolicitacaoReserva(models.Model):
     
     STATUS_CHOICES = [
         ('P', 'Pendente'),
-        ('F', 'Finzalizada'),
+        ('F', 'Finalizada'),
     ]
 
     observacao = models.TextField(null=True)

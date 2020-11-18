@@ -46,7 +46,7 @@ class ProfessorForm(forms.ModelForm):
 class ComputadorForm(forms.ModelForm):
     class Meta:
         model = Computador
-        fields = '__all__'
+        fields = ['codigo', 'patrimonio', 'dual_boot', 'funciona', 'processador', 'hd', 'ram', 'laboratorio_id', 'software_id']
 
 class ReservaForm(forms.ModelForm):
     class Meta:
