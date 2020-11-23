@@ -7,6 +7,9 @@
 <!-- DataTables -->
 <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="{% static 'plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
 {% endblock %}
 
 {% block layouts %}
@@ -62,11 +65,23 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-sm-12">
                     <div class="form-group">
                         <label>Softwares</label>
                         {% render_field form.software_id class+="form-control" %}
+                    </div>
+                  </div>
+                </div> -->
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label>Softwares</label>
+                      <select name="software_id" class="duallistbox" multiple="multiple" required>
+                        {% for s in softwares %}
+                          <option value="{{ s.id }}">{{ s.name }}</option>
+                        {% endfor %}
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -114,17 +129,16 @@
 <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 
+<!-- Bootstrap4 Duallistbox -->
+<script src="{% static 'plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+
 <!-- InputMask -->
 <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
 <script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 
 <script>
-  $(function () {
-    $("#table-lab").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-    });
-  });
+  //Bootstrap Duallistbox
+  $('.duallistbox').bootstrapDualListbox()
 </script>
 
 <script>
@@ -133,47 +147,47 @@
     rules: {
       qnt_alunos: {
         required: true,
-        max: 100,
-        min: 1
-      },
-      curso_id: {
-        required: true,
+        min: 1,
+        max: 50,
       },
       disciplina_id: {
-        required: true
-      },
-      software_id: {
         required: true,
-        email: true
       },
       professor_masp: {
-        required: true,
+          required: true,
+      },
+      curso_id: {
+          required: false,
+      },
+      software_id: {
+          required: true,
       },
       observacao: {
-        required: true,
+          required: false,
       },
     },
     messages: {
       qnt_alunos: {
         required: "Esse campo é obrigatório",
-        max: "Limite máximo de 100 alunos",
-        min: "Limite minímo de 1 aluno",
-      },
-      curso_id: {
-        required: "Esse campo é obrigatório",
+        max: "Máximo de 50 alunos",
+        min: "Mínimo de 1 aluno"
       },
       disciplina_id: {
         required: "Esse campo é obrigatório",
       },
-      software_id: {
-        required: "Esse campo é obrigatório",
-      },
       professor_masp: {
-        required: "Esse campo é obrigatório",
+          required: "Esse campo é obrigatório",
       },
-      observacao: {
-        required: "Esse campo é obrigatório",
+      funciona: {
+          required: "Esse campo é obrigatório",
       },
+      curso_id: {
+          required: "Esse campo é obrigatório",
+      },
+      software_id: {
+          required: "Esse campo é obrigatório",
+      }
+
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

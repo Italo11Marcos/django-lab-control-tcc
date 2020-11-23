@@ -187,7 +187,7 @@ class SolicitacaoReserva(models.Model):
         ('F', 'Finalizada'),
     ]
 
-    observacao = models.TextField(null=True)
+    observacao = models.TextField(blank=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=1, default='P')
     qnt_alunos = models.IntegerField()
     professor_masp = models.ForeignKey(Professor, on_delete=models.CASCADE)

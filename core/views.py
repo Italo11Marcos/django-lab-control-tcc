@@ -515,6 +515,11 @@ class CreateSolicitacaoReservaView(CreateView):
     template_name = 'panel/solicitacao/create.html'
     success_url = reverse_lazy('solicitacao-create')
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateSolicitacaoReservaView, self).get_context_data(**kwargs)
+        context['softwares'] = Software.objects.all()
+        return context
+
     def form_valid(self, form, *args, **kwargs):
         form = SolicitacaoReservaForm(self.request.POST)
         solicitacao = form.save(commit=False)

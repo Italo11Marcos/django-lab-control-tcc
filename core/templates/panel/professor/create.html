@@ -29,7 +29,7 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Professor</h3>
+          <h3 class="card-title"><label>Professor</label></h3>
         </div>
         <div class="card-body">
           <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
@@ -96,7 +96,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>Contato:</label>
-                        {% render_field form.contato class+="form-control" placeholder="(xx) xxxxx-xxxx" %}
+                        <input type="text" class="form-control" name="contato" id="test" data-inputmask='"mask": "(99) 9999-9999"' data-mask>
                     </div>
                 </div>
             </div>
@@ -140,6 +140,12 @@
 <!-- InputMask -->
 <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
 <script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
+<script>
+  $(document).ready(function(){
+    $('#test').inputmask('(99) 9999-9999');
+  });
+</script>
 
 <script>
   $(function () {
