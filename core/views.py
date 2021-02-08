@@ -4,7 +4,6 @@ from .forms import *
 from .models import *
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required, user_passes_test
