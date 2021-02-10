@@ -92,25 +92,25 @@
                   <div class="col-sm-3">
                       <div class="form-group">
                           <label>Laboratório</label>
-                          {% render_field form.laboratorio_id class+="form-control" %}
+                          {% render_field form.laboratorio class+="form-control" %}
                       </div>
                   </div>
                   <div class="col-sm-3">
                     <div class="form-group">
                         <label>Professor</label>
-                        {% render_field form.professor_id class+="form-control" %}
+                        {% render_field form.professor class+="form-control" %}
                     </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
                       <label>Disciplina</label>
-                      {% render_field form.disciplina_id class+="form-control" %}
+                      {% render_field form.disciplina class+="form-control" %}
                   </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
                       <label>Curso</label>
-                      {% render_field form.curso_id class+="form-control" %}
+                      {% render_field form.curso class+="form-control" %}
                   </div>
                 </div>
                 </div>
@@ -183,16 +183,16 @@
         end_day: {
           required: true,
         },
-        laboratorio_id: {
+        laboratorio: {
           required: false,
         },
-        professor_id: {
+        professor: {
           required: false,
         },
-        curso_id: {
+        curso: {
           required: false,
         },
-        disciplina_id: {
+        disciplina: {
           required: false,
         }
       },

@@ -56,10 +56,10 @@
                 <tbody>
                     {% for a in aulas %}
                         <tr>
-                            <td>{{ a.professor_id }}</td>
-                            <td>{{ a.laboratorio_id }}</td>
-                            <td>{{ a.disciplina_id }}</td>
-                            <td>{{ a.curso_id }}</td>
+                            <td>{{ a.professor }}</td>
+                            <td>{{ a.laboratorio }}</td>
+                            <td>{{ a.disciplina }}</td>
+                            <td>{{ a.curso }}</td>
                             <td>
                                 <a href="{% url 'aula-detail' a.pk %}" title="Informações"><i class="far fa-eye"></i></a>
                             </td>
@@ -85,6 +85,7 @@
                     <div class="form-group">
                         <label>Data Início</label>
                         {% render_field form.start_day type="date" class+="form-control" %}
+                        <p class="text-danger">{{ form.start_day.errors }}</p>
                     </div>
                 </div>
                 <div class="col-sm-3">
@@ -97,12 +98,14 @@
                   <div class="form-group">
                       <label>Data Fim</label>
                       {% render_field form.end_day type="date" class+="form-control" %}
+                      <p class="text-danger">{{ form.end_day.errors }}</p>
                   </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
                       <label>Hora Fim</label>
                       {% render_field form.end_time type="time" class+="form-control" %}
+                      <p class="text-danger">{{ form.end_time.errors }}</p>
                   </div>
                 </div>
               </div>
@@ -110,25 +113,25 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label>Laboratório</label>
-                        {% render_field form.laboratorio_id class+="form-control" %}
+                        {% render_field form.laboratorio class+="form-control" %}
                     </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
                       <label>Professor</label>
-                      {% render_field form.professor_id class+="form-control" %}
+                      {% render_field form.professor class+="form-control" %}
                   </div>
               </div>
               <div class="col-sm-3">
                 <div class="form-group">
                     <label>Disciplina</label>
-                    {% render_field form.disciplina_id class+="form-control" %}
+                    {% render_field form.disciplina class+="form-control" %}
                 </div>
               </div>
               <div class="col-sm-3">
                 <div class="form-group">
                     <label>Curso</label>
-                    {% render_field form.curso_id class+="form-control" %}
+                    {% render_field form.curso class+="form-control" %}
                 </div>
               </div>
               </div>

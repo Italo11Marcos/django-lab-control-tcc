@@ -77,12 +77,14 @@
                       <div class="form-group">
                           <label>Evento:</label>
                           {% render_field form.evento class+="form-control" %}
+                          <p class="text-danger">{{ form.evento.errors }}</p>
                       </div>
                   </div>
                   <div class="col-sm-6">
                       <div class="form-group">
                           <label>Date:</label>
                           {% render_field form.date type="datetime-local" class+="form-control" %}
+                          <p class="text-danger">{{ form.date.errors }}</p>
                       </div>
                   </div>
               </div>
@@ -91,6 +93,7 @@
                     <div class="form-group">
                         <label>Responsável:</label>
                         {% render_field form.responsavel class+="form-control" %}
+                        <p class="text-danger">{{ form.responsavel.errors }}</p>
                     </div>
                 </div>
                 <div class="col-sm-3">

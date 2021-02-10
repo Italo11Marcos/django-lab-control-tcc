@@ -44,7 +44,7 @@
                   <div class="col-sm-6">
                       <div class="form-group">
                           <label>Disciplina:</label>
-                          {% render_field form.disciplina_id class+="form-control" %}
+                          {% render_field form.disciplina class+="form-control" %}
                       </div>
                   </div>
                 </div>
@@ -58,13 +58,13 @@
                   <div class="col-sm-4">
                     <div class="form-group">
                         <label>Curso</label>
-                        {% render_field form.curso_id class+="form-control" %}
+                        {% render_field form.curso class+="form-control" %}
                     </div>
                   </div>
                   <div class="col-sm-4">
                     <div class="form-group">
                         <label>Softwares</label>
-                        {% render_field form.software_id class+="form-control" %}
+                        {% render_field form.software class+="form-control" %}
                     </div>
                   </div>
                 </div>
@@ -75,7 +75,7 @@
                         {% render_field form.observacao class+="form-control" %}
                     </div>
                     </div>
-                    <input name="user_id" type="hidden" value="{{ request.user.id }}">
+                    <input name="user" type="hidden" value="{{ request.user.id }}">
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -156,16 +156,16 @@
       end_day: {
         required: true,
       },
-      laboratorio_id: {
+      laboratorio: {
         required: false,
       },
-      professor_id: {
+      professor: {
         required: false,
       },
-      curso_id: {
+      curso: {
         required: false,
       },
-      disciplina_id: {
+      disciplina: {
         required: false,
       }
     },

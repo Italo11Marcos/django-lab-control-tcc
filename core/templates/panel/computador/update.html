@@ -84,7 +84,7 @@
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label>Laboratório</label>
-                      {% render_field form.laboratorio_id class+="form-control" %}
+                      {% render_field form.laboratorio class+="form-control" %}
                     </div>
                 </div>
                 </div>
@@ -92,7 +92,7 @@
                   <div class="col-sm-12">
                     <div class="form-group">
                       <label>Software</label>
-                      {% render_field form.software_id class+="form-control" %}
+                      {% render_field form.software class+="form-control" %}
                     </div>
                   </div>
                 </div>
@@ -166,10 +166,10 @@
         hd: {
             required: true,
         },
-        laboratorio_id: {
+        laboratorio: {
             required: true,
         },
-        software_id: {
+        software: {
             required: true,
         }
       },
@@ -196,10 +196,10 @@
         processador: {
             required: "Esse campo é obrigatório",
         },
-        laboratorio_id: {
+        laboratorio: {
             required: "Esse campo é obrigatório",
         },
-        software_id: {
+        software: {
             required: "Esse campo é obrigatório",
         }
   

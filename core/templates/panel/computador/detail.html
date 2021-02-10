@@ -48,7 +48,7 @@
               <p> <label>Processador:</label> {{computador.processador }}</p>
               <p> <label>Ram:</label> {{computador.ram }}</p>
               <p> <label>HD:</label> {{computador.hd }}</p>
-              <p> <label>Laboratório:</label> {{computador.laboratorio_id }}</p>
+              <p> <label>Laboratório:</label> {{computador.laboratorio }}</p>
               <p> <label>Quantas vezes foi para manutenção:</label> {{computador.qnt_manutencao }}</p>
               {% if computador.em_manutencao %}
                 <p> <label>Em manutenção?</label> Sim</p>
@@ -58,8 +58,8 @@
               
             </div>
             <div class="col-md-6">
-              <label>Softwares Instalados: {{ computador.software_id.all.count }}</label><br>
-              {% for s in computador.software_id.all %}
+              <label>Softwares Instalados: {{ computador.software.all.count }}</label><br>
+              {% for s in computador.software.all %}
                 <span class="badge badge-pill badge-dark">{{ s }}</span>
               {% endfor %}
             </div>

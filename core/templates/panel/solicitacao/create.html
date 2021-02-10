@@ -42,12 +42,13 @@
                       <div class="form-group">
                           <label>Quantidade de alunos:</label>
                           {% render_field form.qnt_alunos class+="form-control" %}
+                          <p class="text-danger">{{ form.qnt_alunos.errors }}</p>
                       </div>
                   </div>
                   <div class="col-sm-6">
                       <div class="form-group">
                           <label>Disciplina:</label>
-                          {% render_field form.disciplina_id class+="form-control" %}
+                          {% render_field form.disciplina class+="form-control" %}
                       </div>
                   </div>
                 </div>
@@ -61,7 +62,7 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                         <label>Curso</label>
-                        {% render_field form.curso_id class+="form-control" %}
+                        {% render_field form.curso class+="form-control" %}
                     </div>
                   </div>
                 </div>
@@ -69,7 +70,7 @@
                   <div class="col-sm-12">
                     <div class="form-group">
                         <label>Softwares</label>
-                        {% render_field form.software_id class+="form-control" %}
+                        {% render_field form.software class+="form-control" %}
                     </div>
                   </div>
                 </div> -->
@@ -77,7 +78,7 @@
                   <div class="col-12">
                     <div class="form-group">
                       <label>Softwares</label>
-                      <select name="software_id" class="duallistbox" multiple="multiple" required>
+                      <select name="software" class="duallistbox" multiple="multiple" required>
                         {% for s in softwares %}
                           <option value="{{ s.id }}">{{ s.name }}</option>
                         {% endfor %}
@@ -92,7 +93,7 @@
                         {% render_field form.observacao class+="form-control" %}
                     </div>
                     </div>
-                    <input name="user_id" type="hidden" value="{{ request.user.id }}">
+                    <input name="user" type="hidden" value="{{ request.user.id }}">
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -147,19 +148,19 @@
     rules: {
       qnt_alunos: {
         required: true,
-        min: 1,
+        min: 5,
         max: 50,
       },
-      disciplina_id: {
+      disciplina: {
         required: true,
       },
       professor_masp: {
           required: true,
       },
-      curso_id: {
+      curso: {
           required: false,
       },
-      software_id: {
+      software: {
           required: true,
       },
       observacao: {
@@ -170,9 +171,9 @@
       qnt_alunos: {
         required: "Esse campo é obrigatório",
         max: "Máximo de 50 alunos",
-        min: "Mínimo de 1 aluno"
+        min: "Mínimo de 5 alunos"
       },
-      disciplina_id: {
+      disciplina: {
         required: "Esse campo é obrigatório",
       },
       professor_masp: {
@@ -181,10 +182,10 @@
       funciona: {
           required: "Esse campo é obrigatório",
       },
-      curso_id: {
+      curso: {
           required: "Esse campo é obrigatório",
       },
-      software_id: {
+      software: {
           required: "Esse campo é obrigatório",
       }
 

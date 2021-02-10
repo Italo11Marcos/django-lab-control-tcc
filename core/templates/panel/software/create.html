@@ -77,12 +77,14 @@
                       <div class="form-group">
                           <label>Nome:</label>
                           {% render_field form.name class+="form-control" %}
+                          <p class="text-danger">{{ form.name.errors }}</p>
                       </div>
                   </div>
                   <div class="col-sm-4">
                       <div class="form-group">
                           <label>Versão:</label>
                           {% render_field form.versao class+="form-control" %}
+                          <p class="text-danger">{{ form.versao.errors }}</p>
                       </div>
                   </div>
                   <div class="col-sm-4">

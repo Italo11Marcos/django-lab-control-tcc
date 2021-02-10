@@ -71,6 +71,7 @@
                       <div class="form-group">
                           <label>Nome:</label>
                           {% render_field form.name class+="form-control" %}
+                          <p class="text-danger">{{ form.name.errors }}</p>
                       </div>
                   </div>
               </div>

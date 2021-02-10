@@ -34,7 +34,7 @@ class UsuarioManager(BaseUserManager):
 
 class CustomUsuario(AbstractUser):
     email = models.EmailField('E-mail', unique=True)
-    masp = models.CharField(max_length=15)
+    masp = models.CharField(max_length=8)
     is_staff = models.BooleanField('Membro da equipe', default=False)
 
     USERNAME_FIELD = 'email'
@@ -47,21 +47,21 @@ class CustomUsuario(AbstractUser):
 
 class Curso(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=45)
+    name = models.CharField(max_length=45, unique=True)
 
     def __str__(self):
         return self.name
 
 class Disciplina(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=70)
+    name = models.CharField(max_length=70, unique=True)
 
     def __str__(self):
         return self.name
 
 class Professor(models.Model):
     masp = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
     contato = models.CharField(max_length=15, blank=True)
 
@@ -70,7 +70,7 @@ class Professor(models.Model):
 
 class Laboratorio(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=45)
+    name = models.CharField(max_length=45, unique=True)
     qnt_computador = models.IntegerField(blank=True)
 
     def __str__(self):
@@ -84,7 +84,7 @@ class Software(models.Model):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     versao = models.CharField(max_length=15)
     tipo = models.CharField(choices=TIPO_CHOICES, max_length=2, default='SL')
     descricao = models.TextField()
@@ -117,12 +117,12 @@ class Computador(models.Model):
     ]
 
     codigo = models.IntegerField(primary_key=True)
-    patrimonio = models.CharField(max_length=15)
+    patrimonio = models.CharField(max_length=15, unique=True)
     dual_boot = models.BooleanField(default=False)
     funciona = models.BooleanField(default=True)
-    processador = models.CharField(choices=PROCESSADOR_CHOICES, max_length=2)
-    hd = models.CharField(choices=HD_CHOICES, max_length=5)
-    ram = models.CharField(choices=RAM_CHOICES, max_length=3)
+    processador = models.CharField(choices=PROCESSADOR_CHOICES, max_length=2, default='I2')
+    hd = models.CharField(choices=HD_CHOICES, max_length=5, default='100GB')
+    ram = models.CharField(choices=RAM_CHOICES, max_length=3, default='1GB')
     laboratorio = models.ForeignKey(Laboratorio, on_delete=models.SET_NULL, null=True)
     software = models.ManyToManyField(Software)
     qnt_manutencao = models.IntegerField(default=0)

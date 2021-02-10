@@ -59,7 +59,7 @@
                             <td>{{ r.evento }}</td>
                             <td>{{ r.responsavel }}</td>
                             <td>{{ r.start_day }}</td>
-                            <td>{{ r.laboratorio_id }}</td>
+                            <td>{{ r.laboratorio }}</td>
                             <td>
                                 <a href="{% url 'reserva-detail' r.pk %}" title="Informações"><i class="far fa-eye"></i></a>
                             </td>
@@ -76,7 +76,7 @@
                   <div class="col-sm-12">
                       <div class="form-group">
                           <label>Evento:</label>
-                          {% render_field form.evento class+="form-control" %}
+                          <p class="text-danger">{{ form.evento.errors }}</p>
                       </div>
                   </div>
               </div>
@@ -85,6 +85,7 @@
                     <div class="form-group">
                         <label>Responsável:</label>
                         {% render_field form.responsavel class+="form-control" %}
+                        <p class="text-danger">{{ form.responsavel.errors }}</p>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -106,12 +107,14 @@
                     <div class="form-group">
                         <label>Data Início</label>
                         {% render_field form.start_day type="date" class+="form-control" %}
+                        <p class="text-danger">{{ form.start_day.errors }}</p>
                     </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
                       <label>Data Fim</label>
                       {% render_field form.end_day type="date" class+="form-control" %}
+                      <p class="text-danger">{{ form.end_day.errors }}</p>
                   </div>
                 </div>
                 <div class="col-sm-3">
@@ -124,6 +127,7 @@
                   <div class="form-group">
                       <label>Hora Fim</label>
                       {% render_field form.end_time type="time" class+="form-control" %}
+                      <p class="text-danger">{{ form.end_time.errors }}</p>
                   </div>
                 </div>
               </div>
@@ -131,25 +135,25 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label>Laboratório</label>
-                        {% render_field form.laboratorio_id class+="form-control" %}
+                        {% render_field form.laboratorio class+="form-control" %}
                     </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
                       <label>Professor</label>
-                      {% render_field form.professor_id class+="form-control" %}
+                      {% render_field form.professor class+="form-control" %}
                   </div>
               </div>
               <div class="col-sm-3">
                 <div class="form-group">
                     <label>Disciplina</label>
-                    {% render_field form.disciplina_id class+="form-control" %}
+                    {% render_field form.disciplina class+="form-control" %}
                 </div>
               </div>
               <div class="col-sm-3">
                 <div class="form-group">
                     <label>Curso</label>
-                    {% render_field form.curso_id class+="form-control" %}
+                    {% render_field form.curso class+="form-control" %}
                 </div>
               </div>
               </div>
@@ -240,16 +244,16 @@
       end_day: {
         required: true,
       },
-      laboratorio_id: {
+      laboratorio: {
         required: false,
       },
-      professor_id: {
+      professor: {
         required: false,
       },
-      curso_id: {
+      curso: {
         required: false,
       },
-      disciplina_id: {
+      disciplina: {
         required: false,
       }
     },

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, CreateView, ListView, DeleteView, DetailView, UpdateView, View
+from django.views.generic import TemplateView, CreateView, ListView, DeleteView, DetailView, UpdateView, View, FormView
 from .forms import *
 from .models import *
 from django.urls import reverse_lazy
@@ -80,6 +80,7 @@ class DeleteUserView(DeleteView):
 
 ##Laboratorios CRUD##
 class CreateLaborationView(CreateView):
+    model = Laboratorio
     form_class = LaboratorioForm
     template_name = 'panel/laboratorio/create.html'
     success_url = reverse_lazy('laboratorio-create')
@@ -95,7 +96,7 @@ class CreateLaborationView(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateLaborationView, self).form_valid(form)
+        return super(CreateLaborationView, self).form_invalid(form)
 
 class DetailLaboratorioView(DetailView):
     model = Laboratorio
@@ -103,7 +104,7 @@ class DetailLaboratorioView(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super(DetailLaboratorioView, self).get_context_data(**kwargs)
-        pcs = Computador.objects.filter(laboratorio_id=self.get_object().pk)
+        pcs = Computador.objects.filter(laboratorio=self.get_object().pk)
         context['pcs'] = pcs
         context['qnt'] = len(pcs)
         return context
@@ -158,7 +159,7 @@ class CreateCursoView(UserPassesTestMixin ,CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateCursoView, self).form_valid(form)
+        return super(CreateCursoView, self).form_invalid(form)
 
 class DetailCursoView(DetailView):
     model = Curso
@@ -167,8 +168,8 @@ class DetailCursoView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailCursoView, self).get_context_data(**kwargs)
-        aulas = Aula.objects.filter(curso_id=self.get_object().pk)
-        reservas = Reserva.objects.filter(curso_id=self.get_object().pk)
+        aulas = Aula.objects.filter(curso=self.get_object().pk)
+        reservas = Reserva.objects.filter(curso=self.get_object().pk)
         context['qnt'] = len(aulas) + len(reservas)
         return context
 
@@ -199,6 +200,7 @@ class DeleteCursoView(DeleteView):
 
 ##Disciplina CRUD##
 class CreateDisciplinaView(CreateView):
+    model = Disciplina
     form_class = DisciplinaForm
     template_name = 'panel/disciplina/create.html'
     success_url = reverse_lazy('disciplina-create')
@@ -214,7 +216,7 @@ class CreateDisciplinaView(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateDisciplinaView, self).form_valid(form)
+        return super(CreateDisciplinaView, self).form_invalid(form)
 
 class DetailDisciplinaView(DetailView):
     model = Disciplina
@@ -223,8 +225,8 @@ class DetailDisciplinaView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailDisciplinaView, self).get_context_data(**kwargs)
-        aulas = Aula.objects.filter(disciplina_id=self.get_object().pk)
-        reservas = Reserva.objects.filter(disciplina_id=self.get_object().pk)
+        aulas = Aula.objects.filter(disciplina=self.get_object().pk)
+        reservas = Reserva.objects.filter(disciplina=self.get_object().pk)
         context['qnt'] = len(aulas) + len(reservas)
         return context
 
@@ -270,7 +272,7 @@ class CreateProfessorView(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateProfessorView, self).form_valid(form)
+        return super(CreateProfessorView, self).form_invalid(form)
 
 class DetailProfessorView(DetailView):
     model = Professor
@@ -319,7 +321,7 @@ class CreateSoftwareView(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateSoftwareView, self).form_valid(form)
+        return super(CreateSoftwareView, self).form_invalid(form)
 
 class DetailSoftwareView(DetailView):
     model = Software
@@ -328,7 +330,7 @@ class DetailSoftwareView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailSoftwareView, self).get_context_data(**kwargs)
-        pcs = Computador.objects.filter(software_id=self.get_object().pk)
+        pcs = Computador.objects.filter(software=self.get_object().pk)
         context['pcs'] = pcs
         context['qnt'] = len(pcs)
         return context
@@ -376,7 +378,7 @@ class CreateComputadorView(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateComputadorView, self).form_valid(form)
+        return super(CreateComputadorView, self).form_invalid(form)
 
 class DetailComputadorView(DetailView):
     model = Computador
@@ -386,7 +388,7 @@ class DetailComputadorView(DetailView):
 class UpdateComputadorView(UpdateView):
     model = Computador
     template_name = 'panel/computador/update.html'
-    fields = '__all__'
+    fields = ['codigo', 'patrimonio', 'dual_boot', 'funciona', 'processador', 'hd', 'ram', 'laboratorio', 'software']
     success_url = reverse_lazy('computador-create')
 
     def form_valid(self, form, *args, **kwargs):
@@ -425,7 +427,7 @@ class CreateReservaView(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateReservaView, self).form_valid(form)
+        return super(CreateReservaView, self).form_invalid(form)
 
 class DetailReservaView(DetailView):
     model = Reserva
@@ -474,7 +476,7 @@ class CreateAulaView(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateAulaView, self).form_valid(form)
+        return super(CreateAulaView, self).form_invalid(form)
 
 class DetailAulaView(DetailView):
     model = Aula
@@ -520,14 +522,14 @@ class CreateSolicitacaoReservaView(CreateView):
     def form_valid(self, form, *args, **kwargs):
         form = SolicitacaoReservaForm(self.request.POST)
         solicitacao = form.save(commit=False)
-        solicitacao.user_masp = self.request.user
+        solicitacao.user = self.request.user
         solicitacao.save()
         messages.success(self.request, 'Solicitação Realizada com sucesso')
         return super(CreateSolicitacaoReservaView, self).form_valid(form)
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateSolicitacaoReservaView, self).form_valid(form)
+        return super(CreateSolicitacaoReservaView, self).form_invalid(form)
 
 class ListSolicitacaoReservaView(ListView):
     model = SolicitacaoReserva
@@ -544,7 +546,7 @@ class ListMySolicitacaoReservaView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListMySolicitacaoReservaView, self).get_context_data(**kwargs)
-        context['solicitacao'] = SolicitacaoReserva.objects.filter(user_masp=self.request.user.id)
+        context['solicitacao'] = SolicitacaoReserva.objects.filter(user=self.request.user.id)
         return context
 
 class ListAllSolicitacaoReservaView(ListView):
@@ -624,7 +626,7 @@ class CreateEmprestimoView(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateEmprestimoView, self).form_valid(form)
+        return super(CreateEmprestimoView, self).form_invalid(form)
 
 class DetailEmprestimoView(DetailView):
     model = Emprestimo
@@ -676,7 +678,7 @@ class CreateManutencaoView(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateManutencaoView, self).form_valid(form)
+        return super(CreateManutencaoView, self).form_invalid(form)
 
 class ListManutencaoView(ListView):
     model = Manutencao
