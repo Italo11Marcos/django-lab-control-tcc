@@ -76,6 +76,7 @@
                   <div class="col-sm-12">
                       <div class="form-group">
                           <label>Evento:</label>
+                          {% render_field form.evento class+="form-control" %}
                           <p class="text-danger">{{ form.evento.errors }}</p>
                       </div>
                   </div>
@@ -219,11 +220,13 @@
     rules: {
       evento: {
         required: true,
-        maxlength: 100
+        maxlength: 100,
+        minlength: 5,
       },
       responsavel: {
         required: true,
-        maxlength: 100
+        maxlength: 100,
+        minlength: 5,
       },
       contato: {
         required: true
@@ -261,10 +264,12 @@
       evento: {
         required: "Esse campo é obrigatório",
         maxlength: "Máximo 100 caracteres",
+        minlength: "Mínimo de 5 caracteres",
       },
       responsavel: {
         required: "Esse campo é obrigatório",
         maxlength: "Máximo 100 caracteres",
+        minlength: "Mínimo de 5 caracteres",
       },
       contato: {
         required: "Esse campo é obrigatório",

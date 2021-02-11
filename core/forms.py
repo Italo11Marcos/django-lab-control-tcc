@@ -154,7 +154,7 @@ class AulaForm(forms.ModelForm):
 class EmprestimoForm(forms.ModelForm):
     class Meta:
         model = Emprestimo
-        fields = ('date', 'evento', 'responsavel', 'email', 'contato', 'computador_codigo')
+        fields = ('date', 'evento', 'responsavel', 'email', 'contato', 'computador')
 
     def clean(self):
         cleaned_data = super().clean()

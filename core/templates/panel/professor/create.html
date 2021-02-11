@@ -163,10 +163,12 @@
     rules: {
       masp: {
         required: true,
+        maxlength: 8,
       },
       name: {
         required: true,
-        maxlength: 100
+        maxlength: 150,
+        minlength: 5
       },
       email: {
           required: true,
@@ -179,10 +181,12 @@
     messages: {
       name: {
         required: "Esse campo é obrigatório",
-        maxlength: "Máximo 100 caracteres",
+        maxlength: "Máximo 150 caracteres",
+        minlength: "Mínimo de 5 caracteres"
       },
       masp: {
         required: "Esse campo é obrigatório",
+        maxlength: "Máximo 8 caracteres"
       },
       email: {
           required: "Esse campo é obrigatório",

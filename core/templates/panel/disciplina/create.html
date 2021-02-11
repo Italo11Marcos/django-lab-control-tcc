@@ -128,11 +128,15 @@
     rules: {
       name: {
         required: true,
+        maxlength: 70,
+        minlength: 5,
       },
     },
     messages: {
       name: {
         required: "Esse campo é obrigatório",
+        maxlength: "Limite máximo de 70 caracteres",
+        minlength: "Limite mínimo de 5 caracteres"
       },
     },
     errorElement: 'span',

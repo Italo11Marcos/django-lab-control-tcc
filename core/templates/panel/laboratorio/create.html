@@ -135,19 +135,25 @@
     rules: {
       name: {
         required: true,
+        maxlength: 45,
+        minlength: 5
       },
       qnt_computador: {
         required: true,
-        min: 1
+        min: 1,
+        max: 30,
       },
     },
     messages: {
       name: {
         required: "Esse campo é obrigatório",
+        maxlength: "Limite máximo de 45 caracteres",
+        minlength: "Limite mínimo de 5 caracteres",
       },
       qnt_computador: {
         required: "Esse campo é requerido",
-        min: "O laboratório não pode ter menos que 1 computador"
+        min: "O laboratório não pode ter menos que 1 computador",
+        max: "O laboratório não pode ter mais que 30 computadores"
       },
     },
     errorElement: 'span',

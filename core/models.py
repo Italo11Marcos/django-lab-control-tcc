@@ -181,7 +181,7 @@ class Emprestimo(models.Model):
     responsavel = models.CharField(max_length=100)
     email = models.EmailField()
     contato = models.CharField(max_length=15, blank=True)
-    computador_codigo = models.ForeignKey(Computador, on_delete=models.SET_NULL, null=True)
+    computador = models.ForeignKey(Computador, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):

@@ -102,15 +102,15 @@ fullCalendar 2.2.5
         {% endfor %}
         {% for a in aulas %}
         {
-          title: "{{ a.disciplina_id }}",
+          title: "{{ a.disciplina }}",
           daysOfWeek: [ '{{ a.dia }}' ], // these recurrent events move separately
           startRecur: '{{ a.start_day|date:"Y-m-d" }}',
           endRecur: '{{ a.end_day|date:"Y-m-d" }}',
           startTime: '{{ a.start_time }}',
           endTime: '{{ a.end_time }}',
           extendedProps: {
-            professor: '{{ a.professor_id }}',
-            curso: '{{ a.curso_id }}'
+            professor: '{{ a.professor }}',
+            curso: '{{ a.curso }}'
           },
           color: '#20d4d1',
           //url: 'http://google.com/',

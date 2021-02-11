@@ -43,7 +43,7 @@
           <div class="tab-content" id="custom-content-below-tabContent">
             <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
               <br>
-              <table id="table-lab" class="table table-bordered table-hover dataTable">
+              <table id="table-emprestimo" class="table table-bordered table-hover dataTable">
                 <thead>
                     <tr>
                         <th class="text-center">Evento</th>
@@ -111,7 +111,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label>Computador:</label>
-                        {% render_field form.computador_codigo class+="form-control" %}
+                        {% render_field form.computador class+="form-control" %}
                     </div>
                 </div>
                 <input name="user_id" type="hidden" value="{{ request.user.id }}">
@@ -165,7 +165,7 @@
 
 <script>
   $(function () {
-    $("#table-lab").DataTable({
+    $("#table-emprestimo").DataTable({
       "responsive": true,
       "autoWidth": false,
     });
@@ -176,22 +176,54 @@
   $(document).ready(function () {
   $('#form-emprestimo').validate({
     rules: {
-      name: {
+      evento: {
+        required: true,
+        maxlength: 200,
+        minlength: 5,
+      },
+      data: {
         required: true,
       },
-      qnt_computador: {
+      responsavel: {
         required: true,
-        min: 1
+        maxlength: 200,
+        minlength: 5,
       },
+      email: {
+        email: true,
+        required: true,
+      },
+      contato: {
+        required: true,
+      },
+      computador: {
+        required: true,
+      }
     },
     messages: {
-      name: {
+      evento: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máxmimo de 200 caracteres",
+        minlength: "Mínimo de 5 caracteres",
+      },
+      data: {
         required: "Esse campo é obrigatório",
       },
-      qnt_computador: {
-        required: "Esse campo é requerido",
-        min: "O laboratório não pode ter menos que 1 computador"
+      responsavel: {
+        required: "Esse campo é obrigatório",
+        maxlength: "Máxmimo de 200 caracteres",
+        minlength: "Mínimo de 5 caracteres",
       },
+      email: {
+        email: "Insira um email válido",
+        required: "Esse campo é obrigatório",
+      },
+      contato: {
+        required: "Esse campo é obrigatório",
+      },
+      computador: {
+        required: "Esse campo é obrigatório",
+      }
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {
