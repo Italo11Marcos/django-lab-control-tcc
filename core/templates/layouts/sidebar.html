@@ -17,226 +17,226 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           {% if not request.user.is_staff %}
-          <!-- Solicitacao de Reservas-->
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tasks"></i>
-              <p>
-                Solicitação Reserva
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{% url 'solicitacao-create' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Solicitar Reserva</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'solicitacao-mylist' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Minhas solicitações</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <!-- Calendário -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'calendario' %}" class="nav-link">
-              <i class="nav-icon fas fa-calendar-alt"></i>
-              <p>
-                Calendário
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
+            <!-- Solicitacao de Reservas-->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                  Solicitação Reserva
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'solicitacao-create' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Solicitar Reserva</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'solicitacao-mylist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Minhas solicitações</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- Calendário -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'calendario' %}" class="nav-link">
+                <i class="nav-icon fas fa-calendar-alt"></i>
+                <p>
+                  Calendário
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
           {% endif %}
           {% if request.user.is_staff %}
-          <!-- Calendário -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'calendario' %}" class="nav-link">
-              <i class="nav-icon fas fa-calendar-alt"></i>
-              <p>
-                Calendário
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Relatório -->
-          <!-- <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-chart-bar"></i>
-              <p>
-                Relatórios
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li> -->
-          <!-- Solicitacao de Reservas-->
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tasks"></i>
-              <p>
-                Solicitação Reserva
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{% url 'solicitacao-list' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Solicitações Pendentes</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'solicitacao-alllist' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Todas as Solicitações</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <!-- Usuários -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'usuario-list' %}" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Usuários
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Laboratórios -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'laboratorio-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-network-wired"></i>
-              <p>
-                Laboratórios
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Computadores -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'computador-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-laptop"></i>
-              <p>
-                Computadores
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Softwares -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'software-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-laptop-code"></i>
-              <p>
-                Softwares
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Log -->
-          <!-- <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-history"></i>
-              <p>
-                Log
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
-          </li> -->
-          <!-- Reserva -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'reserva-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-clipboard-check"></i>
-              <p>
-                Reservas
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Curso -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'curso-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-graduation-cap"></i>
-              <p>
-                Cursos
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Disciplina -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'disciplina-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-                Disciplinas
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Professor -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'professor-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-chalkboard-teacher"></i>
-              <p>
-                Professores
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Aula -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'aula-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-chalkboard"></i>
-              <p>
-                Aulas
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Empréstimos -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'emprestimo-create' %}" class="nav-link">
-              <i class="nav-icon fas fa-dolly-flatbed"></i>
-              <p>
-                Empréstimos
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
-          <!-- Manutenções -->
-          <li class="nav-item has-treeview">
-            <a href="{% url 'manutencao-list' %}" class="nav-link">
-              <i class="nav-icon fas fa-tools"></i>
-              <p>
-                Manutenções
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          </li>
+            <!-- Calendário -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'calendario' %}" class="nav-link">
+                <i class="nav-icon fas fa-calendar-alt"></i>
+                <p>
+                  Calendário
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Aula -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'aula-create' %}" class="nav-link">
+                <i class="nav-icon fas fa-chalkboard"></i>
+                <p>
+                  Aulas
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Reserva -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'reserva-create' %}" class="nav-link">
+                <i class="nav-icon fas fa-clipboard-check"></i>
+                <p>
+                  Reservas
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Relatório -->
+            <!-- <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon far fa-chart-bar"></i>
+                <p>
+                  Relatórios
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li> -->
+            <!-- Solicitacao de Reservas-->
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                  Solicitação Reserva
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'solicitacao-list' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Solicitações Pendentes</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'solicitacao-alllist' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Todas as Solicitações</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- Usuários -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'usuario-list' %}" class="nav-link">
+                <i class="nav-icon fas fa-users"></i>
+                <p>
+                  Usuários
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Laboratórios -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'laboratorio-create' %}" class="nav-link">
+                <i class="nav-icon fas fa-network-wired"></i>
+                <p>
+                  Laboratórios
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Softwares -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'software-create' %}" class="nav-link">
+                <i class="nav-icon fas fa-laptop-code"></i>
+                <p>
+                  Softwares
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Computadores -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'computador-create' %}" class="nav-link">
+                <i class="nav-icon fas fa-laptop"></i>
+                <p>
+                  Computadores
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Professor -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'professor-create' %}" class="nav-link">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>
+                  Professores
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Log -->
+            <!-- <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-history"></i>
+                <p>
+                  Log
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Dashboard v1</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Dashboard v2</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Dashboard v3</p>
+                  </a>
+                </li>
+              </ul>
+            </li> -->
+            <!-- Curso -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'curso-create' %}" class="nav-link">
+                <i class="nav-icon fas fa-graduation-cap"></i>
+                <p>
+                  Cursos
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Disciplina -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'disciplina-create' %}" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>
+                  Disciplinas
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li> 
+            <!-- Empréstimos -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'emprestimo-create' %}" class="nav-link">
+                <i class="nav-icon fas fa-dolly-flatbed"></i>
+                <p>
+                  Empréstimos
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
+            <!-- Manutenções -->
+            <li class="nav-item has-treeview">
+              <a href="{% url 'manutencao-list' %}" class="nav-link">
+                <i class="nav-icon fas fa-tools"></i>
+                <p>
+                  Manutenções
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+            </li>
           {% endif %}
         </ul>
       </nav>
