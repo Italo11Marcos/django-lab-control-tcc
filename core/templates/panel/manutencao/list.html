@@ -51,7 +51,7 @@
                                 <td>{{ m.data_inicio }}</td>
                                 <td>{{ m.data_fim }}</td>
                                 <td>{{ m.status }}</td>
-                                <td>{{ m.user_masp.get_full_name }}</td>
+                                <td>{{ m.user.get_full_name }}</td>
                                 <td>
                                     <a href="{% url 'manutencao-detail' m.pk %}" title="Informações"><i class="far fa-eye"></i></a>
                                 </td>

@@ -44,7 +44,7 @@
               {% if manutencao.data_fim %}
               <p><label>Data fim:</label> {{ manutencao.data_fim }}</p>
               {% endif %}
-              <p><label>Responsável pela manutenção:</label> {{ manutencao.user_masp.get_full_name }}</p>
+              <p><label>Responsável pela manutenção:</label> {{ manutencao.user.get_full_name }}</p>
               {% if manutencao.descricao %}
               <p><label>Descrição:</label></p>
               <p>{{ manutencao.descricao }}</p>
@@ -53,7 +53,7 @@
           </div>
         </div>
         <div class="card-footer">
-            {% if manutencao.status == 'Em Curso' and request.user.get_full_name == manutencao.user_masp.get_full_name %}
+            {% if manutencao.status == 'Em Curso' and request.user.get_full_name == manutencao.user.get_full_name %}
                 <a href="#" class="btn btn-outline-info" data-toggle="modal" data-target="#modalUpdate">Editar</a>
             {% endif %}
         </div>
