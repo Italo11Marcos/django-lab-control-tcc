@@ -1,49 +1,6 @@
 from django.db import models
+from accounts import models as accounts_models
 import uuid
-from django.contrib.auth.models import AbstractUser, BaseUserManager #AbstractBaseUser - bem básico
-
-class UsuarioManager(BaseUserManager):
-
-    use_in_migrations = True
-
-    def _create_user(self, email, password, **extra_fields):
-        if not email:
-            raise ValueError('O e-mail é obrigatório')
-        email = self.normalize_email(email)
-        user = self.model(email=email, username=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_user(self, email, password=None, **extra_fields):
-        # extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password, **extra_fields)
-
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_staff', True)
-
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser precisa ter is_superuser=True')
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser precisa ter is_staff=True')
-
-        return self._create_user(email, password, **extra_fields)
-
-class CustomUsuario(AbstractUser):
-    email = models.EmailField('E-mail', unique=True)
-    masp = models.CharField(max_length=8)
-    is_staff = models.BooleanField('Membro da equipe', default=False)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'masp']
-
-    def __str__(self):
-        return self.email
-
-    objects = UsuarioManager()
 
 class Curso(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -132,7 +89,6 @@ class Computador(models.Model):
         return str(self.codigo)
 
 class Reserva(models.Model):
-    #dia = models.DateField()
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     evento = models.CharField(max_length=100)
     responsavel = models.CharField(max_length=100)
@@ -146,7 +102,6 @@ class Reserva(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.SET_NULL, null=True, blank=True)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.SET_NULL, null=True, blank=True)
     professor = models.ForeignKey(Professor, on_delete=models.SET_NULL, null=True, blank=True)
-    #user_id = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True)
 
 class Aula(models.Model):
 
@@ -182,7 +137,7 @@ class Emprestimo(models.Model):
     email = models.EmailField()
     contato = models.CharField(max_length=15, blank=True)
     computador = models.ForeignKey(Computador, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.evento
@@ -202,13 +157,13 @@ class SolicitacaoReserva(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
     software = models.ManyToManyField(Software)
-    user = models.ForeignKey(CustomUsuario, on_delete=models.CASCADE)
+    user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.CASCADE)
 
 class RespostaSolicitacao(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     solicitacao = models.ForeignKey(SolicitacaoReserva, on_delete=models.CASCADE)
     resposta = models.TextField()
-    user = models.ForeignKey(CustomUsuario, on_delete=models.CASCADE)
+    user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.CASCADE)
 
 class Log(models.Model):
 
@@ -231,7 +186,7 @@ class Log(models.Model):
     emprestimo = models.ForeignKey(Emprestimo, on_delete=models.SET_NULL, null=True, blank=True)
     software = models.ForeignKey(Software, on_delete=models.SET_NULL, null=True, blank=True)
     solicitacao = models.ForeignKey(SolicitacaoReserva, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.SET_NULL, null=True)
 
 class Manutencao(models.Model):
     STATUS_CHOICES = [
@@ -245,4 +200,4 @@ class Manutencao(models.Model):
     data_inicio = models.DateField(auto_now_add=True)
     data_fim = models.DateField(null=True, blank=True)
     descricao = models.TextField(null=True, blank=True)
-    user = models.ForeignKey(CustomUsuario, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.SET_NULL, null=True, blank=True)

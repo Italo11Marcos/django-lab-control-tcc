@@ -1,4 +1,4 @@
-{% extends 'auth/base.html' %}
+{% extends 'registration/base.html' %}
 {% load static %}
 
 {% block title %} Registro {% endblock %}
@@ -15,7 +15,12 @@
       <div class="card-body login-card-body">
         <!-- <p class="login-box-msg">Sign in to start your session</p> -->
         <p class="login-box-msg"><img src=" {% static 'dist/img/unimontes.png' %} " alt="Logo unimontes" class="img-fluid"></p>
-
+        {% if form.errors %}
+        <div class="alert alert-danger">
+          {{ form.non_field_errors }}
+          {{ form.errors }}
+        </div>
+        {% endif %}
         <form method="post" class="form-signin" id="form-register">
             {% csrf_token %}
 
@@ -127,7 +132,7 @@
           required: true,
       },
       password2: {
-          equalTo: "#password1"
+          required: true,
       },
     },
     messages: {

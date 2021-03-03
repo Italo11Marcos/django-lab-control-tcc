@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from datetime import date
+from accounts import models as accounts_models
+from accounts import forms as accounts_forms
 
 
 # Create your views here.
@@ -25,36 +27,20 @@ def QntSolicitacoesPendentes(request):
     return render(request, 'layouts/base.html', context)
 
 ##Usuários CRUD##
-def cadastro(request): 
-    if request.method == "POST":
-        form = CustomUsuarioCreateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Cadastro Realizado com Sucesso')
-            return redirect('login')
-        else:
-            messages.error(request, 'Tivemos algum problema')
-    else:
-        form = CustomUsuarioCreateForm()
-    context = {
-        'form': form
-    }
-    return render(request, 'auth/register.html', context)
-
 class ListUserView(ListView):
     template_name = 'panel/usuario/list.html'
-    model = CustomUsuario
+    model = accounts_models.CustomUsuario
     context_object_name = 'users'
 
 class DetailUserView(DetailView):
-    model = CustomUsuario
+    model = accounts_models.CustomUsuario
     template_name = 'panel/usuario/detail.html'
     context_object_name = 'user'
 
 class UpdateUserView(UpdateView):
-    model = CustomUsuario
+    model = accounts_models.CustomUsuario
     template_name = 'panel/usuario/update.html'
-    form_class = CustomUsuarioChangeForm
+    form_class = accounts_forms.CustomUsuarioChangeForm
     context_object_name = 'user'
     #fields = ['first_name', 'last_name', 'masp', 'username', 'is_staff']
     success_url = reverse_lazy('usuario-list')
@@ -68,7 +54,7 @@ class UpdateUserView(UpdateView):
         return super().form_valid(form)
 
 class DeleteUserView(DeleteView):
-    model = CustomUsuario
+    model = accounts_models.CustomUsuario
     success_url = reverse_lazy('usuario-list')
 
     def delete(self, request, *args, **kwargs):
