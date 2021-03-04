@@ -157,13 +157,11 @@ class SoftwareForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         name = cleaned_data.get("name")
-        versao = cleaned_data.get("versao")
         
-        if len(name) < 5 or len(versao) < 5:
-            msg = 'Limite mínimo de 5 caracteres'
+        if len(name) < 3:
+            msg = 'Limite mínimo de 3 caracteres'
             self.add_error('name', msg)
-            self.add_error('versao', msg)
-
+            
 class SolicitacaoReservaForm(forms.ModelForm):
     class Meta:
         model = SolicitacaoReserva

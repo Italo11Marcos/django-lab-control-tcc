@@ -29,24 +29,32 @@
         <div class="card-header">
           <h3 class="card-title"><label>Status: </label></h3>
           {% if solicitacao.status == 'P' %}
-            <span class="badge badge-pill badge-danger"> Pendente</span>
+            <span class="badge badge-pill badge-primary"> Pendente</span>
           {% else %}
             <span class="badge badge-pill badge-success"> Concluída</span>
           {% endif %} 
         </div>
         <div class="card-body">
-          <p><label>Solicitante: </label> {{ solicitacao.user_masp.get_full_name }}</p>
-          <p><label>Curso: </label> {{ solicitacao.curso_id }}</p>
-          <p><label>Disciplina: </label> {{ solicitacao.disciplina_id }}</p>
+          <p><label>Solicitante: </label> {{ solicitacao.user.get_full_name }}</p>
+          <p><label>Curso: </label> {{ solicitacao.curso }}</p>
+          <p><label>Disciplina: </label> {{ solicitacao.disciplina }}</p>
           <p><label>Quantidade de alunos: </label> {{ solicitacao.qnt_alunos }}</p>
-          <p><label>Obersavções: </label> {{ solicitacao.observacao }}</p>
+          <p>
+            {% if solicitacao.observacao %}
+            <label>Obersavções: </label> {{ solicitacao.observacao }}
+            {% else %}
+            <label>Obersavções: </label> Não há
+            {% endif %}
+          </p>
           <label>Softwares Requisitados: </label><br>
-          {% for s in solicitacao.software_id.all %}
+          <p>
+          {% for s in solicitacao.software.all %}
             <span class="badge badge-pill badge-dark">{{ s }}</span>
           {% endfor %}
-          {% if resp %}
+          {% if resp != '0' %}
           <p><label>Resposta: </label> {{ resp }}</p>
           {% endif %}
+          </p>
         </div>
         <div class="card-footer">
           {% if solicitacao.status == 'P' %}  
@@ -77,7 +85,7 @@
         <div class="modal-body">
           <form action="{% url 'solicitacao-delete' solicitacao.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja cancelar a {{ solicitacao.professor_masp }} ?
+            Realmente deseja cancelar a {{ solicitacao.professor }} ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">

@@ -121,7 +121,6 @@ class DeleteLaboratorioView(DeleteView):
         return HttpResponseRedirect(success_url)
     
 ##Cursos CRUD##
-
 class CreateCursoView(UserPassesTestMixin ,CreateView):
     login_url = 'login'
     form_class = CursoForm
@@ -548,8 +547,10 @@ class DetailSolicitacaoReservaView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailSolicitacaoReservaView, self).get_context_data(**kwargs)
         resp = RespostaSolicitacao.objects.filter(solicitacao=self.get_object().pk)
-        resp = resp[0].resposta
-        context['resp'] = resp
+        resposta = '0'
+        if resp:
+            resposta = resp[0].resposta
+        context['resp'] = resposta
         return context
 
 class UpdateSolicitacaoReservaView(UpdateView):
@@ -583,10 +584,10 @@ def RespostaSolicitacaoCreate(request):
         user = request.POST.get('user_id', False)
         resposta = request.POST.get('resposta', False)
         s = SolicitacaoReserva.objects.get(pk=solicitacaoreserva)
-        u = CustomUsuario.objects.get(pk=user)
+        u = accounts_models.CustomUsuario.objects.get(pk=user)
         s.status = 'F'
         s.save()
-        r = RespostaSolicitacao.objects.create(user_masp=u, solicitacao=s, resposta=resposta)
+        r = RespostaSolicitacao.objects.create(user=u, solicitacao=s, resposta=resposta)
         r.save()
         messages.success(request, 'Respondido com sucesso!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

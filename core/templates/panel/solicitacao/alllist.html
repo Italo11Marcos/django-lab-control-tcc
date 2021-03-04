@@ -53,7 +53,11 @@
                                 <td>{{ s.qnt_alunos }}</td>
                                 <td>{{ s.disciplina }}</td>
                                 <td>{{ s.curso }}</td>
-                                <td>{{ s.status }}</td>
+                                {% if s.status == 'P' %}
+                                <td> <span class="badge badge-warning">Pendente</span> </td>
+                                {% else %}
+                                <td> <span class="badge badge-success">Finalizado</span> </td>
+                                {% endif %}
                                 <td>
                                     <a href="{% url 'solicitacao-detail' s.pk %}" title="Informações"><i class="far fa-eye"></i></a>
                                 </td>
