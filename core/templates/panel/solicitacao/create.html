@@ -46,7 +46,11 @@
                   <div class="col-sm-6">
                       <div class="form-group">
                           <label>Disciplina:</label>
-                          {% render_field form.disciplina class+="form-control" %}
+                          <select name="disciplina" class="form-control select2bs4">
+                            {% for d in disciplinas %}
+                              <option value="{{ d.id }}">{{ d.name }}</option>
+                            {% endfor %}
+                          </select>
                       </div>
                   </div>
                 </div>
@@ -54,13 +58,21 @@
                   <div class="col-sm-6">
                       <div class="form-group">
                           <label>Professor</label>
-                          {% render_field form.professor class+="form-control" %}
+                          <select name="professor" class="form-control select2bs4">
+                            {% for p in professores %}
+                              <option value="{{ p.id }}">{{ p.name }}</option>
+                            {% endfor %}
+                          </select>
                       </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                         <label>Curso</label>
-                        {% render_field form.curso class+="form-control" %}
+                        <select name="curso" class="form-control select2bs4">
+                          {% for c in cursos %}
+                            <option value="{{ c.id }}">{{ c.name }}</option>
+                          {% endfor %}
+                        </select>
                     </div>
                   </div>
                 </div>
@@ -132,6 +144,12 @@
 <script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 
 <script>
+  //Initialize Select2 Elements
+  $('.select2').select2()
+  //Initialize Select2 Elements
+  $('.select2bs4').select2({
+    theme: 'bootstrap4'
+  })
   //Bootstrap Duallistbox
   $('.duallistbox').bootstrapDualListbox()
 </script>

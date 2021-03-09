@@ -6,7 +6,7 @@
 {% block head %}
 <!-- DataTables -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.css"/>
- 
+
 <!-- Bootstrap4 Duallistbox -->
 <link rel="stylesheet" href="{% static 'plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
 {% endblock %}
@@ -139,7 +139,11 @@
                 <div class="col-sm-3">
                   <div class="form-group">
                       <label>Laboratório:</label>
-                      {% render_field form.laboratorio class+="form-control" %}
+                      <select name="laboratorio" class="form-control select2bs4">
+                        {% for l in laboratorios %}
+                          <option value="{{ l.id }}">{{ l.name }}</option>
+                        {% endfor %}
+                      </select>
                   </div>
               </div>
               </div>
@@ -200,6 +204,9 @@
 <!-- Bootstrap4 Duallistbox -->
 <script src="{% static 'plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
 
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <!-- InputMask -->
 <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
 <script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
@@ -255,6 +262,12 @@
 </script>
 
 <script>
+  //Initialize Select2 Elements
+  $('.select2').select2()
+  //Initialize Select2 Elements
+  $('.select2bs4').select2({
+    theme: 'bootstrap4'
+  })
   //Bootstrap Duallistbox
   $('.duallistbox').bootstrapDualListbox()
 </script>

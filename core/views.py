@@ -354,6 +354,7 @@ class CreateComputadorView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateComputadorView, self).get_context_data(**kwargs)
         context['computadors'] = Computador.objects.order_by('?').all()
+        context['laboratorios'] = Laboratorio.objects.order_by('?').all()
         context['softwares'] = Software.objects.all()
         return context
 
@@ -404,6 +405,10 @@ class CreateReservaView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateReservaView, self).get_context_data(**kwargs)
         context['reservas'] = Reserva.objects.order_by('?').all()
+        context['laboratorios'] = Laboratorio.objects.order_by('?').all()
+        context['professores'] = Professor.objects.order_by('?').all()
+        context['disciplinas'] = Disciplina.objects.order_by('?').all()
+        context['cursos'] = Curso.objects.order_by('?').all()
         return context
 
     def form_valid(self, form, *args, **kwargs):
@@ -453,6 +458,10 @@ class CreateAulaView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateAulaView, self).get_context_data(**kwargs)
         context['aulas'] = Aula.objects.order_by('?').all()
+        context['laboratorios'] = Laboratorio.objects.order_by('?').all()
+        context['professores'] = Professor.objects.order_by('?').all()
+        context['disciplinas'] = Disciplina.objects.order_by('?').all()
+        context['cursos'] = Curso.objects.order_by('?').all()
         return context
 
     def form_valid(self, form, *args, **kwargs):
@@ -502,6 +511,9 @@ class CreateSolicitacaoReservaView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateSolicitacaoReservaView, self).get_context_data(**kwargs)
         context['softwares'] = Software.objects.all()
+        context['professores'] = Professor.objects.order_by('?').all()
+        context['disciplinas'] = Disciplina.objects.order_by('?').all()
+        context['cursos'] = Curso.objects.order_by('?').all()
         return context
 
     def form_valid(self, form, *args, **kwargs):
@@ -601,6 +613,7 @@ class CreateEmprestimoView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateEmprestimoView, self).get_context_data(**kwargs)
         context['emprestimos'] = Emprestimo.objects.order_by('?').all()
+        context['computadors'] = Computador.objects.order_by('?').all()
         return context
 
     def form_valid(self, form, *args, **kwargs):
