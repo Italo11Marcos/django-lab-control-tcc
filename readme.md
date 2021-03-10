@@ -15,11 +15,11 @@
 
 :pushpin: [Funcionalidades](#funcionalidades)
 
-:pushpin: [Deploy da Aplicação](#deploy-da-aplicação-dash)
+:pushpin: [Link Deploy](#link-deploy)
 
 :pushpin: [Pré-requisitos](#pré-requisitos)
 
-:pushpin: [Como rodar a aplicação](#como-rodar-a-aplicação-arrow_forward)
+:pushpin: [Como rodar a aplicação](#como-rodar-a-aplicação)
 
 ## Descrição do Projeto
 <p align="justify">
@@ -38,7 +38,7 @@
 :white_check_mark: Gestão de manutenção
 
 ## Link Deploy:
-Em construção...
+[Heroku](https://labs-control-system-im.herokuapp.com/)
 
 ## Pré Requisitos
 * Python 3
