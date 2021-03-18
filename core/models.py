@@ -28,7 +28,7 @@ class Professor(models.Model):
 class Laboratorio(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=45, unique=True)
-    qnt_computador = models.IntegerField(blank=True)
+    qnt_computador = models.IntegerField(blank=True, default=0)
 
     def __str__(self):
         return self.name
@@ -131,7 +131,7 @@ class Aula(models.Model):
 
 class Emprestimo(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    date = models.DateTimeField()
+    date = models.DateField()
     evento = models.CharField(max_length=200)
     responsavel = models.CharField(max_length=100)
     email = models.EmailField()

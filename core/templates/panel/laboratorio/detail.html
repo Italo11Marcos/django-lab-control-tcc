@@ -30,32 +30,74 @@
           <h3 class="card-title"> <label>{{ laboratorio.name }}</label></h3>
         </div>
         <div class="card-body">
-          <p> <label>Quantidade de Computadores: </label> {{ qnt }}</p>
-          
-          <div class="row">
-            {% for p in pcs %}
-            <div class="col-md-3 col-sm-6 col-12">
-                <div class="info-box">
-                  <span class="info-box-icon bg-dark"><i class="fas fa-laptop"></i></span>
-                  <div class="info-box-content">
-                    <span class="info-box-number"> Código: {{ p.codigo }} </span>
-                    <span class="info-box-number"> Patrimônio: {{ p.patrimonio }} </span>
-                    {% if p.funciona %}
-                    <span class="info-box-number"> Funcionando: Sim</span>
-                    {% else %}
-                    <span class="info-box-number"> Funcionando: Não</span>
-                    {% endif %}
-                    {% if p.dual_boot %}
-                    <span class="info-box-number"> Dual Boot: Sim</span>
-                    {% else %}
-                    <span class="info-box-number"> Dual Boot: Não</span>
-                    {% endif %}
-                  </div>
-                </div>
+
+          <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <a class="nav-item nav-link text-center" id="nav-pcs-disponiveis-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-check-circle fa-2x"></i> <br>Computadores Disponíveis</a>
+              <a class="nav-item nav-link text-center" id="nav-pcs-manutencao-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fas fa-tools fa-2x"></i> <br>Computadores em Manutenção</a>
             </div>
-            {% endfor %}
-          </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show" id="nav-home" role="tabpanel" aria-labelledby="nav-pcs-disponiveis-tab">
+              
+              <br> <p> <label>Total: </label> {{ qnt_pcs }}</p>
+
+              <div class="row">
+                {% for p in pcs %}
+                <div class="col-md-3 col-sm-6 col-12">
+                  <a href="#" target="_blank" rel="noreferrer noopener">
+                    <div class="info-box">
+                      <span class="info-box-icon bg-dark"><i class="fas fa-laptop"></i></span>
+                      <div class="info-box-content">
+                        <span class="info-box-number"> Código: {{ p.codigo }} </span>
+                        <span class="info-box-number"> Patrimônio: {{ p.patrimonio }} </span>
+                        {% if p.funciona %}
+                        <span class="info-box-number"> Funcionando: Sim</span>
+                        {% else %}
+                        <span class="info-box-number"> Funcionando: Não</span>
+                        {% endif %}
+                        {% if p.dual_boot %}
+                        <span class="info-box-number"> Dual Boot: Sim</span>
+                        {% else %}
+                        <span class="info-box-number"> Dual Boot: Não</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-pcs-manutencao-tab">
+              
+              <br> <p> <label>Total: </label> {{ qnt_pcs_manutencao }}</p>
           
+              <div class="row">
+                {% for p in pcs_manutencao %}
+                <div class="col-md-3 col-sm-6 col-12">
+                    <div class="info-box">
+                      <span class="info-box-icon bg-dark"><i class="fas fa-laptop"></i></span>
+                      <div class="info-box-content">
+                        <span class="info-box-number"> Código: {{ p.codigo }} </span>
+                        <span class="info-box-number"> Patrimônio: {{ p.patrimonio }} </span>
+                        {% if p.funciona %}
+                        <span class="info-box-number"> Funcionando: Sim</span>
+                        {% else %}
+                        <span class="info-box-number"> Funcionando: Não</span>
+                        {% endif %}
+                        {% if p.dual_boot %}
+                        <span class="info-box-number"> Dual Boot: Sim</span>
+                        {% else %}
+                        <span class="info-box-number"> Dual Boot: Não</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
         </div>
         <div class="card-footer">
             <a href="{% url 'laboratorio-update' laboratorio.pk %}" class="btn btn-outline-info">Editar</a>

@@ -34,8 +34,8 @@
           <p> <label>Responsável pelo evento: </label> {{ emprestimo.responsavel }}</p>
           <p> <label>Contato: </label> {{ emprestimo.contato }}</p>
           <p> <label>E-mail: </label> {{ emprestimo.email }}</p>
-          <p> <label>Computador emprestado: </label> {{ emprestimo.computador_codigo }}</p>
-          <p> <label>Empréstimo realizado por: </label> {{ emprestimo.user_id.get_full_name }} </p>
+          <p> <label>Computador emprestado: </label> {{ emprestimo.computador }}</p>
+          <p> <label>Empréstimo realizado por: </label> {{ emprestimo.user.get_full_name }} </p>
         </div>
         <div class="card-footer">
             <a href="{% url 'emprestimo-update' emprestimo.pk %}" class="btn btn-outline-info">Editar</a>

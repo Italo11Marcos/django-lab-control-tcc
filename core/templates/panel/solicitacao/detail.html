@@ -59,10 +59,9 @@
         <div class="card-footer">
           {% if solicitacao.status == 'P' %}  
             {% if request.user.is_staff %}
-            <a href="{% url 'solicitacao-update' solicitacao.pk %}" class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModalCenter">Responder</a>
+            <a href="{% url 'solicitacao-update' solicitacao.pk %}" class="btn btn-outline-success" data-toggle="modal" data-backdrop="static" data-target="#exampleModalCenter">Responder</a>
             {% else %}
-            <a href="{% url 'solicitacao-update' solicitacao.pk %}" class="btn btn-outline-info">Editar</a>
-            <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Cancelar</a>
+            <a href="{% url 'solicitacao-delete' solicitacao.pk %}" class="btn btn-outline-danger" data-toggle="modal" data-backdrop="static" data-target="#modalDelete">Excluir</a>
             {% endif %}
           {% endif %}
         </div>
@@ -85,7 +84,7 @@
         <div class="modal-body">
           <form action="{% url 'solicitacao-delete' solicitacao.pk %}" method="post">
             {% csrf_token %}
-            Realmente deseja cancelar a {{ solicitacao.professor }} ?
+            Realmente deseja cancelar essa solicitação ?
             Essa ação não poderá ser desfeita!
         </div>
         <div class="modal-footer">
@@ -102,7 +101,6 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><b>Responder Solicitação: <code>{{ solicitacao.id }}</code></b></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -112,8 +110,8 @@
           {% csrf_token %}
           <label>Resposta: </label>
           <textarea name="resposta" class="form-control" cols="30" rows="10" required></textarea>
-          <input type="hidden" name="solicitacaoreserva_id" value="{{ solicitacao.id }}">
-          <input type="hidden" name="user_id" value="{{ request.user.id }}">
+          <input type="hidden" name="solicitacaoreserva" value="{{ solicitacao.id }}">
+          <input type="hidden" name="user" value="{{ request.user.id }}">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

@@ -90,9 +90,12 @@ class DetailLaboratorioView(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super(DetailLaboratorioView, self).get_context_data(**kwargs)
-        pcs = Computador.objects.filter(laboratorio=self.get_object().pk)
+        pcs_manutencao = Computador.objects.filter(laboratorio=self.get_object().pk).filter(em_manutencao=True)
+        pcs = Computador.objects.filter(laboratorio=self.get_object().pk).filter(em_manutencao=False)
         context['pcs'] = pcs
-        context['qnt'] = len(pcs)
+        context['qnt_pcs'] = len(pcs)
+        context['pcs_manutencao'] = pcs_manutencao
+        context['qnt_pcs_manutencao'] = len(pcs_manutencao)
         return context
 
 class UpdateLaboratorioView(UpdateView):
@@ -359,7 +362,13 @@ class CreateComputadorView(CreateView):
         return context
 
     def form_valid(self, form, *args, **kwargs):
-        messages.success(self.request, 'Computador cadastrado com sucesso!')
+        form = ComputadorForm(self.request.POST)
+        computador = form.save(commit=False)
+        laboratorio = Laboratorio.objects.get(pk=self.request.POST.get('laboratorio'))
+        laboratorio.qnt_computador += 1
+        laboratorio.save()
+        computador.save()
+        messages.success(self.request, 'Solicitação Realizada com sucesso')
         return super(CreateComputadorView, self).form_valid(form)
 
     def form_invalid(self, form, *args, **kwargs):
@@ -619,7 +628,7 @@ class CreateEmprestimoView(CreateView):
     def form_valid(self, form, *args, **kwargs):
         form = EmprestimoForm(self.request.POST)
         emprestimo = form.save(commit=False)
-        emprestimo.user_id = self.request.user
+        emprestimo.user = self.request.user
         emprestimo.save()
         messages.success(self.request, 'Solicitação Realizada com sucesso')
         return super(CreateEmprestimoView, self).form_valid(form)

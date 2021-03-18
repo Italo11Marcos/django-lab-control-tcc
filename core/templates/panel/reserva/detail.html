@@ -37,15 +37,15 @@
           <p> <label>Dia fim: </label> {{ reserva.end_day }}</p>
           <p> <label>Hora começo: </label> {{ reserva.start_time }}</p>
           <p> <label>Hora término: </label> {{ reserva.end_time }}</p>
-          <p> <label>Laboratório: </label> {{ reserva.laboratorio_id }}</p>
-          {% if reserva.curso_id %}
-            <p> <label>Curso: </label> {{ reserva.curso_id }}</p>
+          <p> <label>Laboratório: </label> {{ reserva.laboratorio }}</p>
+          {% if reserva.curso %}
+            <p> <label>Curso: </label> {{ reserva.curso }}</p>
           {% endif %}
-          {% if reserva.professor_id %}
-            <p> <label>Professor: </label> {{ reserva.professor_id }}</p>
+          {% if reserva.professor %}
+            <p> <label>Professor: </label> {{ reserva.professor }}</p>
           {% endif %}
-          {% if reserva.disciplina_id %}
-            <p> <label>Disciplina: </label> {{ reserva.disciplina_id }}</p>
+          {% if reserva.disciplina %}
+            <p> <label>Disciplina: </label> {{ reserva.disciplina }}</p>
           {% endif %}
         </div>
         <div class="card-footer">

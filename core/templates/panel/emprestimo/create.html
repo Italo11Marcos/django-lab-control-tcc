@@ -82,8 +82,8 @@
                   </div>
                   <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Date:</label>
-                          {% render_field form.date type="datetime-local" class+="form-control" %}
+                          <label>Data:</label>
+                          <input type="date" name="date" class="form-control">
                           <p class="text-danger">{{ form.date.errors }}</p>
                       </div>
                   </div>
@@ -111,7 +111,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label>Computador:</label>
-                        <select name="professor" class="form-control select2bs4">
+                        <select name="computador" class="form-control select2bs4">
                           {% for c in computadors %}
                               <option value="{{ c.codigo }}">{{ c.codigo }}</option>
                           {% endfor %}

@@ -30,8 +30,8 @@
           <h3 class="card-title"><label>{{ aula.name }}</label></h3>
         </div>
         <div class="card-body">
-          <p> <label>Curso: </label> {{ aula.curso_id }}</p>
-          <p> <label>Disciplina: </label> {{ aula.disciplina_id }}</p>
+          <p> <label>Curso: </label> {{ aula.curso }}</p>
+          <p> <label>Disciplina: </label> {{ aula.disciplina }}</p>
           {% if aula.dia == '1' %}
             <p> <label>Dia: </label> Segunda </p>
           {% elif aula.dia == '2' %}
@@ -47,8 +47,8 @@
           {% elif aula.dia == '7' %}
             <p> <label>Dia: </label> Domingo </p>
           {% endif %}
-          <p> <label>Laboratório: </label> {{ aula.laboratorio_id }}</p>
-          <p> <label>Professor: </label> {{ aula.professor_id }}</p>
+          <p> <label>Laboratório: </label> {{ aula.laboratorio }}</p>
+          <p> <label>Professor: </label> {{ aula.professor }}</p>
           <p> <label>Dia início: </label> {{ aula.start_day }}</p>
           <p> <label>Dia término: </label> {{ aula.end_day }}</p>
           <p> <label>Hora início: </label> {{ aula.start_time }}</p>

@@ -136,41 +136,25 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label>Laboratório</label>
-                        <select name="laboratorio" class="form-control select2bs4">
-                          {% for l in laboratorios %}
-                            <option value="{{ l.id }}">{{ l.name }}</option>
-                          {% endfor %}
-                        </select>
+                        {% render_field form.laboratorio class+="form-control" %}
                     </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
                       <label>Professor</label>
-                      <select name="professor" class="form-control select2bs4">
-                        {% for p in professores %}
-                            <option value="{{ p.id }}">{{ p.name }}</option>
-                        {% endfor %}
-                      </select>
+                      {% render_field form.professor class+="form-control" %}
                   </div>
               </div>
               <div class="col-sm-3">
                 <div class="form-group">
                     <label>Disciplina</label>
-                    <select name="disciplina" class="form-control select2bs4">
-                      {% for d in disciplinas %}
-                            <option value="{{ d.id }}">{{ d.name }}</option>
-                      {% endfor %}
-                    </select>
+                    {% render_field form.disciplina class+="form-control" %}
                 </div>
               </div>
               <div class="col-sm-3">
                 <div class="form-group">
                     <label>Curso</label>
-                    <select name="curso" class="form-control select2bs4">
-                      {% for c in cursos %}
-                            <option value="{{ c.id }}">{{ c.name }}</option>
-                      {% endfor %}
-                    </select>
+                    {% render_field form.curso class+="form-control" %}
                 </div>
               </div>
               </div>
