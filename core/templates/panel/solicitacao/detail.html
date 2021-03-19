@@ -59,9 +59,9 @@
         <div class="card-footer">
           {% if solicitacao.status == 'P' %}  
             {% if request.user.is_staff %}
-            <a href="{% url 'solicitacao-update' solicitacao.pk %}" class="btn btn-outline-success" data-toggle="modal" data-backdrop="static" data-target="#exampleModalCenter">Responder</a>
+            <a href="{% url 'solicitacao-update' solicitacao.pk %}" class="btn btn-success" data-toggle="modal" data-backdrop="static" data-target="#exampleModalCenter">Responder</a>
             {% else %}
-            <a href="{% url 'solicitacao-delete' solicitacao.pk %}" class="btn btn-outline-danger" data-toggle="modal" data-backdrop="static" data-target="#modalDelete">Excluir</a>
+            <a href="{% url 'solicitacao-delete' solicitacao.pk %}" class="btn btn-danger" data-toggle="modal" data-backdrop="static" data-target="#modalDelete">Excluir</a>
             {% endif %}
           {% endif %}
         </div>

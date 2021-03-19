@@ -39,11 +39,11 @@
           {% endif %}
         </div>
         <div class="card-footer">
-            <a href="{% url 'usuario-update' user.pk %}" class="btn btn-outline-info">Editar</a>
+            <a href="{% url 'usuario-update' user.pk %}" class="btn btn-info">Editar</a>
             {% if user == request.user %}
-              <button class="btn btn-outline-danger" disabled>Excluir</button>
+              <button class="btn btn-danger" disabled>Excluir</button>
             {% else %}
-              <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
+              <a href="" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
             {% endif %}
             
         </div>

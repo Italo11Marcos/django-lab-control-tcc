@@ -52,7 +52,7 @@
         </div>
         <div class="card-footer">
             {% if manutencao.status == 'Em Curso' and request.user.get_full_name == manutencao.user.get_full_name %}
-                <a href="#" class="btn btn-outline-info" data-toggle="modal" data-target="#modalUpdate">Editar</a>
+                <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modalUpdate">Editar</a>
             {% endif %}
         </div>
       </div>
