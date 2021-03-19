@@ -45,7 +45,7 @@
               <div class="row">
                 {% for p in pcs %}
                 <div class="col-md-3 col-sm-6 col-12">
-                  <a href="#" target="_blank" rel="noreferrer noopener">
+                  <a href="{% url 'computador-detail' p.pk %}" target="_blank" rel="noreferrer noopener">
                     <div class="info-box">
                       <span class="info-box-icon bg-dark"><i class="fas fa-laptop"></i></span>
                       <div class="info-box-content">

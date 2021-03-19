@@ -42,14 +42,16 @@
               <div class="row">
                 {% for p in pcs %}
                 <div class="col-md-3 col-sm-6 col-12">
+                    <a href="{% url 'computador-detail' p.pk %}" target="_blank" rel="noopener noreferrer">
                     <div class="info-box">
                       <span class="info-box-icon bg-dark"><i class="fas fa-laptop"></i></span>
                       <div class="info-box-content">
                         <span class="info-box-number"> Código: {{ p.codigo }} </span>
                         <span class="info-box-number"> Patrimônio: {{ p.patrimonio }} </span>
-                        <span class="info-box-number"> {{ p.laboratorio_id }}</span>
+                        <span class="info-box-number"> {{ p.laboratorio }}</span>
                       </div>
                     </div>
+                    </a>
                 </div>
                 {% endfor %}
               </div>
