@@ -61,7 +61,11 @@
                             <td>{{ r.evento }}</td>
                             <td>{{ r.responsavel }}</td>
                             <td>{{ r.start_day }}</td>
-                            <td>{{ r.laboratorio }}</td>
+                            {% if r.laboratorio %}
+                              <td>{{ r.laboratorio }}</td>
+                            {% else %}
+                              <td> - </td>
+                            {% endif %}
                             <td>
                                 <a href="{% url 'reserva-detail' r.pk %}" title="Informações"><i class="far fa-eye"></i></a>
                             </td>

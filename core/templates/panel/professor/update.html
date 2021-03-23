@@ -56,7 +56,7 @@
               <div class="col-sm-6">
                   <div class="form-group">
                       <label>Contato:</label>
-                      {% render_field form.contato class+="form-control" placeholder="(xx) xxxxx-xxxx" %}
+                      <input type="text" class="form-control" name="contato" value="{{ professor.contato }}" id="test" data-inputmask='"mask": "(99) 9999-9999"' data-mask>
                   </div>
               </div>
           </div>
@@ -84,6 +84,16 @@
 {% endblock %}
 
 {% block js %}
+
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
+<script>
+  $(document).ready(function(){
+    $('#test').inputmask('(99) 9999-9999');
+  });
+</script>
 
 <!-- jquery-validation -->
 <script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>

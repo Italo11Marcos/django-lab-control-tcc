@@ -46,7 +46,7 @@
                         <label>Cor:</label>
                         <div class="input-group my-colorpicker2">
                           
-                          <input type="text" class="form-control" name="color" value="{{ curso.color }}" required>
+                          <input type="text" class="form-control" name="color" value="{{ reserva.color }}" required>
                           <p class="text-danger">{{ form.color.errors }}</p>
                           <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-square"></i></span>
@@ -65,7 +65,7 @@
                   <div class="col-sm-4">
                       <div class="form-group">
                           <label>Contato:</label>
-                          {% render_field form.contato class+="form-control" %}
+                          <input type="text" class="form-control" name="contato" value="{{ reserva.contato }}" id="test" data-inputmask='"mask": "(99) 9999-9999"' data-mask>
                       </div>
                   </div>
                   <div class="col-sm-4">
@@ -79,7 +79,7 @@
                   <div class="col-sm-3">
                       <div class="form-group">
                           <label>Data Início</label>
-                          {% render_field form.start_day type="date" class+="form-control" %}
+                          <input type="date" value="{{ reserva.start_day|date:'Y-m-d' }}" name="start_day" class="form-control">
                       </div>
                   </div>
                   <div class="col-sm-3">
@@ -91,7 +91,7 @@
                   <div class="col-sm-3">
                     <div class="form-group">
                         <label>Data Fim</label>
-                        {% render_field form.end_day type="date" class+="form-control" %}
+                        <input type="date" value="{{ reserva.end_day|date:'Y-m-d' }}" name="end_day" class="form-control">
                     </div>
                   </div>
                   <div class="col-sm-3">
@@ -158,6 +158,16 @@
 
 <!-- bootstrap color picker -->
 <script src="{% static 'plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js' %}"></script>
+
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
+<script>
+  $(document).ready(function(){
+    $('#test').inputmask('(99) 9999-9999');
+  });
+</script>
 
 <script>
     $(document).ready(function () {

@@ -37,7 +37,9 @@
           <p> <label>Dia fim: </label> {{ reserva.end_day }}</p>
           <p> <label>Hora começo: </label> {{ reserva.start_time }}</p>
           <p> <label>Hora término: </label> {{ reserva.end_time }}</p>
-          <p> <label>Laboratório: </label> {{ reserva.laboratorio }}</p>
+          {% if reserva.laboratorio %}
+            <p> <label>Laboratório: </label> {{ reserva.laboratorio }}</p>
+          {% endif %}
           {% if reserva.curso %}
             <p> <label>Curso: </label> {{ reserva.curso }}</p>
           {% endif %}
