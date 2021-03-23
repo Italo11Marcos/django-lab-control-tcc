@@ -33,15 +33,15 @@
         </div>
         <div class="card-body">
             <table>
-                <table id="table-lab" class="table table-bordered table-hover dataTable">
+                <table id="table-lab" class="table table-bordered table-hover text-center dataTable">
                     <thead>
                         <tr>
-                            <th class="text-center">Computador</th>
-                            <th class="text-center">Data Início</th>
-                            <th class="text-center">Data Término</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Responsável</th>
-                            <th class="text-center">Ações</th>
+                            <th>Computador</th>
+                            <th>Data Início</th>
+                            <th>Data Término</th>
+                            <th>Status</th>
+                            <th>Responsável</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,7 +49,11 @@
                             <tr>
                                 <td>{{ m.pc_codigo }}</td>            
                                 <td>{{ m.data_inicio }}</td>
+                                {% if m.data_fim %}
                                 <td>{{ m.data_fim }}</td>
+                                {% else %}
+                                <td> - </td>
+                                {% endif %}
                                 <td>{{ m.status }}</td>
                                 <td>{{ m.user.get_full_name }}</td>
                                 <td>

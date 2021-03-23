@@ -101,7 +101,7 @@ class DetailLaboratorioView(DetailView):
 class UpdateLaboratorioView(UpdateView):
     model = Laboratorio
     template_name = 'panel/laboratorio/update.html'
-    fields = ['name', 'qnt_computador']
+    fields = ['name']
     success_url = reverse_lazy('laboratorio-create')
 
     def form_valid(self, form, *args, **kwargs):
@@ -707,6 +707,19 @@ def UpdateManutencao(request):
     if request.method == 'POST':
         manutecao = request.POST.get('manutencao_id', False)
         descricao = request.POST.get('descricao', False)
+        ram = request.POST.get('ram', False)
+        hd = request.POST.get('hd', False)
+        procesador = request.POST.get('processador', False)
+        computador = request.POST.get('pc_codigo', False)
+        pc = Computador.objects.get(pk=computador)
+        if ram:
+            pc.ram = ram
+        if processador:
+            pc.procesador = procesador
+        if hd:
+            pc.hd = hd
+        pc.em_manutencao = False
+        pc.save()
         m = Manutencao.objects.get(pk=manutecao)
         m.descricao = descricao
         m.status = 'Resolvido'

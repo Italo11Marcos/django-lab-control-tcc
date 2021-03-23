@@ -27,7 +27,11 @@
 
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title"><label> Computador: {{ computador.codigo }} </label></h3>
+          <h3 class="card-title"><label> Computador: {{ computador.codigo }} </label> - 
+            {% if computador.em_manutencao %}
+             <span class="badge badge-warning">Em manutenção</span>
+            {% endif %} 
+          </h3>
         </div>
         <div class="card-body">
           <div class="row">
@@ -48,12 +52,6 @@
               <p> <label>HD:</label> {{computador.hd }}</p>
               <p> <label>Laboratório:</label> {{computador.laboratorio }}</p>
               <p> <label>Quantas vezes foi para manutenção:</label> {{computador.qnt_manutencao }}</p>
-              {% if computador.em_manutencao %}
-                <p> <label>Em manutenção?</label> Sim</p>
-              {% else %}
-                <p> <label>Em manutenção?</label> Não</p>
-              {% endif %}
-              
             </div>
             <div class="col-md-6">
               <label>Softwares Instalados: {{ computador.software.all.count }}</label><br>
@@ -64,9 +62,11 @@
           </div>
         </div>
         <div class="card-footer">
+          {% if not computador.em_manutencao %}
             <a href="{% url 'computador-update' computador.pk %}" class="btn btn-info">Editar</a>
             <a href="" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
             <a href="" class="btn btn-warning" data-toggle="modal" data-target="#modalManutencao">Manutenção</a>
+          {% endif %}
         </div>
       </div>
 
