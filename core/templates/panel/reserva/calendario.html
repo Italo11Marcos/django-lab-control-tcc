@@ -97,7 +97,7 @@ fullCalendar 2.2.5
             title: "{{ r.evento }}",
             start: '{{ r.start_day|date:"Y-m-d" }} {{ r.start_time }}',
             end: '{{ r.end_day|date:"Y-m-d" }} {{ r.end_time }}',
-            color: '#deeb34'
+            color: '{{ r.color }}'
             //allDay         : false,
         },
         {% endfor %}
@@ -113,7 +113,7 @@ fullCalendar 2.2.5
             professor: '{{ a.professor }}',
             curso: '{{ a.curso }}'
           },
-          color: '#20d4d1',
+          color: '{{ a.curso.color }}',
           //url: 'http://google.com/',
         },
         {% endfor %}

@@ -164,7 +164,7 @@ class DetailCursoView(DetailView):
 class UpdateCursoView(UpdateView):
     model = Curso
     template_name = 'panel/curso/update.html'
-    fields = ['name']
+    fields = ['name', 'color']
     success_url = reverse_lazy('curso-create')
 
     def form_valid(self, form, *args, **kwargs):

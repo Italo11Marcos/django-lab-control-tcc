@@ -20,7 +20,7 @@ class LaboratorioForm(forms.ModelForm):
 class CursoForm(forms.ModelForm):
     class Meta:
         model = Curso
-        fields = ['name']
+        fields = ['name', 'color']
 
     def clean_name(self):
         name = self.cleaned_data['name']

@@ -4,6 +4,8 @@
 {% block title %} Reserva - Painel de Controle {% endblock %} 
 
 {% block head %}
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
 
 {% endblock %}
 
@@ -33,11 +35,24 @@
             <form method="POST" autocomplete="off" id="form-reserva">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label>Evento:</label>
                             {% render_field form.evento class+="form-control" %}
                         </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Cor:</label>
+                        <div class="input-group my-colorpicker2">
+                          
+                          <input type="text" class="form-control" name="color" value="{{ curso.color }}" required>
+                          <p class="text-danger">{{ form.color.errors }}</p>
+                          <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-square"></i></span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                 </div>
                 <div class="row">
@@ -141,7 +156,8 @@
 <script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
 <script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
 
-
+<!-- bootstrap color picker -->
+<script src="{% static 'plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js' %}"></script>
 
 <script>
   $(function () {
@@ -225,7 +241,14 @@
         $(element).addClass('is-valid');
       }
     });
+
+    //color picker with addon
+  $('.my-colorpicker2').colorpicker()
+
+  $('.my-colorpicker2').on('colorpickerChange', function(event) {
+    $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
   });
+});
   </script>
 
 {% if messages %}
