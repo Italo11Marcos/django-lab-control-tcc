@@ -44,7 +44,7 @@
                   <div class="col-sm-3">
                       <div class="form-group">
                           <label>Data Início</label>
-                          {% render_field form.start_day type="date" class+="form-control" %}
+                          <input type="date" value="{{ aula.start_day|date:'Y-m-d' }}" name="start_day" class="form-control">
                       </div>
                   </div>
                   <div class="col-sm-3">
@@ -56,7 +56,7 @@
                   <div class="col-sm-3">
                     <div class="form-group">
                         <label>Data Fim</label>
-                        {% render_field form.end_day type="date" class+="form-control" %}
+                        <input type="date" value="{{ aula.end_day|date:'Y-m-d' }}" name="end_day" class="form-control">
                     </div>
                   </div>
                   <div class="col-sm-3">
@@ -120,17 +120,6 @@
 <!-- jquery-validation -->
 <script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
 <script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
-
-
-
-<script>
-  $(function () {
-    $("#table-lab").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-    });
-  });
-</script>
 
 <script>
     $(document).ready(function () {

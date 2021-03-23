@@ -33,16 +33,10 @@
             <form method="POST" autocomplete="off" id="form-laboratorio">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <div class="form-group">
                             <label>Nome:</label>
                             {% render_field form.name class+="form-control" %}
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Quantidade de Computadores:</label>
-                            {% render_field form.qnt_computador class+="form-control" %}
                         </div>
                     </div>
                 </div>
@@ -76,16 +70,6 @@
 <script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
 
 
-
-<script>
-  $(function () {
-    $("#table-lab").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-    });
-  });
-</script>
-
 <script>
   $(document).ready(function () {
   $('#form-laboratorio').validate({
@@ -93,18 +77,10 @@
       name: {
         required: true,
       },
-      qnt_computador: {
-        required: true,
-        min: 1
-      },
     },
     messages: {
       name: {
         required: "Esse campo é obrigatório",
-      },
-      qnt_computador: {
-        required: "Esse campo é requerido",
-        min: "O laboratório não pode ter menos que 1 computador"
       },
     },
     errorElement: 'span',
