@@ -7,7 +7,7 @@ import datetime
 class LaboratorioForm(forms.ModelForm):
     class Meta:
         model = Laboratorio
-        fields = ('name', 'qnt_computador')
+        fields = ['name']
 
     def clean_name(self):
         name = self.cleaned_data['name']
