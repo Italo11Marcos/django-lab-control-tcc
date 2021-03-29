@@ -392,7 +392,7 @@ class UpdateComputadorView(UpdateView):
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super().form_valid(form)
+        return super().form_invalid(form)
 
 class DeleteComputadorView(DeleteView):
     model = Computador
