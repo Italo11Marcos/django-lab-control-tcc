@@ -30,6 +30,12 @@
           <h3 class="card-title"><label>{{ user.get_full_name }}</label></h3>
         </div>
         <div class="card-body">
+          {% if form.errors %}
+          <div class="alert alert-danger">
+            {{ form.non_field_errors }}
+            {{ form.errors }}
+          </div>
+          {% endif %}
           <form method="post" class="form-signin">
             {% csrf_token %}
 

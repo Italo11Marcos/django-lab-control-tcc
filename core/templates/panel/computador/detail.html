@@ -63,7 +63,7 @@
         </div>
         <div class="card-footer">
           {% if not computador.em_manutencao %}
-            <a href="{% url 'computador-update' computador.pk %}" class="btn btn-info">Editar</a>
+            <a href="{% url 'computador-update' computador.codigo %}" class="btn btn-info">Editar</a>
             <a href="" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
             <a href="" class="btn btn-warning" data-toggle="modal" data-target="#modalManutencao">Manutenção</a>
           {% endif %}

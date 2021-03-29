@@ -30,6 +30,12 @@
           <h3 class="card-title"><label>{{ disciplina.name }}</label></h3>
         </div>
         <div class="card-body">
+          {% if form.errors %}
+          <div class="alert alert-danger">
+            {{ form.non_field_errors }}
+            {{ form.errors }}
+          </div>
+          {% endif %}
             <form method="POST" autocomplete="off" id="form-disciplina">
                 {% csrf_token %}
                 <div class="row">
