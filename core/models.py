@@ -5,7 +5,7 @@ import uuid
 class Curso(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=45, unique=True)
-    color = models.CharField(max_length=7)
+    color = models.CharField(max_length=7, unique=True)
 
     def __str__(self):
         return self.name
@@ -92,7 +92,7 @@ class Computador(models.Model):
 class Reserva(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     evento = models.CharField(max_length=100)
-    color = models.CharField(max_length=7)
+    color = models.CharField(max_length=7, unique=True)
     responsavel = models.CharField(max_length=100)
     contato = models.CharField(max_length=15)
     email = models.EmailField()
