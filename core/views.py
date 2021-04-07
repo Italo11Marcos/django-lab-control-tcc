@@ -513,29 +513,18 @@ class DeleteAulaView(DeleteView):
 
 ##Solicitação Reserva CRUD##
 class CreateSolicitacaoReservaView(CreateView):
+    model = SolicitacaoReserva
     form_class = SolicitacaoReservaForm
     template_name = 'panel/solicitacao/create.html'
     success_url = reverse_lazy('solicitacao-create')
 
-    def get_context_data(self, **kwargs):
-        context = super(CreateSolicitacaoReservaView, self).get_context_data(**kwargs)
-        context['softwares'] = Software.objects.all()
-        context['professores'] = Professor.objects.order_by('?').all()
-        context['disciplinas'] = Disciplina.objects.order_by('?').all()
-        context['cursos'] = Curso.objects.order_by('?').all()
-        return context
-
     def form_valid(self, form, *args, **kwargs):
-        form = SolicitacaoReservaForm(self.request.POST)
-        solicitacao = form.save(commit=False)
-        solicitacao.user = self.request.user
-        solicitacao.save()
         messages.success(self.request, 'Solicitação Realizada com sucesso')
-        return super(CreateSolicitacaoReservaView, self).form_valid(form)
+        return super().form_valid(form)
 
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Tivemos algum problema')
-        return super(CreateSolicitacaoReservaView, self).form_invalid(form)
+        return super().form_invalid(form)
 
 class ListSolicitacaoReservaView(ListView):
     model = SolicitacaoReserva
@@ -565,28 +554,19 @@ class DetailSolicitacaoReservaView(DetailView):
     template_name = 'panel/solicitacao/detail.html'
     context_object_name = 'solicitacao'
 
-    def get_context_data(self, **kwargs):
-        context = super(DetailSolicitacaoReservaView, self).get_context_data(**kwargs)
-        resp = RespostaSolicitacao.objects.filter(solicitacao=self.get_object().pk)
-        resposta = '0'
-        if resp:
-            resposta = resp[0].resposta
-        context['resp'] = resposta
-        return context
+# class UpdateSolicitacaoReservaView(UpdateView):
+#     model = SolicitacaoReserva
+#     template_name = 'panel/solicitacao/update.html'
+#     form_class = SolicitacaoReservaForm
+#     success_url = reverse_lazy('solicitacao-list')
 
-class UpdateSolicitacaoReservaView(UpdateView):
-    model = SolicitacaoReserva
-    template_name = 'panel/solicitacao/update.html'
-    form_class = SolicitacaoReservaForm
-    success_url = reverse_lazy('solicitacao-list')
+#     def form_valid(self, form, *args, **kwargs):
+#         messages.success(self.request, 'Solicitacao editada com sucesso!')
+#         return super().form_valid(form)
 
-    def form_valid(self, form, *args, **kwargs):
-        messages.success(self.request, 'Solicitacao editada com sucesso!')
-        return super().form_valid(form)
-
-    def form_invalid(self, form, *args, **kwargs):
-        messages.error(self.request, 'Tivemos algum problema')
-        return super().form_valid(form)
+#     def form_invalid(self, form, *args, **kwargs):
+#         messages.error(self.request, 'Tivemos algum problema')
+#         return super().form_valid(form)
 
 class DeleteSolicitacaoReservaView(DeleteView):
     model = SolicitacaoReserva
@@ -599,18 +579,13 @@ class DeleteSolicitacaoReservaView(DeleteView):
         success_url = self.get_success_url()
         return HttpResponseRedirect(success_url)
 
-def RespostaSolicitacaoCreate(request):
+def ConfirmaSolicitacao(request):
     if request.method == 'POST':
-        solicitacaoreserva = request.POST.get('solicitacaoreserva_id', False)
-        user = request.POST.get('user_id', False)
-        resposta = request.POST.get('resposta', False)
-        s = SolicitacaoReserva.objects.get(pk=solicitacaoreserva)
-        u = accounts_models.CustomUsuario.objects.get(pk=user)
+        solicitacao = request.POST.get('pk', False)
+        s = SolicitacaoReserva.objects.get(pk=solicitacao)
         s.status = 'F'
         s.save()
-        r = RespostaSolicitacao.objects.create(user=u, solicitacao=s, resposta=resposta)
-        r.save()
-        messages.success(request, 'Respondido com sucesso!')
+        messages.success(request, 'Confirmado com sucesso!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         
 ##Emprestimo CRUD##

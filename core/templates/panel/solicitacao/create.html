@@ -32,60 +32,19 @@
         <div class="card-header">
           <h3 class="card-title"><label>Solicitar Reserva</label></h3>
         </div>
+        {% if form.errors %}
+        <div class="alert alert-danger">
+          {{ form.non_field_errors }}
+          {{ form.errors }}
+        </div>
+        {% endif %}
         <div class="card-body">
-            <form method="POST" autocomplete="off" id="form-solicitacao">
+            <form action="{% url 'solicitacao-create' %}" method="POST" autocomplete="off" id="form-solicitacao" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Quantidade de alunos:</label>
-                          {% render_field form.qnt_alunos class+="form-control" %}
-                          <p class="text-danger">{{ form.qnt_alunos.errors }}</p>
-                      </div>
-                  </div>
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Disciplina:</label>
-                          <select name="disciplina" class="form-control select2bs4">
-                            {% for d in disciplinas %}
-                              <option value="{{ d.id }}">{{ d.name }}</option>
-                            {% endfor %}
-                          </select>
-                      </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                      <div class="form-group">
-                          <label>Professor</label>
-                          <select name="professor" class="form-control select2bs4">
-                            {% for p in professores %}
-                              <option value="{{ p.masp }}">{{ p.name }}</option>
-                            {% endfor %}
-                          </select>
-                      </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Curso</label>
-                        <select name="curso" class="form-control select2bs4">
-                          {% for c in cursos %}
-                            <option value="{{ c.id }}">{{ c.name }}</option>
-                          {% endfor %}
-                        </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label>Softwares</label>
-                      <select name="software" class="duallistbox" multiple="multiple" required>
-                        {% for s in softwares %}
-                          <option value="{{ s.id }}">{{ s.name }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
+                  <div class="col-sm-12">
+                    <label>Arquivo:</label>
+                    <input type="file" name="arquivo" required>
                   </div>
                 </div>
                 <div class="row">
@@ -126,45 +85,11 @@
 <script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
 <script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
 
-
-
-<!-- Bootstrap4 Duallistbox -->
-<script src="{% static 'plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
-
-<!-- InputMask -->
-<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
-<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
-
-<script>
-  //Initialize Select2 Elements
-  $('.select2').select2()
-  //Initialize Select2 Elements
-  $('.select2bs4').select2({
-    theme: 'bootstrap4'
-  })
-  //Bootstrap Duallistbox
-  $('.duallistbox').bootstrapDualListbox()
-</script>
-
 <script>
   $(document).ready(function () {
   $('#form-solicitacao').validate({
     rules: {
-      qnt_alunos: {
-        required: true,
-        min: 5,
-        max: 50,
-      },
-      disciplina: {
-        required: true,
-      },
-      professor_masp: {
-          required: true,
-      },
-      curso: {
-          required: false,
-      },
-      software: {
+      arquivo: {
           required: true,
       },
       observacao: {
@@ -172,27 +97,9 @@
       },
     },
     messages: {
-      qnt_alunos: {
-        required: "Esse campo é obrigatório",
-        max: "Máximo de 50 alunos",
-        min: "Mínimo de 5 alunos"
-      },
-      disciplina: {
+      arquivo: {
         required: "Esse campo é obrigatório",
       },
-      professor_masp: {
-          required: "Esse campo é obrigatório",
-      },
-      funciona: {
-          required: "Esse campo é obrigatório",
-      },
-      curso: {
-          required: "Esse campo é obrigatório",
-      },
-      software: {
-          required: "Esse campo é obrigatório",
-      }
-
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

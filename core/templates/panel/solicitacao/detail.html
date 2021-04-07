@@ -26,41 +26,22 @@
     <section class="content">
 
       <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"><label>Status: </label></h3>
-          {% if solicitacao.status == 'P' %}
-            <span class="badge badge-pill badge-primary"> Pendente</span>
-          {% else %}
-            <span class="badge badge-pill badge-success"> Concluída</span>
-          {% endif %} 
-        </div>
         <div class="card-body">
           <p><label>Solicitante: </label> {{ solicitacao.user.get_full_name }}</p>
-          <p><label>Curso: </label> {{ solicitacao.curso }}</p>
-          <p><label>Disciplina: </label> {{ solicitacao.disciplina }}</p>
-          <p><label>Quantidade de alunos: </label> {{ solicitacao.qnt_alunos }}</p>
           <p>
-            {% if solicitacao.observacao %}
-            <label>Obersavções: </label> {{ solicitacao.observacao }}
-            {% else %}
-            <label>Obersavções: </label> Não há
-            {% endif %}
+          {% if solicitacao.status == 'P' %}
+            <label>Status: </label><span class="badge badge-pill badge-warning"> Pendente</span>
+          {% else %}
+            <label>Status: </label><span class="badge badge-pill badge-success"> Visualizada - {{ solicitacao.data_visualizacao }}</span>
+          {% endif %} 
+          <p><label>Data de envio: </label>{{ solicitacao.data }}</p>
           </p>
-          <label>Softwares Requisitados: </label><br>
-          <p>
-          {% for s in solicitacao.software.all %}
-            <span class="badge badge-pill badge-dark">{{ s }}</span>
-          {% endfor %}
-          {% if resp != '0' %}
-          <p><label>Resposta: </label> {{ resp }}</p>
-          {% endif %}
-          </p>
+          <p><a href="{{ solicitacao.arquivo.url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><i class="fas fa-file-pdf"></i> PDF</a></p>
         </div>
         <div class="card-footer">
           {% if solicitacao.status == 'P' %}  
             {% if request.user.is_staff %}
-            <a href="{% url 'solicitacao-update' solicitacao.pk %}" class="btn btn-success" data-toggle="modal" data-backdrop="static" data-target="#exampleModalCenter">Responder</a>
-            {% else %}
+            <a href="{% url 'solicitacao-confirmar' %}" class="btn btn-success" data-toggle="modal" data-backdrop="static" data-target="#modalConfirmar">Confirmar</a>
             <a href="{% url 'solicitacao-delete' solicitacao.pk %}" class="btn btn-danger" data-toggle="modal" data-backdrop="static" data-target="#modalDelete">Excluir</a>
             {% endif %}
           {% endif %}
@@ -72,7 +53,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Modal Delete-->
+<!-- Modal Delete-->
 <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -96,9 +77,9 @@
     </div>
 </div>
 
-<!-- modal resposta-->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+<!-- Modal Confirmar-->
+<div class="modal fade" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -106,17 +87,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{% url 'resposta-create' %}" method="post">
+        <form action="{% url 'solicitacao-confirmar' %}" method="post">
           {% csrf_token %}
-          <label>Resposta: </label>
-          <textarea name="resposta" class="form-control" cols="30" rows="10" required></textarea>
-          <input type="hidden" name="solicitacaoreserva" value="{{ solicitacao.id }}">
-          <input type="hidden" name="user" value="{{ request.user.id }}">
+          Realmente deseja confirmar a visualização do arquivo enviado por {{ solicitacao.user.get_full_name }} ?
+          Essa ação não poderá ser desfeita!
+          <input type="hidden" name="pk" value="{{ solicitacao.pk }}">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-primary">Responder</button>
-      </form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Confirmar</button>
+        </form>
       </div>
     </div>
   </div>

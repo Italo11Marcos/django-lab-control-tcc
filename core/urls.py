@@ -64,9 +64,9 @@ urlpatterns = [
     path('panel/solicitacao/minhas', ListMySolicitacaoReservaView.as_view(), name='solicitacao-mylist'),
     path('panel/solicitacao/todas', ListAllSolicitacaoReservaView.as_view(), name='solicitacao-alllist'),
     path('panel/solicitacao/detail/<uuid:pk>', DetailSolicitacaoReservaView.as_view(), name='solicitacao-detail'),
-    path('panel/solicitacao/updade/<uuid:pk>', UpdateSolicitacaoReservaView.as_view(), name='solicitacao-update'),
+    path('panel/solicitacao/confirma', ConfirmaSolicitacao, name='solicitacao-confirmar'),
     path('panel/solicitacao/delete/<uuid:pk>', DeleteSolicitacaoReservaView.as_view(), name='solicitacao-delete'),
-    path('panel/resposta/solicitacao', RespostaSolicitacaoCreate, name='resposta-create'),
+    #path('panel/resposta/solicitacao', RespostaSolicitacaoCreate, name='resposta-create'),
     ## URLs Emprestimo
     path('panel/emprestimo/cadastrar', CreateEmprestimoView.as_view(), name='emprestimo-create'),
     path('panel/emprestimo/<uuid:pk>', DetailEmprestimoView.as_view(), name='emprestimo-detail'),

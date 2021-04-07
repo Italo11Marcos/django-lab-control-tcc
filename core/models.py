@@ -1,6 +1,7 @@
 from django.db import models
 from accounts import models as accounts_models
 import uuid
+from .validators import path_and_rename, validate_file_extension, validate_file_size
 
 class Curso(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -148,47 +149,20 @@ class SolicitacaoReserva(models.Model):
     
     STATUS_CHOICES = [
         ('P', 'Pendente'),
-        ('F', 'Finalizada'),
+        ('F', 'Visualizada'),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    observacao = models.TextField(blank=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=1, default='P')
-    qnt_alunos = models.IntegerField()
-    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
-    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
-    software = models.ManyToManyField(Software)
+    data = models.DateTimeField(auto_now_add=True)
+    data_visualizacao = models.DateTimeField(auto_now=True)
+    observacao = models.TextField(blank=True)
+    arquivo = models.FileField(upload_to=path_and_rename, validators=[validate_file_extension, validate_file_size], null=False)
     user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.CASCADE)
 
-class RespostaSolicitacao(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    solicitacao = models.ForeignKey(SolicitacaoReserva, on_delete=models.CASCADE)
-    resposta = models.TextField()
-    user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.CASCADE)
-
-class Log(models.Model):
-
-    CATEGORIA_CHOICES = [
-        ('MN', 'Manutenção'),
-        ('AT', 'Atualização'),
-        ('IT', 'Instalação'),
-        ('CR', 'Cadastro'),
-        ('RV', 'Reserva'),
-        ('EM', 'Empréstimo'),
-        ('AS', 'Atualização Status'),
-        ('NS', 'Nova Solicitação'),
-    ]
-
-    date = models.DateTimeField(auto_now_add=True)
-    categoria = models.CharField(choices=CATEGORIA_CHOICES, max_length=2)
-    laboratorio = models.ForeignKey(Laboratorio, on_delete=models.SET_NULL, null=True, blank=True)
-    computador = models.ForeignKey(Computador, on_delete=models.SET_NULL, null=True, blank=True)
-    reserva = models.ForeignKey(Reserva, on_delete=models.SET_NULL, null=True, blank=True)
-    emprestimo = models.ForeignKey(Emprestimo, on_delete=models.SET_NULL, null=True, blank=True)
-    software = models.ForeignKey(Software, on_delete=models.SET_NULL, null=True, blank=True)
-    solicitacao = models.ForeignKey(SolicitacaoReserva, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.SET_NULL, null=True)
+    def delete(self, *args, **kwargs):
+        self.file.delete()
+        super().delete(*args, **kwargs)
 
 class Manutencao(models.Model):
     STATUS_CHOICES = [
@@ -203,3 +177,33 @@ class Manutencao(models.Model):
     data_fim = models.DateField(null=True, blank=True)
     descricao = models.TextField(null=True, blank=True)
     user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.SET_NULL, null=True, blank=True)
+
+
+# class RespostaSolicitacao(models.Model):
+#     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+#     solicitacao = models.ForeignKey(SolicitacaoReserva, on_delete=models.CASCADE)
+#     resposta = models.TextField()
+#     user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.CASCADE)
+
+# class Log(models.Model):
+
+#     CATEGORIA_CHOICES = [
+#         ('MN', 'Manutenção'),
+#         ('AT', 'Atualização'),
+#         ('IT', 'Instalação'),
+#         ('CR', 'Cadastro'),
+#         ('RV', 'Reserva'),
+#         ('EM', 'Empréstimo'),
+#         ('AS', 'Atualização Status'),
+#         ('NS', 'Nova Solicitação'),
+#     ]
+
+#     date = models.DateTimeField(auto_now_add=True)
+#     categoria = models.CharField(choices=CATEGORIA_CHOICES, max_length=2)
+#     laboratorio = models.ForeignKey(Laboratorio, on_delete=models.SET_NULL, null=True, blank=True)
+#     computador = models.ForeignKey(Computador, on_delete=models.SET_NULL, null=True, blank=True)
+#     reserva = models.ForeignKey(Reserva, on_delete=models.SET_NULL, null=True, blank=True)
+#     emprestimo = models.ForeignKey(Emprestimo, on_delete=models.SET_NULL, null=True, blank=True)
+#     software = models.ForeignKey(Software, on_delete=models.SET_NULL, null=True, blank=True)
+#     solicitacao = models.ForeignKey(SolicitacaoReserva, on_delete=models.SET_NULL, null=True)
+#     user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.SET_NULL, null=True)

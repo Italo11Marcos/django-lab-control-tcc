@@ -165,25 +165,14 @@ class SoftwareForm(forms.ModelForm):
 class SolicitacaoReservaForm(forms.ModelForm):
     class Meta:
         model = SolicitacaoReserva
-        fields = ['qnt_alunos', 'professor', 'curso', 'disciplina', 'software', 'observacao']
-
-    def clean_qnt_alunos(self):
-        qnt_alunos = self.cleaned_data['qnt_alunos']
-
-        if qnt_alunos < 5:
-            raise ValidationError(_('Quantidade tem quer ser maior que 5'))
-
-        if qnt_alunos > 50:
-            raise ValidationError(_('Quantidade tem quer ser menor que 50'))
-
-        return qnt_alunos
-
-class RespostaSolicitacaoForm(forms.ModelForm):
-    class Meta:
-        model = RespostaSolicitacao
-        fields = ['resposta']
+        fields = ['arquivo','observacao','user']
 
 class ManutencaoForm(forms.ModelForm):
     class Meta:
         model = Manutencao
         fields = ['pc_codigo', 'user']
+
+# class RespostaSolicitacaoForm(forms.ModelForm):
+#     class Meta:
+#         model = RespostaSolicitacao
+#         fields = ['resposta']
