@@ -1,7 +1,7 @@
 from django.db import models
 from accounts import models as accounts_models
 import uuid
-from .validators import path_and_rename, validate_file_extension, validate_file_size
+
 
 class Curso(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -149,20 +149,37 @@ class SolicitacaoReserva(models.Model):
     
     STATUS_CHOICES = [
         ('P', 'Pendente'),
-        ('F', 'Visualizada'),
+        ('A', 'Analisando'),
+        ('R', 'Rejeitado'),
+        ('S', 'Aprovado')
+    ]
+
+    DIA_CHOICES = [
+        ('1', 'Segunda'),
+        ('2', 'Terça'),
+        ('3', 'Quarta'),
+        ('4', 'Quinta'),
+        ('5', 'Sexta'),
+        ('6', 'Sábado'),
+        ('7', 'Domingo')
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     status = models.CharField(choices=STATUS_CHOICES, max_length=1, default='P')
-    data = models.DateTimeField(auto_now_add=True)
-    data_visualizacao = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    curso = models.ForeignKey(Curso, on_delete=models.SET_NULL, null=True)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.SET_NULL, null=True)
+    professor = models.ForeignKey(Professor, on_delete=models.SET_NULL, null=True)
+    software = models.ManyToManyField(Software)
+    dia = models.CharField(choices=DIA_CHOICES, max_length=1, default='1')
+    start_time = models.TimeField()
+    end_time = models.TimeField()
     observacao = models.TextField(blank=True)
-    arquivo = models.FileField(upload_to=path_and_rename, validators=[validate_file_extension, validate_file_size], null=False)
+    resposta = models.TextField(blank=True)
     user = models.ForeignKey(accounts_models.CustomUsuario, on_delete=models.CASCADE)
 
-    def delete(self, *args, **kwargs):
-        self.file.delete()
-        super().delete(*args, **kwargs)
+    def solicitacao(self):
+        return str(self.curso) + ' - ' + str(self.disciplina)
 
 class Manutencao(models.Model):
     STATUS_CHOICES = [

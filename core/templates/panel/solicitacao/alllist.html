@@ -36,7 +36,7 @@
                     <thead>
                         <tr>
                             <th>Solicitante</th>
-                            <th>Arquivo</th>
+                            <th>Solicitação</th>
                             <th>Data Envio</th>
                             <th>Status</th>
                             <th>Ações</th>
@@ -46,12 +46,16 @@
                         {% for s in solicitacao %}
                             <tr>
                                 <td>{{ s.user.get_full_name }}</td>
-                                <td><a href="{{ s.arquivo.url }}" target="_blank" rel="noopener noreferrer">PDF</a></td>
-                                <td>{{ s.data }}</td>
+                                <td>{{ s.solicitacao }}</td>
+                                <td>{{ s.created_at }}</td>
                                 {% if s.status == 'P' %}
                                 <td> <span class="badge badge-warning">Pendente</span> </td>
+                                {% elif s.status == 'A' %}
+                                <td> <span class="badge badge-primary">Analisando</span> </td>
+                                {% elif s.status == 'R' %}
+                                <td> <span class="badge badge-danger">Rejeitado</span> </td>
                                 {% else %}
-                                <td> <span class="badge badge-success">Finalizado</span> </td>
+                                <td> <span class="badge badge-success">Aprovado</span> </td>
                                 {% endif %}
                                 <td>
                                     <a href="{% url 'solicitacao-detail' s.pk %}" title="Informações"><i class="far fa-eye"></i></a>

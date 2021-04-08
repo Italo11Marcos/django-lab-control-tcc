@@ -12,6 +12,8 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from datetime import date
 from accounts import models as accounts_models
 from accounts import forms as accounts_forms
+from django.core.mail import send_mail
+from labs.settings import EMAIL_HOST_USER
 
 
 # Create your views here.
@@ -518,6 +520,14 @@ class CreateSolicitacaoReservaView(CreateView):
     template_name = 'panel/solicitacao/create.html'
     success_url = reverse_lazy('solicitacao-create')
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateSolicitacaoReservaView, self).get_context_data(**kwargs)
+        context['softwares'] = Software.objects.all()
+        context['professores'] = Professor.objects.order_by('?').all()
+        context['disciplinas'] = Disciplina.objects.order_by('?').all()
+        context['cursos'] = Curso.objects.order_by('?').all()
+        return context
+
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Solicitação Realizada com sucesso')
         return super().form_valid(form)
@@ -582,10 +592,26 @@ class DeleteSolicitacaoReservaView(DeleteView):
 def ConfirmaSolicitacao(request):
     if request.method == 'POST':
         solicitacao = request.POST.get('pk', False)
+        status = request.POST.get('status', False)
+        resposta = request.POST.get('resposta', False)
+        user_email = request.POST.get('email', False)
         s = SolicitacaoReserva.objects.get(pk=solicitacao)
-        s.status = 'F'
+        if status == 'A':
+            s.status = 'A'
+        elif status == 'R':
+            s.status = 'R'
+            s.resposta = resposta
+            subject = 'Solicitação Reprovada =('
+            message = 'Infelizmente sua solicitação foi reprovada. {}'.format(resposta)
+            send_mail(subject, message, EMAIL_HOST_USER, [user_email], fail_silently=False)
+        elif status == 'S':
+            s.status = 'S'
+            s.resposta = resposta
+            subject = 'Solicitação Aprovada =)'
+            message = 'Sua solicitação foi aprovada. {}'.format(resposta)
+            send_mail(subject, message, EMAIL_HOST_USER, [user_email], fail_silently=False)
         s.save()
-        messages.success(request, 'Confirmado com sucesso!')
+        messages.success(request, 'Sucesso!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         
 ##Emprestimo CRUD##

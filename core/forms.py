@@ -165,7 +165,16 @@ class SoftwareForm(forms.ModelForm):
 class SolicitacaoReservaForm(forms.ModelForm):
     class Meta:
         model = SolicitacaoReserva
-        fields = ['arquivo','observacao','user']
+        fields = ['curso', 'disciplina', 'professor', 'software', 'dia', 'start_time', 'end_time', 'observacao', 'user']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get("start_time")
+        end_time = cleaned_data.get("end_time")
+
+        if end_time < start_time:
+            msg = 'Hora inválida!'
+            self.add_error('end_time', msg)
 
 class ManutencaoForm(forms.ModelForm):
     class Meta:

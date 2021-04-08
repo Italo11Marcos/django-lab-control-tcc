@@ -39,27 +39,90 @@
         </div>
         {% endif %}
         <div class="card-body">
-            <form action="{% url 'solicitacao-create' %}" method="POST" autocomplete="off" id="form-solicitacao" enctype="multipart/form-data">
+            <form action="{% url 'solicitacao-create' %}" method="POST" autocomplete="off" id="form-solicitacao">
                 {% csrf_token %}
                 <div class="row">
-                  <div class="col-sm-12">
-                    <label>Arquivo:</label>
-                    <input type="file" name="arquivo" required>
-                  </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                    <div class="form-group">
-                        <label>Oberservação</label>
-                        {% render_field form.observacao class+="form-control" %}
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                          <label>Curso</label>
+                          <select name="curso" class="form-control select2bs4">
+                            {% for c in cursos %}
+                              <option value="{{ c.id }}">{{ c.name }}</option>
+                            {% endfor %}
+                          </select>
+                          <p class="text-danger">{{ form.curso.errors }}</p>
+                      </div>
                     </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                          <label>Disciplina</label>
+                          <select name="disciplina" class="form-control select2bs4">
+                            {% for d in disciplinas %}
+                              <option value="{{ d.id }}">{{ d.name }}</option>
+                            {% endfor %}
+                          </select>
+                          <p class="text-danger">{{ form.disciplinas.errors }}</p>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                          <label>Professor</label>
+                          <select name="professor" class="form-control select2bs4">
+                            {% for p in professores %}
+                              <option value="{{ p.masp }}">{{ p.name }}</option>
+                            {% endfor %}
+                          </select>
+                          <p class="text-danger">{{ form.professor.errors }}</p>
+                      </div>
                     </div>
                     <input name="user" type="hidden" value="{{ request.user.id }}">
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Softwares</label>
+                      <select name="software" class="duallistbox" multiple="multiple" required>
+                        {% for s in softwares %}
+                          <option value="{{ s.id }}">{{ s.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label>Dia:</label>
+                      {% render_field form.dia class+="form-control" %}
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Hora Início</label>
+                        {% render_field form.start_time type="time" class+="form-control" %}
+                        <p class="text-danger">{{ form.start_time.errors }}</p>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Hora Fim</label>
+                        {% render_field form.end_time type="time" class+="form-control" %}
+                        <p class="text-danger">{{ form.end_time.errors }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
                       <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <label>Observação</label>
+                        {% render_field form.observacao type="text" class+="form-control" %}
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
                       </div>
                   </div>
               </div>
@@ -84,6 +147,24 @@
 <!-- jquery-validation -->
 <script src="{% static 'plugins/jquery-validation/jquery.validate.min.js' %}"></script>
 <script src="{% static 'plugins/jquery-validation/additional-methods.min.js' %}"></script>
+
+<!-- Bootstrap4 Duallistbox -->
+<script src="{% static 'plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
+
+<script>
+  //Initialize Select2 Elements
+  $('.select2').select2()
+  //Initialize Select2 Elements
+  $('.select2bs4').select2({
+    theme: 'bootstrap4'
+  })
+  //Bootstrap Duallistbox
+  $('.duallistbox').bootstrapDualListbox()
+</script>
 
 <script>
   $(document).ready(function () {

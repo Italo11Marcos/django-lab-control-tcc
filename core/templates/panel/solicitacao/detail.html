@@ -26,22 +26,88 @@
     <section class="content">
 
       <div class="card">
-        <div class="card-body">
-          <p><label>Solicitante: </label> {{ solicitacao.user.get_full_name }}</p>
-          <p>
-          {% if solicitacao.status == 'P' %}
-            <label>Status: </label><span class="badge badge-pill badge-warning"> Pendente</span>
-          {% else %}
-            <label>Status: </label><span class="badge badge-pill badge-success"> Visualizada - {{ solicitacao.data_visualizacao }}</span>
-          {% endif %} 
-          <p><label>Data de envio: </label>{{ solicitacao.data }}</p>
-          </p>
-          <p><a href="{{ solicitacao.arquivo.url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><i class="fas fa-file-pdf"></i> PDF</a></p>
+        <div class="card-header">
+          <label> Detalhes da solicitação: </label> {{ solicitacao.id }}
         </div>
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-sm-4">
+              <p><label>Solicitante: </label> {{ solicitacao.user.get_full_name }}</p>
+            </div>
+            <div class="col-sm-4">
+              {% if solicitacao.status == 'P' %}
+                <label>Status: </label><span class="badge badge-pill badge-warning"> Pendente</span>
+              {% elif solicitacao.status == 'A' %}
+                <label>Status: </label><span class="badge badge-pill badge-primary"> Analisando</span>
+              {% elif solicitacao.status == 'R' %}
+                <label>Status: </label><span class="badge badge-pill badge-danger"> Reprovada</span>
+              {% elif solicitacao.status == 'S' %}
+                <label>Status: </label><span class="badge badge-pill badge-success"> Aprovado</span>
+              {% endif %} 
+            </div>
+            <div class="col-sm-4">
+              <p><label>Data de envio: </label> {{ solicitacao.created_at }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <p><label>Curso:</label> {{ solicitacao.curso }}</p>
+            </div>
+            <div class="col-sm-4">
+              <p><label>Disciplina:</label> {{ solicitacao.disciplina }}</p>
+            </div>
+            <div class="col-sm-4">
+              <p><label>Professor:</label> {{ solicitacao.professor }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              {% if solicitacao.dia == '1' %}
+                <p> <label>Dia: </label> Segunda </p>
+              {% elif solicitacao.dia == '2' %}
+                <p> <label>Dia: </label> Terça </p>
+              {% elif solicitacao.dia == '3' %}
+                <p> <label>Dia: </label> Quarta </p>
+              {% elif solicitacao.dia == '4' %}
+                <p> <label>Dia: </label> Quinta </p>
+              {% elif solicitacao.dia == '5' %}
+                <p> <label>Dia: </label> Sexta </p>
+              {% elif solicitacao.dia == '6' %}
+                <p> <label>Dia: </label> Sábado </p>
+              {% elif solicitacao.dia == '7' %}
+                <p> <label>Dia: </label> Domingo </p>
+              {% endif %}
+            </div>
+            <div class="col-sm-4">
+              <p><label>Horário de Início:</label> {{ solicitacao.start_time }}</p>
+            </div>
+            <div class="col-sm-4">
+              <p><label>Horário de Término:</label> {{ solicitacao.end_time }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p><label>Softwares necessários: </label>
+                {% for s in solicitacao.software.all %}
+                  <span class="badge badge-pill badge-dark">{{ s }}</span>
+                {% endfor %}
+              </p>  
+            </div>
+          </div>
+          {% if solicitacao.resposta %}
+          <hr>
+          <div class="row">
+            <div class="col-sm-12">
+             <p><label>Resposta: </label> {{ solicitacao.resposta }}</p>
+            </div>
+          </div>
+          {% endif %}
+      </div>
         <div class="card-footer">
-          {% if solicitacao.status == 'P' %}  
+          {% if solicitacao.status == 'P' or solicitacao.status == 'A' %}  
             {% if request.user.is_staff %}
-            <a href="{% url 'solicitacao-confirmar' %}" class="btn btn-success" data-toggle="modal" data-backdrop="static" data-target="#modalConfirmar">Confirmar</a>
+            <a href="{% url 'solicitacao-confirmar' %}" class="btn btn-secondary" data-toggle="modal" data-backdrop="static" data-target="#modalConfirmar">Responder</a>
             <a href="{% url 'solicitacao-delete' solicitacao.pk %}" class="btn btn-danger" data-toggle="modal" data-backdrop="static" data-target="#modalDelete">Excluir</a>
             {% endif %}
           {% endif %}
@@ -82,6 +148,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
+        <label>Alterar status da solicitação:</label> 
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -89,13 +156,29 @@
       <div class="modal-body">
         <form action="{% url 'solicitacao-confirmar' %}" method="post">
           {% csrf_token %}
-          Realmente deseja confirmar a visualização do arquivo enviado por {{ solicitacao.user.get_full_name }} ?
-          Essa ação não poderá ser desfeita!
+          <div class="form-group">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="status" id="radio-analisando" value="A">
+              <label class="form-check-label" >Analisando</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="status" id="radio-reprovado" value="R">
+              <label class="form-check-label" >Reprovado</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="status" id="radio-aprovado" value="S">
+              <label class="form-check-label" >Aprovado</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <textarea style="display:none;" class="form-control" name="resposta" id="resposta" cols="30" rows="5" placeholder="Resposta para {{ solicitacao.user.get_full_name }}"></textarea>
+          </div>
           <input type="hidden" name="pk" value="{{ solicitacao.pk }}">
+          <input type="hidden" name="email" value="{{ solicitacao.user.email }}">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-success">Confirmar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary">Alterar</button>
         </form>
       </div>
     </div>
@@ -111,6 +194,28 @@
 {% endblock %}
 
 {% block js %}
+
+<script>
+  $(document).ready(function (){
+    $("#radio-reprovado").click(function (){
+      if($(this).is(':checked')) {
+        $("#resposta").show();
+        $("resposta").attr("required", "req");
+      }
+    });
+    $("#radio-aprovado").click(function (){
+      if($(this).is(':checked')) {
+        $("#resposta").show();
+        $("resposta").attr("required", "req");
+      }
+    });
+    $("#radio-analisando").click(function (){
+      if($(this).is(':checked')) {
+        $("#resposta").hide();
+      }
+    });
+  });
+</script>
 
 {% if messages %}
         {% for message in messages %}

@@ -33,27 +33,37 @@
         </div>
         <div class="card-body">
                 <table id="table-lab" class="table table-bordered table-hover text-center dataTable">
-                    <thead>
+                  <thead>
+                    <tr>
+                        <th>Solicitante</th>
+                        <th>Solicitação</th>
+                        <th>Data Envio</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for s in solicitacao %}
                         <tr>
-                            <th>Solicitante</th>
-                            <th>Arquivo</th>
-                            <th>Data Envio</th>
-                            <th>Ações</th>
+                            <td>{{ s.user.get_full_name }}</td>
+                            <td>{{ s.solicitacao }}</td>
+                            <td>{{ s.created_at }}</td>
+                            {% if s.status == 'P' %}
+                            <td> <span class="badge badge-warning">Pendente</span> </td>
+                            {% elif s.status == 'A' %}
+                            <td> <span class="badge badge-primary">Analisando</span> </td>
+                            {% elif s.status == 'R' %}
+                            <td> <span class="badge badge-danger">Rejeitado</span> </td>
+                            {% else %}
+                            <td> <span class="badge badge-success">Aprovado</span> </td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'solicitacao-detail' s.pk %}" title="Informações"><i class="far fa-eye"></i></a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {% for s in solicitacao %}
-                            <tr>
-                                <td>{{ s.user.get_full_name }}</td>
-                                <td><a href="{{ s.arquivo.url }}" target="_blank" rel="noopener noreferrer">PDF</a></td>
-                                <td>{{ s.data }}</td>
-                                <td>
-                                    <a href="{% url 'solicitacao-detail' s.pk %}" title="Informações"><i class="far fa-eye"></i></a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                  </table>
+                    {% endfor %}
+                  </tbody>
+                </table>
         </div>
       </div>
 
