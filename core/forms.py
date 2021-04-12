@@ -117,10 +117,6 @@ class AulaForm(forms.ModelForm):
         start_time = cleaned_data.get("start_time")
         end_time = cleaned_data.get("end_time")
 
-        if start_day < datetime.date.today():
-            msg = 'Esse dia já passou!'
-            self.add_error('start_day', msg)
-
         if end_day < start_day:
             msg = 'Data inválida!'
             self.add_error('end_day', msg)
