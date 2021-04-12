@@ -564,6 +564,15 @@ class DetailSolicitacaoReservaView(DetailView):
     template_name = 'panel/solicitacao/detail.html'
     context_object_name = 'solicitacao'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        obj_softwares = SolicitacaoReserva.objects.filter(id=self.get_object().pk).values_list('software')
+        list_softwares = [i[0] for i in obj_softwares]
+        laboratorios = Computador.objects.filter(software__in=list_softwares)
+        laboratorios_names = set(labs.laboratorio for labs in laboratorios)
+        context['laboratorios'] = laboratorios_names
+        return context
+
 # class UpdateSolicitacaoReservaView(UpdateView):
 #     model = SolicitacaoReserva
 #     template_name = 'panel/solicitacao/update.html'

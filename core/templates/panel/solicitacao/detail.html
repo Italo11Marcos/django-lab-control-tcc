@@ -95,6 +95,14 @@
               </p>  
             </div>
           </div>
+          {% if solicitacao.status == 'P' or solicitacao.status == 'A' %}
+          <hr>
+          <p>Os softwares necessários estão presentes nos Laboratórios: <p>
+            {% for l in laboratorios %}
+              <span class="badge badge-pill badge-dark">{{ l }}</span>
+            {% endfor %}
+          <hr>
+          {% endif %}
           {% if solicitacao.resposta %}
           <hr>
           <div class="row">
