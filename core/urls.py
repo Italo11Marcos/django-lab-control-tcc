@@ -80,4 +80,6 @@ urlpatterns = [
     #path('panel/manutencao/update/<int:pk>', UpdateManutencaoView.as_view(), name='manutencao-update'),
     ## URL calendar
     path('panel/calendar', calendar, name='calendario'),
+    ## URLs Relatórios
+    path('panel/relatorios/<uuid:pk>', relatorios.as_view(), name='relatorio-index'),
 ]

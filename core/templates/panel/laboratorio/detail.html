@@ -33,12 +33,13 @@
 
           <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link text-center" id="nav-pcs-disponiveis-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-check-circle fa-2x"></i> <br>Computadores Disponíveis</a>
-              <a class="nav-item nav-link text-center" id="nav-pcs-manutencao-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fas fa-tools fa-2x"></i> <br>Computadores em Manutenção</a>
+              <a class="nav-item nav-link text-center" id="nav-pcs-disponiveis-tab" data-toggle="tab" href="#nav-1" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-check-circle fa-2x"></i> <br>Computadores Disponíveis</a>
+              <a class="nav-item nav-link text-center" id="nav-pcs-manutencao-tab" data-toggle="tab" href="#nav-2" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fas fa-tools fa-2x"></i> <br>Computadores em Manutenção</a>
+              <a class="nav-item nav-link text-center" id="nav-pcs-softwares-tab" data-toggle="tab" href="#nav-3" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fas fa-laptop-code fa-2x"></i> <br>Softwares Disponíveis</a>
             </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show" id="nav-home" role="tabpanel" aria-labelledby="nav-pcs-disponiveis-tab">
+            <div class="tab-pane fade show" id="nav-1" role="tabpanel" aria-labelledby="nav-pcs-disponiveis-tab">
               
               <br> <p> <label>Total: </label> {{ qnt_pcs }}</p>
 
@@ -68,7 +69,7 @@
                 {% endfor %}
               </div>
             </div>
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-pcs-manutencao-tab">
+            <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-pcs-manutencao-tab">
               
               <br> <p> <label>Total: </label> {{ qnt_pcs_manutencao }}</p>
           
@@ -96,12 +97,23 @@
                 {% endfor %}
               </div>
             </div>
+            <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-pcs-softwares-tab">
+              <br>
+                <div class="row">
+                  {% for s in softwares %}
+                  <div class="col-md-3">
+                    <span class="badge">{{ s }}</span>
+                  </div>
+                  {% endfor %}
+                </div>
+            </div>
           </div>
 
         </div>
         <div class="card-footer">
             <a href="{% url 'laboratorio-update' laboratorio.pk %}" class="btn btn-info">Editar</a>
             <a href="" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">Excluir</a>
+            <a href="{% url 'relatorio-index' laboratorio.pk %}" class="btn btn-info">Imprimir</a>
         </div>
       </div>
 

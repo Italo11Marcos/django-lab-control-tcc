@@ -13,6 +13,7 @@ from datetime import date
 from accounts import models as accounts_models
 from accounts import forms as accounts_forms
 from django.core.mail import send_mail
+from django_renderpdf.views import PDFView
 from labs.settings import EMAIL_HOST_USER
 
 
@@ -94,10 +95,14 @@ class DetailLaboratorioView(DetailView):
         context = super(DetailLaboratorioView, self).get_context_data(**kwargs)
         pcs_manutencao = Computador.objects.filter(laboratorio=self.get_object().pk).filter(em_manutencao=True)
         pcs = Computador.objects.filter(laboratorio=self.get_object().pk).filter(em_manutencao=False)
+        softwares = Computador.objects.filter(laboratorio=self.get_object().pk).values_list('software')
+        softwares_ids = [i[0] for i in softwares]
+        softwares_names = [Software.objects.get(pk=i).name for i in softwares_ids]
         context['pcs'] = pcs
         context['qnt_pcs'] = len(pcs)
         context['pcs_manutencao'] = pcs_manutencao
         context['qnt_pcs_manutencao'] = len(pcs_manutencao)
+        context['softwares'] = softwares_names
         return context
 
 class UpdateLaboratorioView(UpdateView):
@@ -748,7 +753,24 @@ def calendar(request):
     }
     return render(request, 'panel/reserva/calendario.html', context)
 
+class relatorios(PDFView):
+    template_name = 'panel/relatorios/index.html'
+    def get_context_data(self, *args, **kwargs):
+        pk = self.kwargs['pk']
+        laboratorio = Laboratorio.objects.get(id=pk)
+        computadores = Computador.objects.filter(laboratorio=pk)
+        softwares = Computador.objects.filter(laboratorio=pk).values_list('software')
+        softwares_ids = [i[0] for i in softwares]
+        softwares_names = [Software.objects.get(pk=i).name for i in softwares_ids]
+        laboratorio_name = laboratorio.name
+        context = {
+            'computadores': computadores,
+            'labs': laboratorio_name,
+            'softwares': softwares_names
+        }
+        return context
 
+    
 
 
 
