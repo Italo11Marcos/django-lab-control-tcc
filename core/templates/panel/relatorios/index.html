@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Computadores {{ labs }}</title>
+</head>
+<body>
+    <h3 class="text-center">Universidade Estadual de Montes Claros</h3>
+    <h3 class="text-center">Departamento de Ciências Exatas</h3>
+    <br>
+    <h4 class="text-center">Computadores do {{ labs }}</h4>
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Patrimônio</th>
+                <th>Código Interno</th>
+                <th>HD</th>
+                <th>RAM</th>
+                <th>Processador</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in computadores %}
+                <tr>
+                    <td>{{ c.patrimonio }}</td>
+                    <td>{{ c.codigo }}</td>
+                    <td>{{ c.hd }}</td>
+                    <td>{{ c.ram }}</td>
+                    <td>{{ c.processador }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <h4 class="text-center">Softwares Presentes</h4>
+    <table class="table table-bordered text-center">
+        <tbody>
+            {% for s in softwares %}
+                <tr>
+                    <td>{{ s }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
