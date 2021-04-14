@@ -42,7 +42,8 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>Masp:</label>
-                        {% render_field form.masp class+="form-control" %}
+                        <!-- {% render_field form.masp class+="form-control" %} -->
+                        <input type="text" class="form-control" name="masp" value="{{ professor.masp }}" disabled>
                     </div>
                 </div>
                 <div class="col-sm-6">

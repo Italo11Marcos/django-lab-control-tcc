@@ -277,7 +277,7 @@ class DetailProfessorView(DetailView):
 class UpdateProfessorView(UpdateView):
     model = Professor
     template_name = 'panel/professor/update.html'
-    fields = '__all__'
+    fields = ['name', 'contato', 'email']
     success_url = reverse_lazy('professor-create')
 
     def form_valid(self, form, *args, **kwargs):
@@ -390,7 +390,7 @@ class DetailComputadorView(DetailView):
 class UpdateComputadorView(UpdateView):
     model = Computador
     template_name = 'panel/computador/update.html'
-    fields = ['codigo', 'patrimonio', 'dual_boot', 'funciona', 'processador', 'hd', 'ram', 'laboratorio', 'software']
+    fields = ['patrimonio', 'dual_boot', 'funciona', 'processador', 'hd', 'ram', 'laboratorio', 'software']
     success_url = reverse_lazy('computador-create')
 
     def form_valid(self, form, *args, **kwargs):

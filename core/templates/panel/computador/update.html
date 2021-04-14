@@ -42,7 +42,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Código:</label>
-                            {% render_field form.codigo class+="form-control" %}
+                            <!-- {% render_field form.codigo class+="form-control"|attr:"disabled" %} -->
+                            <input type="text" name="codigo" value="{{ computador.codigo }}" class="form-control" disabled>
                         </div>
                     </div>
                     <div class="col-sm-6">
