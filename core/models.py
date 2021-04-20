@@ -106,6 +106,12 @@ class Reserva(models.Model):
     disciplina = models.ForeignKey(Disciplina, on_delete=models.SET_NULL, null=True, blank=True)
     professor = models.ForeignKey(Professor, on_delete=models.SET_NULL, null=True, blank=True)
 
+    def __str__(self):
+        return (self.evento)
+
+    class Meta:
+        unique_together = ['start_day', 'laboratorio', 'start_time']
+
 class Aula(models.Model):
 
     DIA_CHOICES = [
@@ -131,6 +137,9 @@ class Aula(models.Model):
 
     def name(self):
         return str(self.curso) + ' - ' + str(self.disciplina)
+
+    class Meta:
+        unique_together = ['dia', 'laboratorio', 'start_time']
 
 class Emprestimo(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

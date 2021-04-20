@@ -724,13 +724,13 @@ def UpdateManutencao(request):
         descricao = request.POST.get('descricao', False)
         ram = request.POST.get('ram', False)
         hd = request.POST.get('hd', False)
-        procesador = request.POST.get('processador', False)
+        processador = request.POST.get('processador', False)
         computador = request.POST.get('pc_codigo', False)
         pc = Computador.objects.get(pk=computador)
         if ram:
             pc.ram = ram
         if processador:
-            pc.procesador = procesador
+            pc.procesador = processador
         if hd:
             pc.hd = hd
         pc.em_manutencao = False

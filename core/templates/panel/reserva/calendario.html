@@ -68,7 +68,7 @@
 
 {% block js %}
 
-fullCalendar 2.2.5
+<!--fullCalendar 2.2.5-->
 <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
 <script src="{% static 'plugins/fullcalendar/main.min.js' %}"></script>
 <script src="{% static 'plugins/fullcalendar-daygrid/main.min.js' %}"></script>
@@ -111,7 +111,8 @@ fullCalendar 2.2.5
           endTime: '{{ a.end_time }}',
           extendedProps: {
             professor: '{{ a.professor }}',
-            curso: '{{ a.curso }}'
+            curso: '{{ a.curso }}',
+            laboratorio: '{{ a.laboratorio }}'
           },
           color: '{{ a.curso.color }}',
           //url: 'http://google.com/',
@@ -119,7 +120,7 @@ fullCalendar 2.2.5
         {% endfor %}
       ],
       eventClick: function(event){
-        console.log(event)
+        //console.log(event)
         $('#modalTitle').empty()
         $('#disciplina').empty()
         $('#professor').empty()
@@ -128,7 +129,7 @@ fullCalendar 2.2.5
         $('#starttime').empty()
         $('#end').empty()
         $('#endtime').empty()
-        $('#modalTitle').html(event.event.title)
+        $('#modalTitle').html(event.event.extendedProps.laboratorio)
         $('#disciplina').html(event.event.title)
         $('#professor').html(event.event.extendedProps.professor)
         $('#curso').html(event.event.extendedProps.curso)

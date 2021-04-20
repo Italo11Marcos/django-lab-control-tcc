@@ -89,6 +89,7 @@
            <div class="tab-pane fade" id="custom-content-cadastro" role="tabpanel" aria-labelledby="custom-content-cadastro-tab">
             <br>
             <form  action="{% url 'aula-create' %}" method="POST" autocomplete="off" id="form-aula">
+              {{ form.all.errors }}
               {% csrf_token %}
               <div class="row">
                   <div class="col-sm-12">
