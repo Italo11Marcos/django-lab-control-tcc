@@ -2,17 +2,12 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import *
 
+handler404 = 'core.views.handler404'
+handler403 = 'core.views.handler403'
+handler500 = 'core.views.handler500'
+
 urlpatterns = [
     path('panel', IndexView.as_view(), name='index'),
-    ## URLs Auth
-    # path('', auth_views.LoginView.as_view(template_name='auth/login.html'), name='login'),
-    # path('recuperar-senha/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset.html'), name='password_reset'),
-	# path('recuperar-senha/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
-	# path('recuperar-senha/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name="password_reset_confirm"),
-	# path('recuperar-senha/complete/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete'),
-    # #path('registrar/', CreateUserView.as_view(), name='registrar'),
-    # path('registrar/', cadastro, name='registrar'),
-    # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     ## URLs Usuários
     path('panel/usuarios/todos', ListUserView.as_view(), name='usuario-list'),
     path('panel/usuarios/<int:pk>', DetailUserView.as_view(), name='usuario-detail'),

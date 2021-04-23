@@ -17,18 +17,24 @@ from django_renderpdf.views import PDFView
 from labs.settings import EMAIL_HOST_USER
 
 
+def handler404(request, exception):
+    response = render(request, "errors/404.html")
+    response.status_code = 404
+    return response
+
+def handler500(request):
+    response = render(request, "errors/505.html")
+    response.status_code = 500
+    return response
+
+def handler403(request, exception):
+    response = render(request, "errors/403.html")
+    response.status_code = 403
+    return response
+
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'panel/index.html'
-
-#View qnt de solicitações pendentes
-def QntSolicitacoesPendentes(request):
-    qntSolicitacoesPendentes = len(SolicitacaoReserva.objects.filter(status='P'))
-    context = {
-        'qnt': qntSolicitacoesPendentes
-    }
-    return render(request, 'layouts/base.html', context)
-
 ##Usuários CRUD##
 class ListUserView(ListView):
     template_name = 'panel/usuario/list.html'
@@ -45,7 +51,6 @@ class UpdateUserView(UpdateView):
     template_name = 'panel/usuario/update.html'
     form_class = accounts_forms.CustomUsuarioChangeForm
     context_object_name = 'user'
-    #fields = ['first_name', 'last_name', 'masp', 'username', 'is_staff']
     success_url = reverse_lazy('usuario-list')
 
     def form_valid(self, form, *args, **kwargs):
@@ -577,20 +582,6 @@ class DetailSolicitacaoReservaView(DetailView):
         laboratorios_names = set(labs.laboratorio for labs in laboratorios)
         context['laboratorios'] = laboratorios_names
         return context
-
-# class UpdateSolicitacaoReservaView(UpdateView):
-#     model = SolicitacaoReserva
-#     template_name = 'panel/solicitacao/update.html'
-#     form_class = SolicitacaoReservaForm
-#     success_url = reverse_lazy('solicitacao-list')
-
-#     def form_valid(self, form, *args, **kwargs):
-#         messages.success(self.request, 'Solicitacao editada com sucesso!')
-#         return super().form_valid(form)
-
-#     def form_invalid(self, form, *args, **kwargs):
-#         messages.error(self.request, 'Tivemos algum problema')
-#         return super().form_valid(form)
 
 class DeleteSolicitacaoReservaView(DeleteView):
     model = SolicitacaoReserva
