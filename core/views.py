@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import login_required, user_passes_test
+#from django.contrib.auth.decorators import login_required, LoginRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from datetime import date
@@ -35,23 +35,42 @@ def handler403(request, exception):
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'panel/index.html'
+
 ##Usuários CRUD##
-class ListUserView(ListView):
+class ListUserView(UserPassesTestMixin, ListView):
     template_name = 'panel/usuario/list.html'
     model = accounts_models.CustomUsuario
     context_object_name = 'users'
 
-class DetailUserView(DetailView):
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
+
+class DetailUserView(UserPassesTestMixin, DetailView):
     model = accounts_models.CustomUsuario
     template_name = 'panel/usuario/detail.html'
     context_object_name = 'user'
 
-class UpdateUserView(UpdateView):
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
+
+class UpdateUserView(UserPassesTestMixin, UpdateView):
     model = accounts_models.CustomUsuario
     template_name = 'panel/usuario/update.html'
     form_class = accounts_forms.CustomUsuarioChangeForm
     context_object_name = 'user'
     success_url = reverse_lazy('usuario-list')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Usuário editado com sucesso!')
@@ -73,11 +92,17 @@ class DeleteUserView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 ##Laboratorios CRUD##
-class CreateLaborationView(CreateView):
+class CreateLaborationView(UserPassesTestMixin, CreateView):
     model = Laboratorio
     form_class = LaboratorioForm
     template_name = 'panel/laboratorio/create.html'
     success_url = reverse_lazy('laboratorio-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(CreateLaborationView, self).get_context_data(**kwargs)
@@ -92,10 +117,16 @@ class CreateLaborationView(CreateView):
         messages.error(self.request, 'Tivemos algum problema')
         return super(CreateLaborationView, self).form_invalid(form)
 
-class DetailLaboratorioView(DetailView):
+class DetailLaboratorioView(UserPassesTestMixin, DetailView):
     model = Laboratorio
     template_name = 'panel/laboratorio/detail.html'
     
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
+
     def get_context_data(self, **kwargs):
         context = super(DetailLaboratorioView, self).get_context_data(**kwargs)
         pcs_manutencao = Computador.objects.filter(laboratorio=self.get_object().pk).filter(em_manutencao=True)
@@ -110,11 +141,17 @@ class DetailLaboratorioView(DetailView):
         context['softwares'] = softwares_names
         return context
 
-class UpdateLaboratorioView(UpdateView):
+class UpdateLaboratorioView(UserPassesTestMixin, UpdateView):
     model = Laboratorio
     template_name = 'panel/laboratorio/update.html'
     fields = ['name']
     success_url = reverse_lazy('laboratorio-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Laboratório editado com sucesso!')
@@ -161,10 +198,16 @@ class CreateCursoView(UserPassesTestMixin ,CreateView):
         messages.error(self.request, 'Tivemos algum problema')
         return super(CreateCursoView, self).form_invalid(form)
 
-class DetailCursoView(DetailView):
+class DetailCursoView(UserPassesTestMixin, DetailView):
     model = Curso
     template_name = 'panel/curso/detail.html'
     context_object_name = 'curso'
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(DetailCursoView, self).get_context_data(**kwargs)
@@ -173,11 +216,17 @@ class DetailCursoView(DetailView):
         context['qnt'] = len(aulas) + len(reservas)
         return context
 
-class UpdateCursoView(UpdateView):
+class UpdateCursoView(UserPassesTestMixin, UpdateView):
     model = Curso
     template_name = 'panel/curso/update.html'
     fields = ['name', 'color']
     success_url = reverse_lazy('curso-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Curso editado com sucesso!')
@@ -199,11 +248,17 @@ class DeleteCursoView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 ##Disciplina CRUD##
-class CreateDisciplinaView(CreateView):
+class CreateDisciplinaView(UserPassesTestMixin, CreateView):
     model = Disciplina
     form_class = DisciplinaForm
     template_name = 'panel/disciplina/create.html'
     success_url = reverse_lazy('disciplina-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(CreateDisciplinaView, self).get_context_data(**kwargs)
@@ -218,10 +273,16 @@ class CreateDisciplinaView(CreateView):
         messages.error(self.request, 'Tivemos algum problema')
         return super(CreateDisciplinaView, self).form_invalid(form)
 
-class DetailDisciplinaView(DetailView):
+class DetailDisciplinaView(UserPassesTestMixin, DetailView):
     model = Disciplina
     template_name = 'panel/disciplina/detail.html'
     context_object_name = 'disciplina'
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(DetailDisciplinaView, self).get_context_data(**kwargs)
@@ -230,11 +291,17 @@ class DetailDisciplinaView(DetailView):
         context['qnt'] = len(aulas) + len(reservas)
         return context
 
-class UpdateDisciplinaView(UpdateView):
+class UpdateDisciplinaView(UserPassesTestMixin, UpdateView):
     model = Disciplina
     template_name = 'panel/disciplina/update.html'
     fields = ['name']
     success_url = reverse_lazy('disciplina-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Disciplina editada com sucesso!')
@@ -256,10 +323,16 @@ class DeleteDisciplinaView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 ##Professor CRUD##
-class CreateProfessorView(CreateView):
+class CreateProfessorView(UserPassesTestMixin, CreateView):
     form_class = ProfessorForm
     template_name = 'panel/professor/create.html'
     success_url = reverse_lazy('professor-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(CreateProfessorView, self).get_context_data(**kwargs)
@@ -274,16 +347,28 @@ class CreateProfessorView(CreateView):
         messages.error(self.request, 'Tivemos algum problema')
         return super(CreateProfessorView, self).form_invalid(form)
 
-class DetailProfessorView(DetailView):
+class DetailProfessorView(UserPassesTestMixin, DetailView):
     model = Professor
     template_name = 'panel/professor/detail.html'
     context_object_name = 'professor'
 
-class UpdateProfessorView(UpdateView):
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
+
+class UpdateProfessorView(UserPassesTestMixin, UpdateView):
     model = Professor
     template_name = 'panel/professor/update.html'
     fields = ['name', 'contato', 'email']
     success_url = reverse_lazy('professor-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Professor(a) editado(a) com sucesso!')
@@ -305,10 +390,16 @@ class DeleteProfessorView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 ##Software CRUD##
-class CreateSoftwareView(CreateView):
+class CreateSoftwareView(UserPassesTestMixin, CreateView):
     form_class = SoftwareForm
     template_name = 'panel/software/create.html'
     success_url = reverse_lazy('software-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(CreateSoftwareView, self).get_context_data(**kwargs)
@@ -323,10 +414,16 @@ class CreateSoftwareView(CreateView):
         messages.error(self.request, 'Tivemos algum problema')
         return super(CreateSoftwareView, self).form_invalid(form)
 
-class DetailSoftwareView(DetailView):
+class DetailSoftwareView(UserPassesTestMixin, DetailView):
     model = Software
     template_name = 'panel/software/detail.html'
     context_object_name = 'software'
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(DetailSoftwareView, self).get_context_data(**kwargs)
@@ -335,11 +432,17 @@ class DetailSoftwareView(DetailView):
         context['qnt'] = len(pcs)
         return context
 
-class UpdateSoftwareView(UpdateView):
+class UpdateSoftwareView(UserPassesTestMixin, UpdateView):
     model = Software
     template_name = 'panel/software/update.html'
     fields = ['name', 'versao', 'tipo', 'descricao']
     success_url = reverse_lazy('software-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Software editado com sucesso!')
@@ -361,10 +464,16 @@ class DeleteSoftwareView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 ##Computador CRUD##
-class CreateComputadorView(CreateView):
+class CreateComputadorView(UserPassesTestMixin, CreateView):
     form_class = ComputadorForm
     template_name = 'panel/computador/create.html'
     success_url = reverse_lazy('computador-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(CreateComputadorView, self).get_context_data(**kwargs)
@@ -387,16 +496,28 @@ class CreateComputadorView(CreateView):
         messages.error(self.request, 'Tivemos algum problema')
         return super(CreateComputadorView, self).form_invalid(form)
 
-class DetailComputadorView(DetailView):
+class DetailComputadorView(UserPassesTestMixin, DetailView):
     model = Computador
     template_name = 'panel/computador/detail.html'
     context_object_name = 'computador'
 
-class UpdateComputadorView(UpdateView):
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
+
+class UpdateComputadorView(UserPassesTestMixin, UpdateView):
     model = Computador
     template_name = 'panel/computador/update.html'
     fields = ['patrimonio', 'dual_boot', 'funciona', 'processador', 'hd', 'ram', 'laboratorio', 'software']
     success_url = reverse_lazy('computador-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Computador editado com sucesso!')
@@ -418,10 +539,16 @@ class DeleteComputadorView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 ##Reserva CRUD##
-class CreateReservaView(CreateView):
+class CreateReservaView(UserPassesTestMixin, CreateView):
     form_class = ReservaForm
     template_name = 'panel/reserva/create.html'
     success_url = reverse_lazy('reserva-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(CreateReservaView, self).get_context_data(**kwargs)
@@ -440,16 +567,28 @@ class CreateReservaView(CreateView):
         messages.error(self.request, 'Tivemos algum problema')
         return super(CreateReservaView, self).form_invalid(form)
 
-class DetailReservaView(DetailView):
+class DetailReservaView(UserPassesTestMixin, DetailView):
     model = Reserva
     template_name = 'panel/reserva/detail.html'
     context_object_name = 'reserva'
 
-class UpdateReservaView(UpdateView):
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
+
+class UpdateReservaView(UserPassesTestMixin, UpdateView):
     model = Reserva
     template_name = 'panel/reserva/update.html'
     fields = '__all__'
     success_url = reverse_lazy('reserva-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Reserva editada com sucesso!')
@@ -471,10 +610,16 @@ class DeleteReservaView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 ##Aula CRUD##
-class CreateAulaView(CreateView):
+class CreateAulaView(UserPassesTestMixin, CreateView):
     form_class = AulaForm
     template_name = 'panel/aula/create.html'
     success_url = reverse_lazy('aula-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(CreateAulaView, self).get_context_data(**kwargs)
@@ -493,16 +638,28 @@ class CreateAulaView(CreateView):
         messages.error(self.request, 'Tivemos algum problema')
         return super(CreateAulaView, self).form_invalid(form)
 
-class DetailAulaView(DetailView):
+class DetailAulaView(UserPassesTestMixin, DetailView):
     model = Aula
     template_name = 'panel/aula/detail.html'
     context_object_name = 'aula'
 
-class UpdateAulaView(UpdateView):
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
+
+class UpdateAulaView(UserPassesTestMixin, UpdateView):
     model = Aula
     template_name = 'panel/aula/update.html'
     fields = '__all__'
     success_url = reverse_lazy('aula-create')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, 'Aula editada com sucesso!')
@@ -674,9 +831,15 @@ class DeleteEmprestimoView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 ##Manutenção CRUD##
-class CreateManutencaoView(CreateView):
+class CreateManutencaoView(UserPassesTestMixin, CreateView):
     form_class = ManutencaoForm
     success_url = reverse_lazy('manutencao-list')
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def form_valid(self, form, *args, **kwargs):
         form = ManutencaoForm(self.request.POST)
@@ -695,19 +858,31 @@ class CreateManutencaoView(CreateView):
         messages.error(self.request, 'Tivemos algum problema')
         return super(CreateManutencaoView, self).form_invalid(form)
 
-class ListManutencaoView(ListView):
+class ListManutencaoView(UserPassesTestMixin, ListView):
     model = Manutencao
     template_name = 'panel/manutencao/list.html'
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
     def get_context_data(self, **kwargs):
         context = super(ListManutencaoView, self).get_context_data(**kwargs)
         context['manutencoes'] = Manutencao.objects.all()
         return context
 
-class DetailManutencaoView(DetailView):
+class DetailManutencaoView(UserPassesTestMixin, DetailView):
     model = Manutencao
     template_name = 'panel/manutencao/detail.html'
     context_object_name = 'manutencao'
+
+    def test_func(self):
+        if self.request.user.is_staff:
+            return True
+        else:
+            raise Http404('Você não tem permissão')
 
 def UpdateManutencao(request):
     if request.method == 'POST':
