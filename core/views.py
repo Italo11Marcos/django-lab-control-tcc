@@ -138,7 +138,7 @@ class DetailLaboratorioView(UserPassesTestMixin, DetailView):
         context['qnt_pcs'] = len(pcs)
         context['pcs_manutencao'] = pcs_manutencao
         context['qnt_pcs_manutencao'] = len(pcs_manutencao)
-        context['softwares'] = softwares_names
+        context['softwares'] = set(softwares_names)
         return context
 
 class UpdateLaboratorioView(UserPassesTestMixin, UpdateView):
@@ -932,7 +932,7 @@ class relatorios(PDFView):
         context = {
             'computadores': computadores,
             'labs': laboratorio_name,
-            'softwares': softwares_names
+            'softwares': set(softwares_names)
         }
         return context
 
