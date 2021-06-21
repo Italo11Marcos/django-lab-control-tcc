@@ -32,7 +32,8 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-12">
-              <p> <label>Patrimônio:</label> {{manutencao.pc_codigo.patrimonio }}</p>
+              <p> <label>Patrimônio:</label> {{ manutencao.pc_codigo.patrimonio }}</p>
+              <p> <label>Laboratório</label> {{ manutencao.pc_codigo.laboratorio }}</p>
               {% if manutencao.status == 'Em Curso' %}
               <p><label>Status: <span class="badge badge-warning">Em curso</span></label></p>
               {% else %}
