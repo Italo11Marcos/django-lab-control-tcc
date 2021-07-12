@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/static/v1?label=Heroku&message=deploy&color=430098&style=for-the-badge&logo=heroku"/>
   <img src="http://img.shields.io/static/v1?label=License&message=MIT&color=green&style=for-the-badge"/>
   <img src="http://img.shields.io/static/v1?label=Django&message=3.1.1&color=092E20&style=for-the-badge&logo=Django"/>
-  <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=yellow&style=for-the-badge"/>
+  <img src="http://img.shields.io/static/v1?label=STATUS&message=Concluido&color=green&style=for-the-badge"/>
 </p>
 
 
