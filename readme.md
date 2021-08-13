@@ -43,10 +43,3 @@
 ## Pré Requisitos
 * Python 3
 * Django 3.1
-
-## Como rodar a aplicação:
-Em construção...
-
-## Pacotes utilizados:
-Em construção...
-
